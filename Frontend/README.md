@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 
 ##To start project after clone from git
-1. 'cd Frontend' 
+1. `cd Frontend` 
 2. `npm install`
 3. `npm install bootstrap --save`
 4. `npm install jquery --save`
