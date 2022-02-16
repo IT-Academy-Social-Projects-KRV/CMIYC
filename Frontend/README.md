@@ -3,11 +3,12 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 
 ##To start project after clone from git
-1. `npm install`
-2. `npm install bootstrap --save`
-3. `npm install jquery --save`
-4. `npm install popper.js --save`
-5. `ng serve`
+1. 'cd Frontend' 
+2. `npm install`
+3. `npm install bootstrap --save`
+4. `npm install jquery --save`
+5. `npm install popper.js --save`
+6. `ng serve`
 
 ## Development server
 
