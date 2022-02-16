@@ -4,7 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ##To start project after clone from git
 1. `npm install`
-2. `ng serve`
+2. `npm install bootstrap --save`
+3. `npm install jquery --save`
+4. `npm install popper.js --save`
+5. `ng serve`
 
 ## Development server
 
