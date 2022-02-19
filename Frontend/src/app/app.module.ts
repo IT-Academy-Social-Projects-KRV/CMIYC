@@ -10,6 +10,8 @@ import {AdminManageSchemaListComponent} from "./admin-manage-schema-list/admin-m
 import {AdminUserFormComponent} from "./admin-user-form/admin-user-form.component";
 import {AdminCreateSchemaFormComponent} from "./admin-create-schema-form/admin-create-schema-form.component";
 import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manage-user-list.component";
+import { LoginFormComponent } from './login-form/login-form.component';
+import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manag
     AdminManageSchemaListComponent,
     AdminUserFormComponent,
     AdminCreateSchemaFormComponent,
-    AdminManageUserListComponent
+    AdminManageUserListComponent,
+    LoginFormComponent,
+    TwoFactorAuthenticationFormComponent
   ],
   imports: [
     BrowserModule,
