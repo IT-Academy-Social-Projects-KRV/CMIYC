@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RegisterComponent } from './register/register.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import {AdminManageSchemaListComponent} from "./admin-manage-schema-list/admin-manage-schema-list.component";
@@ -13,6 +14,7 @@ import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manag
 @NgModule({
   declarations: [
     AppComponent,
+    RegisterComponent,
     SidebarComponent,
     HeaderComponent,
     AdminManageSchemaListComponent,
