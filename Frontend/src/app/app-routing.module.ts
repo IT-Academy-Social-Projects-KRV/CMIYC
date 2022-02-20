@@ -8,17 +8,20 @@ import {LoginFormComponent} from "./login-form/login-form.component";
 import {TwoFactorAuthenticationFormComponent} from "./two-factor-authentication-form/two-factor-authentication-form.component";
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
+import {NavUserSearchComponent} from "./nav-user-search/nav-user-search.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'allSchemas', component: AdminManageSchemaListComponent },
-  { path: 'allUsers', component: AdminManageUserListComponent },
+  { path: 'admin/allSchemas', component: AdminManageSchemaListComponent },
+  { path: 'admin/allUsers', component: AdminManageUserListComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },
   { path: "register", component: RegisterComponent },
-  { path: 'app-user-search-interface', component: UserSearchInterfaceComponent, outlet: 'routeUserSearch' },
-  { path: 'app-search-response', component: SearchResponseComponent, outlet: 'routeUserSearch'},
+  { path: 'app-user-search-interface', component: UserSearchInterfaceComponent },
+  { path: 'app-search-response', component: SearchResponseComponent},
+  { path: 'app-nav-user-search', component: NavUserSearchComponent},
+
 ];
 
 
