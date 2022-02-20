@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
+import { Error403Component } from './errorpages/error403/error403.component';
+import { Error404Component } from './errorpages/error404/error404.component';
+import { Error500Component } from './errorpages/error500/error500.component';
 import {AdminManageSchemaListComponent} from "./admin-manage-schema-list/admin-manage-schema-list.component";
 import {AdminUserFormComponent} from "./admin-user-form/admin-user-form.component";
 import {AdminCreateSchemaFormComponent} from "./admin-create-schema-form/admin-create-schema-form.component";
@@ -24,6 +27,9 @@ import { NavUserSearchComponent } from './nav-user-search/nav-user-search.compon
     RegisterComponent,
     SidebarComponent,
     HeaderComponent,
+    Error403Component,
+    Error404Component,
+    Error500Component,
     AdminManageSchemaListComponent,
     AdminUserFormComponent,
     AdminCreateSchemaFormComponent,
