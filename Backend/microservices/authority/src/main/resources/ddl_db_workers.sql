@@ -1,60 +1,59 @@
 -- -----------------------------------------------------
 -- Schema db_workers
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `db_workers` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `db_workers` ;
+CREATE SCHEMA IF NOT EXISTS db_workers DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE db_workers ;
 
 -- -----------------------------------------------------
--- Table `db_workers`.`roles`
+-- Table db_workers.roles
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_workers`.`roles` ;
+DROP TABLE IF EXISTS db_workers.roles ;
 
-CREATE TABLE IF NOT EXISTS `db_workers`.`roles` (
-  `ID_ROLES` INT NOT NULL AUTO_INCREMENT,
-  `ROLE` VARCHAR(25) NULL ,
-  `ROLE_DESCRIPTON` VARCHAR(150) NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_ROLES`))
+CREATE TABLE IF NOT EXISTS db_workers.roles (
+  id_role INT NOT NULL AUTO_INCREMENT,
+  role VARCHAR(25) DEFAULT "User",
+  role_desc VARCHAR(150) DEFAULT NULL,
+  CONSTRAINT pk_roles PRIMARY KEY (id_role)
+  )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `db_workers`.`users`
+-- Table db_workers.users
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_workers`.`users` ;
+DROP TABLE IF EXISTS db_workers.users;
 
-CREATE TABLE IF NOT EXISTS `db_workers`.`users` (
-  `ID_USER` INT NOT NULL AUTO_INCREMENT,
-  `FIRST_NAME` VARCHAR(50) NULL DEFAULT NULL,
-  `LAST_NAME` VARCHAR(50) NULL DEFAULT NULL,
-  `EMAIL` VARCHAR(50) NULL ,
-  `USER_LOGIN` VARCHAR(50) NULL DEFAULT NULL,
-  `REGISTER_DATE` DATE NULL DEFAULT (CURRENT_DATE),
-  `IS_ACTIVE` TINYINT NULL DEFAULT '0',
-  PRIMARY KEY (`ID_USER`),
-UNIQUE INDEX `UN_USERS_EMAIL` (`EMAIL` ASC) VISIBLE)
+CREATE TABLE IF NOT EXISTS db_workers.users (
+  id_user INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  register_date DATE DEFAULT (CURRENT_DATE),
+  is_active BOOLEAN DEFAULT false,
+  CONSTRAINT pk_users PRIMARY KEY (id_user),
+  CONSTRAINT uq_users UNIQUE (email)
+  )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `db_workers`.`user_roles`
+-- Table db_workers.user_roles
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_workers`.`user_roles` ;
+DROP TABLE IF EXISTS db_workers.users_roles;
 
-CREATE TABLE IF NOT EXISTS `db_workers`.`user_roles` (
-  `ID_USER` INT NOT NULL,
-  `ID_ROLE` INT NOT NULL,
-  PRIMARY KEY (`ID_USER`, `ID_ROLE`),
-  INDEX `fk_roles` (`ID_ROLE` ASC) VISIBLE,
-  CONSTRAINT `fk_roles`
-    FOREIGN KEY (`ID_ROLE`)
-    REFERENCES `db_workers`.`roles` (`ID_ROLES`),
-  CONSTRAINT `fk_users`
-    FOREIGN KEY (`ID_USER`)
-    REFERENCES `db_workers`.`users` (`ID_USER`))
+CREATE TABLE IF NOT EXISTS db_workers.users_roles (
+  id_user INT NOT NULL,
+  id_role INT NOT NULL,
+  CONSTRAINT pk_users_roles PRIMARY KEY (id_user, id_role),
+  CONSTRAINT fk_users_roles_id_role_roles
+  FOREIGN KEY (id_role) REFERENCES roles (id_role),
+  CONSTRAINT fk_users_roles_id_user_users
+  FOREIGN KEY (id_user) REFERENCES users (id_user)
+  )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
