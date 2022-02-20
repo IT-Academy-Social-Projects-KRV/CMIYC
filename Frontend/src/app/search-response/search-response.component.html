@@ -1,0 +1,63 @@
+
+<div class="container">
+  <app-header></app-header>
+  <div class="row">
+    <nav class="nav nav-tabs mt-3 ">
+      <a routerLink="/app-user-search-interface" routerLinkActive="active" class="nav-item nav-link active">
+        <i class="bi-house-door"></i> Search
+      </a>
+      <a routerLink="/app-search-response" routerLinkActive="active" class="nav-item nav-link">
+        <i class="bi-person"></i> Search Result
+      </a>
+    </nav>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
+
+<div class="container">
+
+  <table class="table mt-4">
+    <thead class="table-dark">
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Registration Number</th>
+      <th>Licence number</th>
+      <th>Birth Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Clark</td>
+      <td>Kent</td>
+      <td>clarkkent@mail.com</td>
+      <td>BK1117AT</td>
+      <td>21321414</td>
+      <td>11.01.1991</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Peter</td>
+      <td>Parker</td>
+      <td>peterparker@mail.com</td>
+      <td>BK1117AT</td>
+      <td>21321414</td>
+      <td>11.01.1991</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>John</td>
+      <td>Carter</td>
+      <td>johncarter@mail.com</td>
+      <td>BK1117AT</td>
+      <td>21321414</td>
+      <td>11.01.1991</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

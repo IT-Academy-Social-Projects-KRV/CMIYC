@@ -12,6 +12,11 @@ import {AdminCreateSchemaFormComponent} from "./admin-create-schema-form/admin-c
 import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manage-user-list.component";
 import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
+import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
+import { SearchResponseComponent } from './search-response/search-response.component';
+import { NavUserSearchComponent } from './nav-user-search/nav-user-search.component';
+
+
 
 @NgModule({
   declarations: [
@@ -24,7 +29,10 @@ import { TwoFactorAuthenticationFormComponent } from './two-factor-authenticatio
     AdminCreateSchemaFormComponent,
     AdminManageUserListComponent,
     LoginFormComponent,
-    TwoFactorAuthenticationFormComponent
+    TwoFactorAuthenticationFormComponent,
+    UserSearchInterfaceComponent,
+    SearchResponseComponent,
+    NavUserSearchComponent
   ],
   imports: [
     BrowserModule,
