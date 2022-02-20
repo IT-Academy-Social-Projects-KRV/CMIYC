@@ -8,7 +8,7 @@ import {LoginFormComponent} from "./login-form/login-form.component";
 import {TwoFactorAuthenticationFormComponent} from "./two-factor-authentication-form/two-factor-authentication-form.component";
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
-import {NavUserSearchComponent} from "./nav-user-search/nav-user-search.component";
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: 'app-user-search-interface', component: UserSearchInterfaceComponent },
   { path: 'app-search-response', component: SearchResponseComponent},
-  { path: 'app-nav-user-search', component: NavUserSearchComponent},
+
 
 ];
 
