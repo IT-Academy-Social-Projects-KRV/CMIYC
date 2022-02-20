@@ -19,9 +19,9 @@ const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },
-  { path: "403", component: Error403Component},
-  { path: "404", component: Error404Component},
-  { path: "500", component: Error500Component}
+  { path: "error403", component: Error403Component},
+  { path: "error404", component: Error404Component},
+  { path: "error500", component: Error500Component}
 ];
 
 
