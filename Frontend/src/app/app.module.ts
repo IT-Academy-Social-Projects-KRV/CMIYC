@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
+import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    UserSearchInterfaceComponent
   ],
   imports: [
     BrowserModule,
