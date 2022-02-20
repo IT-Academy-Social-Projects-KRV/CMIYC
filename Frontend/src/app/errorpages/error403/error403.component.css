@@ -9,3 +9,9 @@ h1{
 a{
   font-family: 'Modern Vision', sans-serif;
 }
+.img-fluid{
+  align-items: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
