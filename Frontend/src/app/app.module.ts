@@ -8,6 +8,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
+import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TwoFactorAuthenticationFormComponent } from './two-factor-authenticatio
     SidebarComponent,
     HeaderComponent,
     LoginFormComponent,
-    TwoFactorAuthenticationFormComponent
+    TwoFactorAuthenticationFormComponent,
+    UserSearchInterfaceComponent
   ],
   imports: [
     BrowserModule,
