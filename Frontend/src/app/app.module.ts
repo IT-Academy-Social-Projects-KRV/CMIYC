@@ -13,6 +13,10 @@ import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manag
 import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
+import { SearchResponseComponent } from './search-response/search-response.component';
+import { NavUserSearchComponent } from './nav-user-search/nav-user-search.component';
+
+
 
 @NgModule({
   declarations: [
@@ -26,7 +30,9 @@ import { UserSearchInterfaceComponent } from './user-search-interface/user-searc
     AdminManageUserListComponent,
     LoginFormComponent,
     TwoFactorAuthenticationFormComponent,
-    UserSearchInterfaceComponent
+    UserSearchInterfaceComponent,
+    SearchResponseComponent,
+    NavUserSearchComponent
   ],
   imports: [
     BrowserModule,
