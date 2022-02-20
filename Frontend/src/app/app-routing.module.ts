@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },
   { path: "register", component: RegisterComponent },
-  { path: 'app-user-search-interface', component: UserSearchInterfaceComponent },
-  { path: 'app-search-response', component: SearchResponseComponent },
+  { path: 'app-user-search-interface', component: UserSearchInterfaceComponent, outlet: 'routeUserSearch' },
+  { path: 'app-search-response', component: SearchResponseComponent, outlet: 'routeUserSearch'},
 ];
 
 
