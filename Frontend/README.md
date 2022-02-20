@@ -5,10 +5,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ##To start project after clone from git
 1. `cd Frontend` 
 2. `npm install`
-3. `npm install bootstrap --save`
-4. `npm install jquery --save`
-5. `npm install popper.js --save`
-6. `ng serve`
+3. `ng serve`
+
+If the unpredictable happens and Angular does not install all the frameworks, use the commands 4, 5, 6.
+
+4. `npm install bootstrap --save`
+5. `npm install jquery --save`
+6. `npm install popper.js --save`
 
 ## Development server
 
@@ -43,7 +46,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Angular DevTools](https://angular.io/devtools/)
 
 ##Useful commands
-* New Component - `ng generate component xyz`
+* New Component - `ng generate component xyz` or shorter `ng g c xyz`
 * Angular Material - `ng add @angular/material`
 * Add PWA Support - `ng add @angular/pwa`
 * Add Dependency - `ng add _____`
