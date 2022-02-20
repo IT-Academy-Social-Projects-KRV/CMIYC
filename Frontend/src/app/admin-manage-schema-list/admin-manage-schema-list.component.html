@@ -1,0 +1,54 @@
+<div>
+  <app-sidebar></app-sidebar>
+
+  <div class="d-flex flex-column flex-shrink-0 border-start border-1">
+    <!-- Table -->
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">
+            <button class="btn btn-success btn-sm"  data-bs-toggle="modal" data-bs-target="#modalWindow">
+              <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
+            </button>
+          </th>
+          <th scope="col">Name</th>
+          <th scope="col">Schema</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <th scope="row" class="align-middle px-3">1</th>
+          <td class="align-middle">Fourth Schema</td>
+          <td class="align-middle">Birth Date, First Name, Last Name, Driver License Number</td>
+          <td>
+            <div>
+              <a class="btn btn-danger">
+                <i class="bi bi-trash3"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalWindowLabel">Add schema</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <app-admin-create-schema-form></app-admin-create-schema-form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
