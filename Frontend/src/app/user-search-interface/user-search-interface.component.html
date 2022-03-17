@@ -3,10 +3,10 @@
   <app-header></app-header>
   <div class="row">
     <nav class="nav nav-tabs mt-3 ">
-      <a routerLink="/app-user-search-interface" routerLinkActive="active" class="nav-item nav-link active">
+      <a routerLink="/userSearch" routerLinkActive="active" class="nav-item nav-link">
         <i class="bi-house-door"></i> Search
       </a>
-      <a routerLink="/app-search-response" routerLinkActive="active" class="nav-item nav-link">
+      <a routerLink="/searchResponse" routerLinkActive="active" class="nav-item nav-link">
         <i class="bi-person"></i> Search Result
       </a>
     </nav>
@@ -19,80 +19,72 @@
 <div class="container ">
 
   <div class="row ">
-    <div class="col-lg-12 p-5 mb-4 border bg-light">
+    <div class=" p-5 mb-4 border bg-light">
+      <h3 class="d-flex justify-content-center ps-3 mb-3">Driver License Query</h3>
+      <div class="d-flex justify-content-center m-4 ps-5">
 
-      <div class="container-fluid mb-5">
-        <div class="row">
-          <h3 class=" col-lg-4 col-sm-12 ps-3">Driver License Query</h3>
+        </div>
+      <div class="d-flex justify-content-center ">
+        <form class="searchForm" method="post">
 
-          <div class="form-check form-check-inline col-lg-1 col-sm-2 pt-2">
-        <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi1">
-        <label class="form-check-label" for="checkApi1">API 1</label>
+          <div class="d-flex justify-content-center mb-4">
+            <label for="inputEmail" class="col-form-label  col-sm-4 col-lg-3">Email:</label>
+            <input type="email" class="form-control ms-5 col-sm-8 col-lg-9" id="inputEmail" placeholder="Email" required>
+          </div>
+
+          <div class="d-flex justify-content-center mb-4">
+            <label for="inputFirstName" class="col-form-label col-sm-4 col-lg-3">First Name:</label>
+            <input type="text" class="form-control ms-5 col-sm-8 col-lg-9" id="inputFirstName" placeholder="Firs tName" required>
+          </div>
+
+          <div class="d-flex  justify-content-center mb-4">
+            <label for="inputLastName" class="col-form-label  col-sm-4 col-lg-3">Last Name:</label>
+            <input type="text" class="form-control ms-5 col-sm-8 col-lg-9" id="inputLastName" placeholder="Last Name" required>
+          </div>
+
+          <div class="d-flex justify-content-center mb-4">
+            <label for="inputBirthDate" class="col-form-label  col-sm-4 col-lg-3">Birth Date :</label>
+            <input type="date" class="form-control ms-5 col-sm-8 col-lg-9"  id="inputBirthDate">
+          </div>
+          <div class="d-flex justify-content-center mb-4">
+            <label for="inputBirthDate" class="col-form-label  col-sm-4 col-lg-3">Sex:</label>
+            <select class="form-select ms-5 col-sm-8 col-lg-9" aria-label="Default select example">
+              <option selected>Select </option>
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+
+            </select>
+          </div>
+        </form>
       </div>
 
-          <div class="form-check form-check-inline col-lg-1 col-sm-2 pt-2">
-        <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi2">
-        <label class="form-check-label" for="checkApi2">API 2</label>
+    <div class="row">
+      <div class="col-lg-5"> </div>
+      <div class="col-lg-5">
+          <div class=" form-check form-check-inline ">
+      <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi1">
+      <label class="form-check-label" for="checkApi1">API 1</label>
+    </div>
+          <div class=" form-check form-check-inline ">
+      <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi2">
+      <label class="form-check-label" for="checkApi2">API 2</label>
+    </div>
+          <div class=" form-check form-check-inline">
+      <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi3">
+      <label class="form-check-label" for="checkApi3">API 3</label>
+    </div>
       </div>
-
-          <div class="form-check form-check-inline col-lg-1 col-sm-2 pt-2">
-        <input type="checkbox" class="form-check-input" name="hobbies" id="checkApi3">
-        <label class="form-check-label" for="checkApi3">API 3</label>
+    </div>
+      <div class="row">
+      <div class="col-lg-5"></div>
+      <button type="submit" class="btn btn-primary mt-5 col-lg-2">Submit</button>
       </div>
-        </div>
-      </div>
-
-      <form class="searchForm" method="post">
-
-        <div class="row mb-4">
-          <label for="inputEmail" class="col-sm-4 col-lg-2 col-form-label ps-5">Email:</label>
-          <div class="col-sm-8 col-lg-6">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <label for="inputName" class="col-sm-4 col-lg-2 col-form-label ps-5">First Name:</label>
-          <div class="col-sm-8 col-lg-6">
-            <input type="name" class="form-control" id="inputFirstName" placeholder="First Name" required>
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <label for="inputLastName" class="col-sm-4 col-lg-2 col-form-label ps-5">Last Name:</label>
-          <div class="col-sm-8 col-lg-6">
-            <input type="lastName" class="form-control" id="inputLastName" placeholder="Last Name" required>
-          </div>
-        </div>
-
-        <div class="row mb-2">
-          <label for="inputRegistrationNumber" class="col-sm-4 col-lg-2 col-form-label ps-5">Registration Number:</label>
-          <div class="col-sm-8 col-lg-6">
-            <input type="registrationNumber" class="form-control" id="inputRegistrationNumber" placeholder="RegistrationNumber" required>
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <label for="inputLicenceNumber" class="col-sm-4 col-lg-2 col-form-label ps-5">Licence number:</label>
-          <div class="col-sm-8 col-lg-6">
-            <input type="licenceNumber" class="form-control" id="inputLicenceNumber" placeholder="LicenceNumber" required>
-          </div>
-        </div>
-
-
-
-
-        <div class=" row mb-4">
-          <label for="inputBirthDate" class="col-sm-4 col-lg-2 col-form-label ps-5">Birth Date :</label>
-          <div class="col-sm-8 col-lg-6">
-          <input type="date" class="form-control"  id="inputBirthDate">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary m-5">Submit</button>
-      </form>
     </div>
 
   </div>
 
 
 </div>
+
+
+

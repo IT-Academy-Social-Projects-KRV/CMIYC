@@ -17,7 +17,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
-import { NavUserSearchComponent } from './nav-user-search/nav-user-search.component';
+
 
 
 
@@ -38,7 +38,7 @@ import { NavUserSearchComponent } from './nav-user-search/nav-user-search.compon
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,
     SearchResponseComponent,
-    NavUserSearchComponent
+
   ],
   imports: [
     BrowserModule,

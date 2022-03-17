@@ -21,8 +21,8 @@ const routes: Routes = [
   { path: "error404", component: Error404Component},
   { path: "error500", component: Error500Component},
   { path: "register", component: RegisterComponent },
-  { path: 'app-user-search-interface', component: UserSearchInterfaceComponent },
-  { path: 'app-search-response', component: SearchResponseComponent},
+  { path: 'userSearch', component: UserSearchInterfaceComponent },
+  { path: 'searchResponse', component: SearchResponseComponent},
 ];
 
 
