@@ -33,6 +33,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
      * @see Authentication
      * @see UserService
      * @see AuthenticationProvider#authenticate(Authentication)
+     *
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
