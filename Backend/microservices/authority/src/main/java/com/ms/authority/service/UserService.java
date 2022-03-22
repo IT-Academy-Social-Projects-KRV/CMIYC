@@ -25,10 +25,10 @@ public class UserService implements UserDetailsService {
         return userByEmail;
     }
 
-    // Should we move it to another configuration?
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 8 Should be enough ==> https://security.stackexchange.com/a/83382
         return new BCryptPasswordEncoder(8);
     }
+
 }
