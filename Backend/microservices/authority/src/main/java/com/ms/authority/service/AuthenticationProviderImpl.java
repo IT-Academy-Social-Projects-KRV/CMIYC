@@ -1,14 +1,20 @@
 package com.ms.authority.service;
 
 import com.ms.authority.entity.User;
+import com.ms.authority.utils.FrontendData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This bean is responsible for checking whether or not entered email and password was correct
@@ -29,11 +35,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
      * @param authentication Contains entered email and password
      * @return new Authentication object if email and password are correct
      * @throws AuthenticationException if email or password wrong
-     *
      * @see Authentication
      * @see UserService
      * @see AuthenticationProvider#authenticate(Authentication)
-     *
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -54,17 +58,28 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             throw new BadCredentialsException("Wrong password!");
 
         // Return new authentication object
-        // TODO: probably need to replace with JwtAuthenticationToken
-        return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                user.getUsername(),
+                hashedPass,
+                Set.of(() -> "user")         // TODO: replace with actual roles
+        );
+
+        // Adding front data to authentication
+        token.setDetails(new FrontendData(
+                user.getEmail(),
+                user.getFirstName() + " " + user.getLastName()
+        ));
+
+        return token;
     }
 
     /**
      * Read parent documentation:
+     *
      * @see AuthenticationProvider#supports(Class)
      */
     @Override
     public boolean supports(Class<?> authentication) {
-        // TODO: probably need to replace with JwtAuthenticationToken
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
