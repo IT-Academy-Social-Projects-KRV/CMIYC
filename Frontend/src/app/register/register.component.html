@@ -2,7 +2,7 @@
   <main class="form-signin w-100 m-auto">
     <div class="card mx-4">
       <div class="card-body p-4">
-        <form>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <h1 class="h3 mb-3 fw-normal">Register</h1>
           <h6 class="h6 mb-3 fw-normal text-muted">Enter and confirm your password to finish registration.</h6>
           <div class="form-floating">
@@ -10,12 +10,49 @@
             <label for="floatingEmail">email@example.com</label>
           </div>
           <div class="form-floating">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-              <label for="floatingPassword">Password</label>
+            <input
+              type="password"
+              formControlName="password"
+              class="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+              [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+            >
+            <label for="floatingPassword">Password</label>
+            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+              <div *ngIf="f['password'].errors['required']">Password is required</div>
+              <div *ngIf="f['password'].errors['minlength']">
+                Password must be at least 8 characters
+              </div>
+              <div *ngIf="f['password'].errors['maxlength']">
+                Password must not exceed 40 characters
+              </div>
+              <div *ngIf="f['password'].errors['pattern']">
+                Password should contain one number,one character and one special character
+              </div>
+            </div>
           </div>
           <div class="form-floating">
-              <input type="password" class="form-control" id="floatingConfirmPassword" placeholder="Confirm password">
-              <label for="floatingConfirmPassword">Confirm password</label>
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              class="form-control"
+              id="floatingConfirmPassword"
+              placeholder="Confirm password"
+              [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+            >
+            <label for="floatingConfirmPassword">Confirm password</label>
+            <div
+              *ngIf="submitted && f['confirmPassword'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['confirmPassword'].errors['required']">
+                Confirm Password is required
+              </div>
+              <div *ngIf="f['confirmPassword'].errors['matching']">
+                Confirm Password does not match
+              </div>
+            </div>
           </div>
           <button class="w-100 btn btn-lg btn-primary" type="submit">Finish</button>
         </form>
