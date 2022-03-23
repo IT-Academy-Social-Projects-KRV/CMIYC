@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
+//@Component
 public class CustomTokenEnhancer implements TokenEnhancer {
 
     @Override

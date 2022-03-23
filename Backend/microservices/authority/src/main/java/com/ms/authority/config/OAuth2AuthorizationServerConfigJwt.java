@@ -36,7 +36,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+    public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
@@ -57,17 +57,18 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     @Bean
     @Primary
     public DefaultTokenServices tokenServices() {
-        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
-        defaultTokenServices.setSupportRefreshToken(true);
+        defaultTokenServices.setSupportRefreshToken(false);
+
         return defaultTokenServices;
     }
 
     @Override
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain
-                .setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+                .setTokenEnhancers(Arrays.asList(/*tokenEnhancer(), */accessTokenConverter()));
 
         endpoints
                 .tokenStore(tokenStore())
@@ -84,8 +85,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     public JwtAccessTokenConverter accessTokenConverter() {
         final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey("123");
-        // final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("mytest.jks"), "mypass".toCharArray());
-        // converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
+
         return converter;
     }
 
