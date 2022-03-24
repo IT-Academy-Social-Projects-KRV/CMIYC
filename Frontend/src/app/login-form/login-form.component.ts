@@ -1,3 +1,4 @@
+import { ClassField } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,8 +33,6 @@ export class LoginFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    // console.log(JSON.stringify(this.form.value, null, 2));
-    this.router.navigateByUrl('/twoFactor');
   }
 
 }
