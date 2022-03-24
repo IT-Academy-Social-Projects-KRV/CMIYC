@@ -13,7 +13,7 @@ export class RegisterComponent implements OnInit {
     confirmPassword: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) { }
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log(JSON.stringify(this.form.value, null, 2));
+    // console.log(JSON.stringify(this.form.value, null, 2));
   }
 
 }

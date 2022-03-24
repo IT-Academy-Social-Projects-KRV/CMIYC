@@ -14,7 +14,7 @@ export class LoginFormComponent implements OnInit {
     password: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) { }
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
@@ -32,7 +32,7 @@ export class LoginFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log(JSON.stringify(this.form.value, null, 2));
+    // console.log(JSON.stringify(this.form.value, null, 2));
     this.router.navigateByUrl('/twoFactor');
   }
 

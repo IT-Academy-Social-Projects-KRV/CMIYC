@@ -18,11 +18,18 @@ export default class Validation {
   }
 
   static passwordValidator(): ValidatorFn[] {
-      return [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(40),
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].*')
-      ]
+    return [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(40),
+      Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].*')
+    ]
+  }
+
+  static nameValidator(): ValidatorFn[] {
+    return [
+      Validators.maxLength(20),
+      Validators.pattern('[A-Za-z]*')
+    ]
   }
 }
