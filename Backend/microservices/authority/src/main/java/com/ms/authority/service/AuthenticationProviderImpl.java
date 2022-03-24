@@ -8,13 +8,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This bean is responsible for checking whether or not entered email and password was correct
@@ -61,7 +56,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 hashedPass,
-                Set.of(() -> "user")         // TODO: replace with actual roles
+                user.getRoles()
         );
 
         // Adding front data to authentication
