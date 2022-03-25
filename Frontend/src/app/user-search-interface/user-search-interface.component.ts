@@ -50,16 +50,10 @@ export class UserSearchInterfaceComponent implements OnInit {
     this.form.value['foreignDataSource'] = this.getAPIs();
   }
 
-  getAPIs(): string[] {
-    let apis: string[] = [];
-    let index: number = 0;
-    for (let i = 0; i < Object.values(this.apis.value).length; i++) {
-      if (Object.values(this.apis.value)[i] == true) {
-        apis[index] = Object.keys(this.apis.value)[i];
-        index++;
-      }
-    }
-    return apis;
+  getAPIs(): (string | null)[] {
+    return Object.keys(this.apis.value)
+      .flatMap(key => this.apis.get(key)?.value ? key : key = '')
+      .filter((a) => a);
   }
 
 }
