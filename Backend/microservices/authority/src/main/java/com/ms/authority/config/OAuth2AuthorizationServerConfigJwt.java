@@ -111,9 +111,19 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
             // Додаємо в data email та повне ім'я юзера. На етапі аутентифікації ми поклали цей об'єкт сюди в класі AuthenticationProviderImpl
             frontendData.loadToMap(data);
 
-            // Кладемо справжні скоупи на заміну тим що були вказані при реєстрації клієнта в конфігу
-            String scopes = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(", "));
-            data.put("scope", scopes);
+            // Збираємо список ролей користувача в один рядок через кому
+            String scopes = authentication
+                    .getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(", "));
+
+            // Кладемо ролі юзера на заміну тим що були вказані при реєстрації клієнта в конфігу
+            data.put("scope", scopes);        // Поле scope кладеться спрінгом
+
+            // Якщо є більше однієї scope, їх треба обов'язково покласти в поле scopes, інакше resource server не зрозуміє :(
+            if(authentication.getAuthorities().size() > 1)
+                data.put("scopes", scopes);
 
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(data);
             return accessToken;
