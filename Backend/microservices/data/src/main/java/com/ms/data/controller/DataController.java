@@ -2,7 +2,7 @@ package com.ms.data.controller;
 
 import com.ms.data.model.XmlObject;
 import com.ms.data.resource.XmlResource;
-import com.ms.data.service.XMLService;
+import com.ms.data.service.XmlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import java.util.List;
 public class DataController {
 
     @Autowired
-    private XMLService xmlService;
+    private XmlService xmlService;
 
     @GetMapping
     public List<XmlObject> welcomeFromData() throws JAXBException {

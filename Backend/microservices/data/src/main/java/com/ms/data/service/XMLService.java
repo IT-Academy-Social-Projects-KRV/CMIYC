@@ -11,7 +11,7 @@ import java.io.StringReader;
 
 @Service
 
-public class XMLService {
+public class XmlService {
 
     public XmlObject getData(String xmldata) throws JAXBException {
         StringReader reader = new StringReader(xmldata);
@@ -19,18 +19,12 @@ public class XMLService {
         Unmarshaller unmarshaller = context.createUnmarshaller();
         XmlObject xmlObject = (XmlObject) unmarshaller.unmarshal(reader);
 
-//    List<String> mySet = new ArrayList<String>();
-//
-//    mySet.add(xmlObject.getFirstName());
-//    mySet.add(xmlObject.getLastName());
-//    mySet.add(xmlObject.getBirthDate());
-//    mySet.add(xmlObject.getSex());
-//    mySet.add(xmlObject.getForeignDataSource());
+
         return xmlObject;
 
     }
 
-    public XMLService() throws JAXBException {
+    public XmlService() throws JAXBException {
 
     }
 }
