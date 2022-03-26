@@ -22,14 +22,14 @@ export default class Validation {
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(40),
-      Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].*')
+      Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z0-9$@$!%*?&].*')
     ]
   }
 
   static nameValidator(): ValidatorFn[] {
     return [
       Validators.maxLength(20),
-      Validators.pattern('[A-Za-z]*')
+      Validators.pattern('^[A-Z][-a-zA-Z]+$')
     ]
   }
 }
