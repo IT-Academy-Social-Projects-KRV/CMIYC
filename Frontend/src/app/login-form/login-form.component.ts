@@ -1,4 +1,8 @@
+import { ClassField } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import Validation from '../utils/validation';
 
 @Component({
   selector: 'app-login-form',
@@ -6,10 +10,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
-
-  constructor() { }
-
+  form: FormGroup = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl('')
+  });
+  submitted = false;
+  constructor(private formBuilder: FormBuilder, private router: Router) { }
   ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', Validation.passwordValidator()],
+      }
+    );
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.form.invalid) {
+      return;
+    }
   }
 
 }
