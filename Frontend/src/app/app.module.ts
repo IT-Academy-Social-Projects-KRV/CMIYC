@@ -17,6 +17,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
+import { AuthGuard } from './services/auth.guard';
 
 
 
@@ -44,7 +45,7 @@ import { SearchResponseComponent } from './search-response/search-response.compo
     BrowserModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
