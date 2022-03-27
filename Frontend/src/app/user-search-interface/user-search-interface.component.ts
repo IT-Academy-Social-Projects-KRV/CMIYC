@@ -56,4 +56,10 @@ export class UserSearchInterfaceComponent implements OnInit {
       .filter((a) => a);
   }
 
+  onTextChange(): void {
+    // this method will be change
+    this.apis.get('api1')?.setValue(this.form.get('firstName')?.value.length > 0);
+    this.apis.get('api2')?.setValue(this.form.get('lastName')?.value.length > 0);
+    this.apis.get('api3')?.setValue(this.form.get('birthDayDate')?.value.length > 0);
+  }
 }
