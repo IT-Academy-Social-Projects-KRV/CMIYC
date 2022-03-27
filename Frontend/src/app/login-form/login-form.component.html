@@ -1,17 +1,26 @@
 <div class="d-flex vw-100 vh-100">
-<main class="form-signin w-100 m-auto">
-  <form>
-    <h1 class="h3 mb-3 fw-normal">Please enter your email address and password to continue logging in.</h1>
+  <main class="form-signin w-100 m-auto">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h1 class="h3 mb-3 fw-normal">Please enter your email address and password to continue logging in.</h1>
 
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit" routerLink="/twoFactor">Next</button>
-  </form>
-</main>
+      <div class="form-floating">
+        <input type="email" formControlName="email" class="form-control" id="floatingInput"
+          placeholder="name@example.com" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+        <label for="floatingInput">Email address</label>
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+        </div>
+      </div>
+      <div class="form-floating">
+        <input type="password" formControlName="password" class="form-control" id="floatingPassword"
+          placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+        <label for="floatingPassword">Password</label>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Password is required</div>
+        </div>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Next</button>
+    </form>
+  </main>
 </div>

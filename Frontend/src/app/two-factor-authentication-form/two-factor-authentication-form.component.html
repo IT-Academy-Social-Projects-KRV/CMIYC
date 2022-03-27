@@ -1,13 +1,26 @@
 <div class="d-flex vw-100 vh-100">
-<main class="form-signin  w-100 m-auto">
-  <form>
-    <h1 class="h3 mb-3 fw-normal">Please enter your authentication code.</h1>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Authentication code">
-      <label for="floatingPassword">Authentication code</label>
-    </div>
+  <main class="form-signin  w-100 m-auto">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h1 class="h3 mb-3 fw-normal">Please enter your authentication code.</h1>
+      <div class="form-floating">
+        <input type="password" formControlName="code" class="form-control" id="floatingCode"
+          placeholder="Authentication code" [ngClass]="{ 'is-invalid': submitted && f['code'].errors }">
+        <label for="floatingCode">Authentication code</label>
+        <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
+          <div *ngIf="f['code'].errors['required']">Code is required</div>
+          <div *ngIf="f['code'].errors['minlength']">
+            Code must be at least 6 numbers
+          </div>
+          <div *ngIf="f['code'].errors['maxlength']">
+            Code must not exceed 6 numbers
+          </div>
+          <div *ngIf="f['code'].errors['pattern']">
+            Code should contain only numbers
+          </div>
+        </div>
+      </div>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
-  </form>
-</main>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
+    </form>
+  </main>
 </div>

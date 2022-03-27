@@ -5,18 +5,18 @@
     <!-- Table -->
     <table class="table table-striped">
       <thead class="table-dark">
-      <tr>
-        <th scope="col">
-          <button class="btn btn-success btn-sm"  data-bs-toggle="modal" data-bs-target="#modalWindow">
-            <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
-          </button>
-        </th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Email</th>
-        <th scope="col">Role</th>
-        <th scope="col">Actions</th>
-      </tr>
+        <tr>
+          <th scope="col">
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalWindow">
+              <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
+            </button>
+          </th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Actions</th>
+        </tr>
       </thead>
 
       <tbody>
@@ -28,12 +28,14 @@
           <td class="align-middle">email@example.com</td>
           <td>
             <div class="form-check form-switch form-check-inline ">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch" id="forUserManager" disabled>
+              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch"
+                id="forUserManager" disabled>
               <label class="form-check-label " style="margin-top: 6px;" for="forUserManager">User Manager</label>
             </div>
 
             <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch" id="forSchemaManager" checked disabled>
+              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch"
+                id="forSchemaManager" checked disabled>
               <label class="form-check-label" style="margin-top: 6px;" for="forSchemaManager">Schema Manager</label>
             </div>
           </td>
@@ -51,7 +53,8 @@
     </table>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

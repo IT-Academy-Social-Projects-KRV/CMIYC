@@ -1,17 +1,21 @@
 @import url('http://fonts.cdnfonts.com/css/modern-vision');
 
-body{
+body {
   background: #fdfdfd;
 }
-.text-gray-600{
+
+.text-gray-600 {
   font-family: 'Modern Vision', sans-serif;
-  color:#6c757d;
-  background: #fdfdfd;}
-h1{
+  color: #6c757d;
+  background: #fdfdfd;
+}
+
+h1 {
   font-family: 'Modern Vision', sans-serif;
   background: #fdfdfd;
 }
-a{
+
+a {
   font-family: 'Modern Vision', sans-serif;
   background: #fdfdfd;
 }
