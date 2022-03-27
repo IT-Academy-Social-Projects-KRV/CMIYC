@@ -27,17 +27,14 @@
               <input type="text" formControlName="firstName" class="form-control col-sm-8 col-lg-9" id="inputFirstName"
                 placeholder="First Name" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" />
               <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback col-sm-8 col-lg-9">
-                <div *ngIf="f['firstName'].errors['required']">
-                  First Name is required
-                </div>
                 <div *ngIf="f['firstName'].errors['minlength']">
-                  First Name must be at least 6 characters
+                  First Name must be at least 2 characters
                 </div>
                 <div *ngIf="f['firstName'].errors['maxlength']">
                   First Name must not exceed 20 characters
                 </div>
                 <div *ngIf="f['firstName'].errors['pattern']">
-                  First Name must contain only characters
+                  First Name must start with a capital letter, may contain lowercase, uppercase letters and "-"
                 </div>
               </div>
             </div>
@@ -49,17 +46,14 @@
               <input type="text" formControlName="lastName" class="form-control col-sm-8 col-lg-9" id="inputLastName"
                 placeholder="Last Name" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" />
               <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback col-sm-8 col-lg-9">
-                <div *ngIf="f['lastName'].errors['required']">
-                  Last Name is required
-                </div>
                 <div *ngIf="f['lastName'].errors['minlength']">
-                  Last Name must be at least 6 characters
+                  Last Name must be at least 2 characters
                 </div>
                 <div *ngIf="f['lastName'].errors['maxlength']">
                   Last Name must not exceed 20 characters
                 </div>
                 <div *ngIf="f['lastName'].errors['pattern']">
-                  Last Name must contain only characters
+                  Last Name must start with a capital letter, may contain lowercase, uppercase letters and "-"
                 </div>
               </div>
             </div>
