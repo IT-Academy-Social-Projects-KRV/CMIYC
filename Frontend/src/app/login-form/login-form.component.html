@@ -18,15 +18,6 @@
         <label for="floatingPassword">Password</label>
         <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
           <div *ngIf="f['password'].errors['required']">Password is required</div>
-          <div *ngIf="f['password'].errors['minlength']">
-            Password must be at least 8 characters
-          </div>
-          <div *ngIf="f['password'].errors['maxlength']">
-            Password must not exceed 40 characters
-          </div>
-          <div *ngIf="f['password'].errors['pattern']">
-            Password should contain one number,one lowercase letters, one uppercase letters, and one special character
-          </div>
         </div>
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Next</button>
