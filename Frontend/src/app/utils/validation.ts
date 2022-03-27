@@ -28,6 +28,7 @@ export default class Validation {
 
   static nameValidator(): ValidatorFn[] {
     return [
+      Validators.minLength(2),
       Validators.maxLength(20),
       Validators.pattern('^[A-Z][-a-zA-Z]+$')
     ]
