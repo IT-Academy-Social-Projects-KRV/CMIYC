@@ -18,7 +18,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
-
+import { AuthService } from './shared/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -44,9 +45,10 @@ import { SearchResponseComponent } from './search-response/search-response.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
