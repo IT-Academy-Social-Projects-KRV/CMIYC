@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Validation from '../utils/validation';
+import {AuthService} from "../shared/auth.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-login-form',
@@ -15,12 +17,15 @@ export class LoginFormComponent implements OnInit {
     password: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private authService: AuthService,
+              private http: HttpClient) { }
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        password: ['', Validation.passwordValidator()],
+        password: ['', Validators.required],
       }
     );
   }
@@ -33,6 +38,9 @@ export class LoginFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    let email = this.form.get('email')?.value;
+    let password = this.form.get('password')?.value;
+    this.authService.login(email, password);
   }
 
 }

@@ -21,7 +21,7 @@ public class DataController {
     private XmlService xmlService;
 
     @GetMapping
-    public List<XmlObject> welcomeFromData() throws JAXBException {
+    public List<XmlObject> xmlSchema() throws JAXBException {
         List<XmlObject> result = new ArrayList<XmlObject>();
         result.add(xmlService.getData(XmlResource.xmldata1));
         result.add(xmlService.getData(XmlResource.xmldata2));

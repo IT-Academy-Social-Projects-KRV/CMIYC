@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -30,5 +32,4 @@ public class UserService implements UserDetailsService {
         // 8 Should be enough ==> https://security.stackexchange.com/a/83382
         return new BCryptPasswordEncoder(8);
     }
-
 }
