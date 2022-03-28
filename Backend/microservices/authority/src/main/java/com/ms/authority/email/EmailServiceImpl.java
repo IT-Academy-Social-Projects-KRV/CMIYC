@@ -2,6 +2,7 @@ package com.ms.authority.email;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,15 +15,22 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 @Service
-@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
+    @Autowired
     private JavaMailSender emailSender;
 
+    @Value("${spring.mail.username}")
+    private String from;
+
     @Override
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void sendSimpleMessage(
+            String to,
+            String subject,
+            String text)
+    {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("policecmiyc@gmail.com");
+        message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
@@ -41,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("noreply@baeldung.com");
+        helper.setFrom(from);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(text);
@@ -54,9 +62,9 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
-//    @PostConstruct
-//    public void init () {
-//        sendSimpleMessage("*@gmail.com", "Hello", "how are you" );
-//    }
+    @PostConstruct
+    public void init () {
+        sendSimpleMessage("emage.haf@gmail.com", "Hello", "how are you" );
+    }
 
 }
