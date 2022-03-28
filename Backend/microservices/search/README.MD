@@ -1,5 +1,22 @@
 #Search Api
 
+##How to work with:
+1) You must have valid token in header
+2) Get schemas from Data API: http://localhost:8082/api/search
+3) Post to get data from Connector API: http://localhost:8082/api/search in body you should have json like this:
+```json
+{
+ "firstName": "Sherlock",
+ "lastName": null,
+ "birthDayDate": "13/05/1983",
+ "sex": "Male",
+ "foreignDataSource": [
+   "api1",
+   "api2",
+   "api3"
+ ]
+}
+```
 ###[Class diagram](https://drive.google.com/file/d/1_v5K_qAytpAQvTl_efTj0dLoffYO5Og6/view?usp=sharing)
 ![img.png](img.png)
 
