@@ -11,3 +11,18 @@ spring:
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/cmiyc_authority_db?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cmiycpolice@gmail.com
+    password: eowdaehcnnyycoit
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+          enable: true
