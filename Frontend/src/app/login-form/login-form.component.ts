@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import Validation from '../utils/validation';
 import {AuthService} from "../shared/auth.service";
 import {HttpClient} from "@angular/common/http";
+import { repos } from '../repos';
 
 @Component({
   selector: 'app-login-form',
@@ -40,7 +41,11 @@ export class LoginFormComponent implements OnInit {
     }
     let email = this.form.get('email')?.value;
     let password = this.form.get('password')?.value;
-    this.authService.login(email, password);
+    this.authService.login<repos>(email, password).subscribe(response => {
+      localStorage.setItem('access_token', response.access_token);
+      localStorage.setItem('scope', response.scope);
+      localStorage.setItem('fullName', response.fullName);
+    });
   }
 
 }

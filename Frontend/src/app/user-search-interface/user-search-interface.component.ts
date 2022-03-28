@@ -1,3 +1,4 @@
+import { AuthService } from './../shared/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Validation from '../utils/validation';
@@ -20,8 +21,9 @@ export class UserSearchInterfaceComponent implements OnInit {
     api3: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
   ngOnInit(): void {
+    this.authService.getSchemas().subscribe(response => console.log(response));
     this.form = this.formBuilder.group(
       {
         firstName: ['', Validation.nameValidator()],
@@ -48,6 +50,14 @@ export class UserSearchInterfaceComponent implements OnInit {
       return;
     }
     this.form.value['foreignDataSource'] = this.getAPIs();
+    this.authService.search(this.form).subscribe({
+      next: response => {
+        console.log(response);
+      },
+      error: error => {
+        console.error('There was an error!', error);
+      }
+    });
   }
 
   getAPIs(): (string | null)[] {
