@@ -1,11 +1,11 @@
 package com.ms.authority.email;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -14,16 +14,10 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 @Service
+@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
     private JavaMailSender emailSender;
-
-//    @Autowired
-//    public SimpleMailMessage template;
-//
-//    String text = String.format(template.getText(), templateArgs);
-//    sendSimpleMessage(to, subject, text);
 
     @Override
     public void sendSimpleMessage(String to, String subject, String text) {
@@ -33,7 +27,6 @@ public class EmailServiceImpl implements EmailService {
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-
     }
 
     @Override
@@ -63,7 +56,7 @@ public class EmailServiceImpl implements EmailService {
 
 //    @PostConstruct
 //    public void init () {
-//        sendSimpleMessage("emage.haf@gmail.com", "Hello", "how are you" );
+//        sendSimpleMessage("*@gmail.com", "Hello", "how are you" );
 //    }
 
 }
