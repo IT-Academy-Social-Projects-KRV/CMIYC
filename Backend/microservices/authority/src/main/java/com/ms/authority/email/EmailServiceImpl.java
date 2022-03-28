@@ -62,9 +62,9 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
-    @PostConstruct
-    public void init () {
-        sendSimpleMessage("emage.haf@gmail.com", "Hello", "how are you" );
-    }
+//    @PostConstruct
+//    public void init () {
+//        sendSimpleMessage("*@gmail.com", "Hello", "how are you" );
+//    }
 
 }
