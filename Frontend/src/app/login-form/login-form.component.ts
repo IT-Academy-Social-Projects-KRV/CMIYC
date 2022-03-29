@@ -41,11 +41,22 @@ export class LoginFormComponent implements OnInit {
     }
     let email = this.form.get('email')?.value;
     let password = this.form.get('password')?.value;
+
     this.authService.login<repos>(email, password).subscribe(response => {
+      console.log(response.access_token);
       localStorage.setItem('access_token', response.access_token);
       localStorage.setItem('scope', response.scope);
       localStorage.setItem('fullName', response.fullName);
+      if(localStorage.getItem('scope') =='user'){
+      this.router.navigate(['userSearch']);
+      }else if(localStorage.getItem('scope') =='admin_user'){
+      this.router.navigate(['admin/allUsers']);
+      }else if(localStorage.getItem('scope') =='admin_schema'){
+      this.router.navigate(['admin/allSchemas']);
+      }else{
+      this.router.navigate(['login']);
+      }
     });
-  }
+}
 
 }

@@ -4,6 +4,6 @@ export class repos {
   expires_in: number | any;
   fullName: string | any;
   jti: string | any;
-  scope: string[] | any;
+  scope: string [] | any;
   token_type: string | any;
 }

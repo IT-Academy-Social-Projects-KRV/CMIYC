@@ -10,24 +10,27 @@ import { Error500Component } from "./errorpages/error500/error500.component";
 import { TwoFactorAuthenticationFormComponent } from "./two-factor-authentication-form/two-factor-authentication-form.component";
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
+import { UserAuthGuard } from './shared/user.auth.guard';
+import { AdminAuthGuard } from './shared/admin.auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'admin/allSchemas', component: AdminManageSchemaListComponent },
-  { path: 'admin/allUsers', component: AdminManageUserListComponent },
+  { path: 'admin/allSchemas', component: AdminManageSchemaListComponent  , canActivate: [AdminAuthGuard]},
+  { path: 'admin/allUsers', component: AdminManageUserListComponent , canActivate: [AdminAuthGuard]},
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },
   { path: "error403", component: Error403Component },
   { path: "error404", component: Error404Component },
   { path: "error500", component: Error500Component },
   { path: "register", component: RegisterComponent },
-  { path: 'userSearch', component: UserSearchInterfaceComponent },
+  { path: 'userSearch', component: UserSearchInterfaceComponent , canActivate: [UserAuthGuard] },
   { path: 'searchResponse', component: SearchResponseComponent },
 ];
 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [UserAuthGuard, AdminAuthGuard]
 })
 export class AppRoutingModule { }
