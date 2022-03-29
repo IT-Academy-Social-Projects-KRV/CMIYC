@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
+import { Router } from '@angular/router';
+import { tap, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor( private router: Router,private http: HttpClient) { }
+
+  isLoggedIn = false;
 
   login<T>(email:string, password:string ): Observable<T> {
     const headers = new HttpHeaders({
@@ -24,4 +28,13 @@ export class AuthService {
     // we still need to handle the reception of the token
   }
 
+
+  logout(){
+    console.log('logout from authService');
+    localStorage.setItem('scope', 'null');
+    localStorage.setItem('access_token','null');
+    this.router.navigate(['login']);
+   return true;
+
+  }
 }
