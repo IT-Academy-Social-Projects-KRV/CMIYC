@@ -18,8 +18,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { TwoFactorAuthenticationFormComponent } from './two-factor-authentication-form/two-factor-authentication-form.component';
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
-import { AuthGuard } from './services/auth.guard';
-
+import { UserAuthGuard } from './shared/user.auth.guard';
+import { AdminAuthGuard } from './shared/admin.auth.guard';
 import { AuthService } from './shared/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -50,7 +50,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, UserAuthGuard, AdminAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
