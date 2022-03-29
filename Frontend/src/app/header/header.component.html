@@ -4,7 +4,8 @@
     <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
     <span class="fs-4">CMIYC</span>
   </a>
-  <div class="col-md-3 text-end float end">
-    <button type="button" class="btn btn-primary" (click)="isLogout()">Log out</button>
-  </div>
+  <p class="nav nav-item ms-auto me-3">
+    <span>Hello! {{userName}}</span>
+  </p>
+  <button type="button" class="btn btn-primary text-end float end"  (click)="isLogout()">Log out</button>
 </header>

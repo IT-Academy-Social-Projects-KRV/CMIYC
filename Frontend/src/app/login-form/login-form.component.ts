@@ -7,7 +7,6 @@ import {AuthService} from "../shared/auth.service";
 import {HttpClient} from "@angular/common/http";
 import { repos } from '../repos';
 
-
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -47,6 +46,7 @@ export class LoginFormComponent implements OnInit {
       console.log(response.access_token);
       localStorage.setItem('access_token', response.access_token);
       localStorage.setItem('scope', response.scope);
+      localStorage.setItem('fullName', response.fullName);
       if(localStorage.getItem('scope') =='user'){
       this.router.navigate(['userSearch']);
       }else if(localStorage.getItem('scope') =='admin_user'){
