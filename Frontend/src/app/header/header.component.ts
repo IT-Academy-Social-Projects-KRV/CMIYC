@@ -17,6 +17,5 @@ constructor( private authService: AuthService){}
   isLogout() {
     console.log("logout work");
     this.authService.logout();
-
     }
 }

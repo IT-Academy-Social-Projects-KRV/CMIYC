@@ -15,7 +15,7 @@ import { AdminAuthGuard } from './shared/admin.auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'admin/allSchemas', component: AdminManageSchemaListComponent },
+  { path: 'admin/allSchemas', component: AdminManageSchemaListComponent  , canActivate: [AdminAuthGuard]},
   { path: 'admin/allUsers', component: AdminManageUserListComponent , canActivate: [AdminAuthGuard]},
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },

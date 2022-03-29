@@ -15,19 +15,9 @@ export class UserAuthGuard implements CanActivate {
         console.log('user');
         return true;
       }else{
+        this.authService.logout();
         window.alert("You don't have permission to view this page");
         return false;
       }
   }
 }
-
-
-/* }else if (localStorage.getItem('scope') =='admin') {
-        console.log('admin');
-      this.router.navigate(['/admin/allUsers']);
-      return true;
-    }else if(localStorage.getItem('scope') =='null'){
-      console.log('logout');
-      this.router.navigate(['/login']);
-      return false;    }
-*/

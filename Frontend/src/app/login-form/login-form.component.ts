@@ -49,8 +49,12 @@ export class LoginFormComponent implements OnInit {
       localStorage.setItem('scope', response.scope);
       if(localStorage.getItem('scope') =='user'){
       this.router.navigate(['userSearch']);
-      }else{
+      }else if(localStorage.getItem('scope') =='admin_user'){
       this.router.navigate(['admin/allUsers']);
+      }else if(localStorage.getItem('scope') =='admin_schema'){
+      this.router.navigate(['admin/allSchemas']);
+      }else{
+      this.router.navigate(['login']);
       }
     });
 }
