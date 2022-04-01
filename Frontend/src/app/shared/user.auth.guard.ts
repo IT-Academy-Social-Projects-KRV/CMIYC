@@ -1,23 +1,26 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot,Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserAuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {
+  }
+
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-     if (localStorage.getItem('scope') =='user') {
-        console.log('user');
-        return true;
-      }else{
-        this.authService.logout();
-        window.alert("You don't have permission to view this page");
-        return false;
-      }
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (this.authService.isUserLoggedIn()) {
+      console.log('user');
+      return true;
+    } else {
+      this.authService.performLogout();
+      window.alert("You don't have permission to view this page");
+      return false;
+    }
   }
 }

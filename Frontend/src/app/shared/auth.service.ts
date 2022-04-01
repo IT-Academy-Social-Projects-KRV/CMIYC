@@ -1,55 +1,81 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { FormGroup } from '@angular/forms';
-import {Observable, of} from "rxjs";
-import { Router } from '@angular/router';
-import { tap, delay } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClientService} from "./http.client.service";
+import {LoginResult} from "./data/login-result";
+import {JwtData} from "./data/jwt-data";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor( private router: Router,private http: HttpClient) { }
+  private readonly SCOPE_ADMIN_USER = "admin_user";
+  private readonly SCOPE_ADMIN_SCHEMA = "admin_schema";
+  private readonly SCOPE_USER = "user";
 
-  isLoggedIn = false;
-
-  login<T>(email:string, password:string ): Observable<T> {
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa('client-ui:secret'), 'Content-Type': 'application/x-www-form-urlencoded'
-    });
-    const params = new URLSearchParams();
-    params.append( 'username', email);
-    params.append( 'password', password);
-    params.append( 'grant_type', 'password');
-    params.append( 'client_id', 'client-ui');
-
-    return this.http.post<T>('http://localhost:8090/oauth/token', params, {headers});
-    // this is just the HTTP call,
-    // we still need to handle the reception of the token
+  constructor(private router: Router, private httpClientService: HttpClientService) {
   }
 
-  getSchemas<T>(): Observable<T>  {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Content-Type': 'application/json'
-    });
-    return this.http.get<T>('http://localhost:8082/api/search', {headers});
+  // TODO: rename this method
+  private isScopeAuthenticated(scope: string) {
+    const scopes = localStorage.getItem("scopes");
+    return scopes != null && scopes.split(", ").filter(s => s === scope).length > 0;
   }
 
-  search<T>(body: FormGroup): Observable<T> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Content-Type': 'application/json'
-    });
-
-    return this.http.post<T>('http://localhost:8082/api/search', JSON.stringify(body.value, null, 2), {headers});
+  private saveJwtDataToStorage(jwtData: JwtData): void {
+    localStorage.setItem('access_token', jwtData.access_token);
+    localStorage.setItem('scopes', jwtData.scope);
+    localStorage.setItem('full_name', jwtData.fullName);
   }
 
-  logout(){
-    console.log('logout from authService');
-    localStorage.setItem('scope', 'null');
-    localStorage.setItem('access_token','null');
+  private removeJwtDataFromStorage() {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("scopes");
+    localStorage.removeItem("full_name");
+  }
+
+  private getUrlToNavigateAfterLogin(): string {
+    switch (true) {
+      case this.isUserAdminLoggedIn(): {
+        return 'admin/allUsers';
+      }
+      case this.isSchemaAdminLoggedIn(): {
+        return 'admin/allSchemas';
+      }
+      default: {
+        return 'userSearch';
+      }
+    }
+  }
+
+  public performLogin(email: string, password: string): void {
+    this.httpClientService.login(email, password, (loginResult: LoginResult) => {
+      if(loginResult.isError || loginResult.jwtData == null) {
+        alert(loginResult.errorMessage);
+        this.router.navigate(['login']);
+      } else {
+        const response: JwtData | null = loginResult.jwtData;
+        this.saveJwtDataToStorage(response);
+        console.log(localStorage.getItem("scopes"))
+        this.router.navigate([this.getUrlToNavigateAfterLogin()]);
+      }
+    });
+  }
+
+  public performLogout() {
+    this.removeJwtDataFromStorage();
     this.router.navigate(['login']);
-   return true;
+  }
 
+  public isUserAdminLoggedIn(): boolean {
+    return this.isScopeAuthenticated(this.SCOPE_ADMIN_USER);
+  }
+
+  public isSchemaAdminLoggedIn(): boolean {
+    return this.isScopeAuthenticated(this.SCOPE_ADMIN_SCHEMA);
+  }
+
+  public isUserLoggedIn(): boolean {
+    return this.isScopeAuthenticated(this.SCOPE_USER);
   }
 }
