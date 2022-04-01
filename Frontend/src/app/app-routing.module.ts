@@ -10,13 +10,13 @@ import { Error500Component } from "./errorpages/error500/error500.component";
 import { TwoFactorAuthenticationFormComponent } from "./two-factor-authentication-form/two-factor-authentication-form.component";
 import { UserSearchInterfaceComponent } from './user-search-interface/user-search-interface.component';
 import { SearchResponseComponent } from './search-response/search-response.component';
-import { UserAuthGuard } from './shared/user.auth.guard';
-import { AdminAuthGuard } from './shared/admin.auth.guard';
+import { UserAuthGuard } from './shared/auth-guards/user.auth.guard';
+import { AdminAuthGuard } from './shared/auth-guards/admin.auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'admin/allSchemas', component: AdminManageSchemaListComponent  , canActivate: [AdminAuthGuard]},
-  { path: 'admin/allUsers', component: AdminManageUserListComponent , canActivate: [AdminAuthGuard]},
+  { path: 'admin/allUsers', component: AdminManageUserListComponent},
   { path: "login", component: LoginFormComponent },
   { path: "twoFactor", component: TwoFactorAuthenticationFormComponent },
   { path: "error403", component: Error403Component },

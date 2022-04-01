@@ -2,6 +2,7 @@ import { AuthService } from './../shared/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Validation from '../utils/validation';
+import {HttpClientService} from "../shared/http.client.service";
 
 @Component({
   selector: 'app-user-search-interface',
@@ -21,9 +22,9 @@ export class UserSearchInterfaceComponent implements OnInit {
     api3: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
   ngOnInit(): void {
-    this.authService.getSchemas().subscribe(response => console.log(response));
+    this.httpClientService.getSchemas().subscribe(response => console.log(response));
     this.form = this.formBuilder.group(
       {
         firstName: ['', Validation.nameValidator()],
@@ -50,7 +51,7 @@ export class UserSearchInterfaceComponent implements OnInit {
       return;
     }
     this.form.value['foreignDataSource'] = this.getAPIs();
-    this.authService.search(this.form).subscribe({
+    this.httpClientService.search(this.form).subscribe({
       next: response => {
         console.log(response);
       },

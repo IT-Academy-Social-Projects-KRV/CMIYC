@@ -1,7 +1,4 @@
-import { isNull } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
-import { repos } from '../repos';
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../shared/auth.service";
 
 @Component({
@@ -12,13 +9,13 @@ import {AuthService} from "../shared/auth.service";
 export class HeaderComponent implements OnInit {
   userName: string | null;
   constructor(private authService: AuthService) {
-    this.userName = localStorage.getItem('fullName');
+    this.userName = localStorage.getItem('full_name');
   }
 
   ngOnInit(): void {
   }
   isLogout() {
     console.log("logout work");
-    this.authService.logout();
+    this.authService.performLogout();
     }
 }

@@ -1,11 +1,9 @@
-import { ClassField } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import Validation from '../utils/validation';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AuthService} from "../shared/auth.service";
 import {HttpClient} from "@angular/common/http";
-import { repos } from '../repos';
+import {JwtData} from '../shared/data/jwt-data';
 
 @Component({
   selector: 'app-login-form',
@@ -39,24 +37,11 @@ export class LoginFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
     let email = this.form.get('email')?.value;
     let password = this.form.get('password')?.value;
 
-    this.authService.login<repos>(email, password).subscribe(response => {
-      console.log(response.access_token);
-      localStorage.setItem('access_token', response.access_token);
-      localStorage.setItem('scope', response.scope);
-      localStorage.setItem('fullName', response.fullName);
-      if(localStorage.getItem('scope') =='user'){
-      this.router.navigate(['userSearch']);
-      }else if(localStorage.getItem('scope') =='admin_user'){
-      this.router.navigate(['admin/allUsers']);
-      }else if(localStorage.getItem('scope') =='admin_schema'){
-      this.router.navigate(['admin/allSchemas']);
-      }else{
-      this.router.navigate(['login']);
-      }
-    });
+    this.authService.performLogin(email, password);
 }
 
 }
