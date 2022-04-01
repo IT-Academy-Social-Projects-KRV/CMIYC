@@ -14,12 +14,10 @@ export class AdminAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
-
-    if (localStorage.getItem('scope') == 'admin_user') {
+    if (this.authService.isUserAdminLoggedIn()) {
       console.log('admin');
       return true;
-    } else if (localStorage.getItem('scope') == 'admin_schema') {
+    } else if (this.authService.isSchemaAdminLoggedIn()) {
       return true;
     } else {
       this.authService.performLogout();

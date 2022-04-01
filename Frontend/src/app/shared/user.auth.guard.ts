@@ -7,20 +7,19 @@ import {AuthService} from './auth.service';
   providedIn: 'root'
 })
 export class UserAuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
-    if (localStorage.getItem('scope') == 'user') {
+    if (this.authService.isUserAdminLoggedIn()) {
       console.log('user');
       return true;
     } else {
       this.authService.performLogout();
-      window.alert("You don't have permission to view this page");
+      window.alert("You do    n't have permission to view this page");
       return false;
     }
   }
