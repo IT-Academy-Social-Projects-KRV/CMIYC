@@ -56,6 +56,7 @@ export class AuthService {
       } else {
         const response: JwtData | null = loginResult.jwtData;
         this.saveJwtDataToStorage(response);
+        console.log(localStorage.getItem("scopes"))
         this.router.navigate([this.getUrlToNavigateAfterLogin()]);
       }
     });

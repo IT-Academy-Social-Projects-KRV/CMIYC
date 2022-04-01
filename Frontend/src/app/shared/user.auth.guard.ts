@@ -14,12 +14,12 @@ export class UserAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.isUserAdminLoggedIn()) {
+    if (this.authService.isUserLoggedIn()) {
       console.log('user');
       return true;
     } else {
       this.authService.performLogout();
-      window.alert("You do    n't have permission to view this page");
+      window.alert("You don't have permission to view this page");
       return false;
     }
   }
