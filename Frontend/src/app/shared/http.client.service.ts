@@ -6,12 +6,7 @@ import {Router} from '@angular/router';
 import {LoginRequest} from "./data/login-request";
 import {JwtData} from "./data/jwt-data";
 import {LoginResult} from "./data/login-result";
-import {AuthService} from "./auth.service";
-
-class UnauthorizedException implements Error {
-  readonly message: string = "You are unauthorized. Please log in.";
-  readonly name: string = "UnauthorizedException";
-}
+import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,19 +20,11 @@ export class HttpClientService {
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
 
-  // TODO: validate expiration time
-  private getAndValidateAccessToken(): string {
-    const accessToken = localStorage.getItem('access_token');
-
-    if (accessToken == null)
-      throw new UnauthorizedException();
-
-    return accessToken;
-  }
-
   private getJSONOptions(): Object {
+    const authService = this.injector.get(AuthService);
+
     try {
-      const accessToken = this.getAndValidateAccessToken();
+      const accessToken = authService.validateAndGetToken();
       return {
         "responseType": "json",
         "headers": new HttpHeaders({
@@ -45,10 +32,10 @@ export class HttpClientService {
           'Content-Type': 'application/json'
         })
       }
-    } catch (e: UnauthorizedException | any) {
+    } catch (e: UnauthorizedException | SessionExpiredException | any) {
       alert(e.message);
-      this.injector.get(AuthService).performLogout();
-      return {};
+      authService.performLogout();
+      throw e;
     }
   }
 
