@@ -22,6 +22,8 @@ import { UserAuthGuard } from './shared/user.auth.guard';
 import { AdminAuthGuard } from './shared/admin.auth.guard';
 import { AuthService } from './shared/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from "@angular/material/button";
 
 
 
@@ -45,10 +47,10 @@ import { HttpClientModule } from '@angular/common/http';
 
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule
   ],
   providers: [AuthService, UserAuthGuard, AdminAuthGuard],
   bootstrap: [AppComponent]
