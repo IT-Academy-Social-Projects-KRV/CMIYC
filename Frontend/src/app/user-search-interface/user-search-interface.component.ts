@@ -56,7 +56,7 @@ export class UserSearchInterfaceComponent implements OnInit {
         console.log(response);
       },
       error: error => {
-        console.error('There was an error!', error);
+        console.error(error);
       }
     });
   }

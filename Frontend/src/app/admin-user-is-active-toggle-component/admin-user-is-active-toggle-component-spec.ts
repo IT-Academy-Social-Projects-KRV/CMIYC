@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidebarComponent } from './sidebar.component';
+import { AdminUserIsActiveToggleComponent } from './admin-user-is-active-toggle-component';
 
-describe('SidebarComponent', () => {
-  let component: SidebarComponent;
-  let fixture: ComponentFixture<SidebarComponent>;
+describe('AdminUserIsActiveToggleComponent', () => {
+  let component: AdminUserIsActiveToggleComponent;
+  let fixture: ComponentFixture<AdminUserIsActiveToggleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidebarComponent ]
+      declarations: [ AdminUserIsActiveToggleComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SidebarComponent);
+    fixture = TestBed.createComponent(AdminUserIsActiveToggleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

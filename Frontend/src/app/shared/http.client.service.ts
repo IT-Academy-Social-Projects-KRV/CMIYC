@@ -7,15 +7,25 @@ import {LoginRequest} from "./data/login-request";
 import {JwtData} from "./data/jwt-data";
 import {LoginResult} from "./data/login-result";
 import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
+import { User } from './data/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly URL_LOGIN:   string = 'http://localhost:8090/oauth/token';
-  private readonly URL_SCHEMAS: string = 'http://localhost:8082/api/search';
-  private readonly URL_SEARCH:  string = 'http://localhost:8082/api/search';
+  private readonly AUTH_SERVER: string = 'http://localhost:8090';
+  private readonly SEARCH_API:  string = 'http://localhost:8082';
+
+  // Auth
+  private readonly URL_LOGIN:        string = this.AUTH_SERVER + '/oauth/token';
+  private readonly URL_USERS:        string = this.AUTH_SERVER + '/users';
+  private readonly URL_ENABLE_USER:  string = this.AUTH_SERVER + '/users/{userId}/enable';
+  private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
+
+  // Search API
+  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
+  private readonly URL_SEARCH:  string = this.SEARCH_API + '/api/search';
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
@@ -62,7 +72,7 @@ export class HttpClientService {
           callback.call(this, LoginResult.success(jwtData))
         },
         error: err => {
-          callback.call(this, LoginResult.error(err.error.error_description || "Server is temporary unavailable. Please, try again later!"));
+          callback.call(this, LoginResult.error(err));
         }
       });
   }
@@ -73,5 +83,16 @@ export class HttpClientService {
 
   public search<T>(body: FormGroup): Observable<T> {
     return this.postRequest(this.URL_SEARCH, body.value);
+  }
+
+  public getUsers(): Observable<User[]> {
+    return this.getRequest<User[]>(this.URL_USERS);
+  }
+
+  public setUserActive(userId: number, isActive: boolean): Observable<any> {
+    return this.postRequest(
+      (isActive ? this.URL_ENABLE_USER : this.URL_DISABLE_USER).replace("{userId}", String(userId)),
+      {}
+    );
   }
 }

@@ -1,22 +1,31 @@
-import {JwtData} from "./jwt-data";
+import {AuthService} from "../auth.service";
 
-export class LoginResult {
+export class User {
+  // Data from server
+  readonly id: number;
+  readonly email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  active: boolean;
+  readonly registerDate: string;
+  readonly scopes: string[];
 
-  public static success(jwtData: JwtData): LoginResult {
-    return new LoginResult(false, null, jwtData);
+  // Generated in constructor
+  readonly isUserAdmin: boolean;
+  readonly isSchemaAdmin: boolean;
+  readonly isUser: boolean;
+
+  constructor(id: number, email: string, firstName: string, lastName: string, active: boolean, registerDate: string, scopes: string[]) {
+    this.id = id;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.active = active;
+    this.registerDate = registerDate;
+    this.scopes = scopes;
+
+    this.isUserAdmin = scopes.filter(value => value === AuthService.SCOPE_ADMIN_USER).length > 0;
+    this.isSchemaAdmin = scopes.filter(value => value === AuthService.SCOPE_ADMIN_SCHEMA).length > 0;
+    this.isUser = scopes.filter(value => value === AuthService.SCOPE_USER).length > 0;
   }
-
-  public static error(errorMessage: string): LoginResult {
-    return new LoginResult(true, errorMessage, null);
-  }
-
-  private constructor(isError: boolean, errorMessage: string | null, jwtData: JwtData | null) {
-    this.isError = isError;
-    this.errorMessage = errorMessage;
-    this.jwtData = jwtData;
-  }
-
-  readonly isError: boolean;
-  readonly errorMessage: string | null;
-  readonly jwtData: JwtData | null;
 }
