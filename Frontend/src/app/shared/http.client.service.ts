@@ -13,10 +13,10 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 })
 export class HttpClientService {
 
-  private readonly URL_LOGIN:   string = 'http://localhost:8090/oauth/token';
+  private readonly URL_LOGIN: string = 'http://localhost:8090/oauth/token';
   private readonly URL_SCHEMAS: string = 'http://localhost:8082/api/search';
-  private readonly URL_SEARCH:  string = 'http://localhost:8082/api/search';
-  private readonly URL_DATA:  string = 'http://localhost:8081/api/data';
+  private readonly URL_SEARCH: string = 'http://localhost:8082/api/search';
+  private readonly URL_DATA: string = 'http://localhost:8081/api/data';
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
@@ -61,6 +61,7 @@ export class HttpClientService {
   private postRequest<T>(url: string, params: any): Observable<T> {
     return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
+
   private postFile<T>(url: string, formData: FormData): Observable<T> {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }

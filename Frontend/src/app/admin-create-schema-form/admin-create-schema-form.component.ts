@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClientService} from "../shared/http.client.service";
-import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -29,8 +28,8 @@ export class AdminCreateSchemaFormComponent implements OnInit {
   }
 
 
- constructor(private httpclient:HttpClientService,private formBuilder: FormBuilder) {
-   }
+  constructor(private httpclient: HttpClientService, private formBuilder: FormBuilder) {
+  }
 
 
   ngOnInit(): void {
@@ -43,21 +42,18 @@ export class AdminCreateSchemaFormComponent implements OnInit {
     formData.append('file', this.form.get('fileSource').value);
 
 
+    const upload$ = this.httpclient.sendSchema(formData);
 
-
-
-
-
-      const upload$ = this.httpclient.sendSchema(formData);
-
-      upload$.subscribe({
-        next: value => {alert("success")},
-        error: err => {
-          const errorMessage: string = err.message || "Something went wrong";
-          alert(errorMessage);
-        }
-      });
-    }
+    upload$.subscribe({
+      next: value => {
+        alert("success")
+      },
+      error: err => {
+        const errorMessage: string = err.message || "Something went wrong";
+        alert(errorMessage);
+      }
+    });
+  }
 
 
 }

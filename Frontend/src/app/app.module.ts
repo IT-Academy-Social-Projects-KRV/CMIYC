@@ -1,4 +1,3 @@
-
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
@@ -17,7 +16,9 @@ import {AdminUserFormComponent} from "./admin-user-form/admin-user-form.componen
 import {AdminCreateSchemaFormComponent} from "./admin-create-schema-form/admin-create-schema-form.component";
 import {AdminManageUserListComponent} from "./admin-manage-user-list/admin-manage-user-list.component";
 import {LoginFormComponent} from './login-form/login-form.component';
-import {TwoFactorAuthenticationFormComponent} from './two-factor-authentication-form/two-factor-authentication-form.component';
+import {
+  TwoFactorAuthenticationFormComponent
+} from './two-factor-authentication-form/two-factor-authentication-form.component';
 import {UserSearchInterfaceComponent} from './user-search-interface/user-search-interface.component';
 import {SearchResponseComponent} from './search-response/search-response.component';
 import {UserAuthGuard} from './shared/auth-guards/user.auth.guard';
