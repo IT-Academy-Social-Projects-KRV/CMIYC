@@ -47,7 +47,7 @@ export class AuthService {
     localStorage.removeItem("expires_at");
   }
 
-  private getUrlToNavigateAfterLogin(): string {
+  public getUrlToNavigateAfterLogin(): string {
     switch (true) {
       case this.isUserAdminLoggedIn(): {
         return 'admin/allUsers';
@@ -106,5 +106,9 @@ export class AuthService {
 
   public isUserLoggedIn(): boolean {
     return this.isScopeAuthenticated(this.SCOPE_USER);
+  }
+
+  public isAnyUserLoggedIn(): boolean {
+    return localStorage.getItem("access_token") != null;
   }
 }
