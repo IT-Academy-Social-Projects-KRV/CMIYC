@@ -21,18 +21,12 @@ export class HttpClientService {
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
 
-  private getJSONOptions(): Object {
+  private getHeadersWithToken(): HttpHeaders {
     const authService = this.injector.get(AuthService);
 
     try {
       const accessToken = authService.validateAndGetToken();
-      return {
-        "responseType": "json",
-        "headers": new HttpHeaders({
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        })
-      }
+      return new HttpHeaders({'Authorization': `Bearer ${accessToken}`});
     } catch (e: UnauthorizedException | SessionExpiredException | any) {
       alert(e.message);
       authService.performLogout();
@@ -40,19 +34,35 @@ export class HttpClientService {
     }
   }
 
+  private getMultipartRequestOptions(): Object {
+    const headersWithToken = this.getHeadersWithToken();
+    headersWithToken.set('Content-Type', 'multipart/form-data');
+
+    return {
+      "responseType": "json",
+      "headers": headersWithToken
+    }
+  }
+
+  private getJSONRequestOptions(): Object {
+    const headersWithToken = this.getHeadersWithToken();
+    headersWithToken.set('Content-Type', 'application/json');
+
+    return {
+      "responseType": "json",
+      "headers": headersWithToken
+    }
+  }
+
   private getRequest<T>(url: string): Observable<T> {
-    return this.http.get<T>(url, this.getJSONOptions());
+    return this.http.get<T>(url, this.getJSONRequestOptions());
   }
 
   private postRequest<T>(url: string, params: any): Observable<T> {
-    return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONOptions());
+    return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
   private postFile<T>(url: string, formData: FormData): Observable<T> {
-    var jsonOptions = this.getJSONOptions();
-    // @ts-ignore
-    var headers: HttpHeaders = jsonOptions["headers"];
-    headers.set("Content-Type","multipart/form-data")
-    return this.http.post<T>(url, formData, jsonOptions);
+    return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
 
   login(email: string, password: string, callback: Function): void {
@@ -85,10 +95,6 @@ export class HttpClientService {
 
 
   public sendSchema<T>(formData: FormData): Observable<T> {
-    return this.postFile(this.URL_DATA,formData);
-
-
+    return this.postFile(this.URL_DATA, formData);
   }
-
-
 }
