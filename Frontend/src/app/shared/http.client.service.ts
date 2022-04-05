@@ -94,7 +94,7 @@ export class HttpClientService {
           callback.call(this, LoginResult.success(jwtData))
         },
         error: err => {
-          callback.call(this, LoginResult.error(err));
+          callback.call(this, LoginResult.error(err.error.error_description || "Server is temporary unavailable. Please, try again later!"));
         }
       });
   }
