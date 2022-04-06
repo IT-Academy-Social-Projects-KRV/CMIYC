@@ -31,8 +31,8 @@ public class UserService implements UserDetailsService {
         return userByEmail;
     }
 
-    public User changeUserActive(String userId, boolean isActive) throws UsernameNotFoundException {
-        User user = userRepository.findById(Integer.parseInt(userId))
+    public User changeUserActive(int userId, boolean isActive) throws UsernameNotFoundException {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id"));
         user.setActive(isActive);
         return userRepository.save(user);
