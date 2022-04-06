@@ -7,16 +7,29 @@ import {LoginRequest} from "./data/login-request";
 import {JwtData} from "./data/jwt-data";
 import {LoginResult} from "./data/login-result";
 import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
+import { User } from './data/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly URL_LOGIN: string = 'http://localhost:8090/oauth/token';
-  private readonly URL_SCHEMAS: string = 'http://localhost:8082/api/search';
-  private readonly URL_SEARCH: string = 'http://localhost:8082/api/search';
-  private readonly URL_DATA: string = 'http://localhost:8081/api/data';
+  private readonly AUTH_SERVER: string = 'http://localhost:8090';
+  private readonly SEARCH_API: string = 'http://localhost:8082';
+  private readonly DATA_API: string = 'http://localhost:8081';
+
+  // Auth
+  private readonly URL_LOGIN: string = this.AUTH_SERVER + '/oauth/token';
+  private readonly URL_USERS: string = this.AUTH_SERVER + '/users';
+  private readonly URL_ENABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/enable';
+  private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
+
+  // Search API
+  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
+  private readonly URL_SEARCH: string = this.SEARCH_API + '/api/search';
+
+  // Data API
+  private readonly URL_DATA: string = this.DATA_API + '/api/data';
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
@@ -94,6 +107,16 @@ export class HttpClientService {
     return this.postRequest(this.URL_SEARCH, body.value);
   }
 
+  public getUsers(): Observable<User[]> {
+    return this.getRequest<User[]>(this.URL_USERS);
+  }
+
+  public setUserActive(userId: number, isActive: boolean): Observable<any> {
+    return this.postRequest(
+      (isActive ? this.URL_ENABLE_USER : this.URL_DISABLE_USER).replace("{userId}", String(userId)),
+      {}
+    );
+  }
 
   public sendSchema<T>(formData: FormData): Observable<T> {
     return this.postFile(this.URL_DATA, formData);

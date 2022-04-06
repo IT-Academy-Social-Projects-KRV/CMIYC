@@ -19,9 +19,9 @@ export class SessionExpiredException implements Error {
 })
 export class AuthService {
 
-  private readonly SCOPE_ADMIN_USER = "admin_user";
-  private readonly SCOPE_ADMIN_SCHEMA = "admin_schema";
-  private readonly SCOPE_USER = "user";
+  public static readonly SCOPE_ADMIN_USER = "admin_user";
+  public static readonly SCOPE_ADMIN_SCHEMA = "admin_schema";
+  public static readonly SCOPE_USER = "user";
 
   constructor(private router: Router, private httpClientService: HttpClientService) {
   }
@@ -97,15 +97,15 @@ export class AuthService {
   }
 
   public isUserAdminLoggedIn(): boolean {
-    return this.isScopeAuthenticated(this.SCOPE_ADMIN_USER);
+    return this.isScopeAuthenticated(AuthService.SCOPE_ADMIN_USER);
   }
 
   public isSchemaAdminLoggedIn(): boolean {
-    return this.isScopeAuthenticated(this.SCOPE_ADMIN_SCHEMA);
+    return this.isScopeAuthenticated(AuthService.SCOPE_ADMIN_SCHEMA);
   }
 
   public isUserLoggedIn(): boolean {
-    return this.isScopeAuthenticated(this.SCOPE_USER);
+    return this.isScopeAuthenticated(AuthService.SCOPE_USER);
   }
 
   public isAnyUserLoggedIn(): boolean {
