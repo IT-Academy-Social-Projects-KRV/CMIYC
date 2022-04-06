@@ -17,6 +17,8 @@ import java.io.StringReader;
 
 public class XmlService {
 
+
+    
     public XmlObject getData(String xmldata) throws JAXBException {
         StringReader reader = new StringReader(xmldata);
         JAXBContext context = JAXBContext.newInstance(XmlObject.class);
