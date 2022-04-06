@@ -29,6 +29,7 @@ const routes: Routes = [
   {path: "register", component: RegisterComponent},
   {path: 'userSearch', component: UserSearchInterfaceComponent, canActivate: [UserAuthGuard]},
   {path: 'searchResponse', component: SearchResponseComponent},
+  {path:'**',component:Error404Component}
 ];
 
 
