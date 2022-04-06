@@ -21,16 +21,8 @@ export class AdminManageUserListComponent implements OnInit {
           this.loadUsers(usersFromServer);
         },
 
-        // TODO: remove this after auth will implement /users endpoint
         error: () => {
-          const mockData = [
-            {"id":1,"email":"user@gmail.com","firstName":"User","lastName":"Foo","registerDate":"2022-03-28","scopes":["user"],"active":true},
-            {"id":2,"email":"admin_u@gmail.com","firstName":"Admin","lastName":"User","registerDate":"2022-03-28","scopes":["admin_user"],"active":true},
-            {"id":3,"email":"admin_s@gmail.com","firstName":"Admin","lastName":"Schema","registerDate":"2022-03-28","scopes":["admin_schema"],"active":true}
-          ];
-
-          // @ts-ignore
-          this.loadUsers(mockData);
+          alert('There was an error loading list of users. Please, try again later.');
         }
       })
   }

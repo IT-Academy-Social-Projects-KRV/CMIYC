@@ -61,11 +61,10 @@ export class AuthService {
     }
   }
 
-  public performLogin(email: string, password: string): void {
+  public performLogin(email: string, password: string, onErrorCallback: Function): void {
     this.httpClientService.login(email, password, (loginResult: LoginResult) => {
       if (loginResult.isError || loginResult.jwtData == null) {
-        alert(loginResult.errorMessage);
-        this.router.navigate(['login']);
+        onErrorCallback.call(this, loginResult.errorMessage);
       } else {
         const response: JwtData | null = loginResult.jwtData;
         this.saveJwtDataToStorage(response);
@@ -110,5 +109,9 @@ export class AuthService {
 
   public isAnyUserLoggedIn(): boolean {
     return localStorage.getItem("access_token") != null;
+  }
+
+  public getCurrentUserFullName(): string | null {
+    return localStorage.getItem('full_name');
   }
 }
