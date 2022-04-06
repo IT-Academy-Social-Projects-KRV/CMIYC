@@ -2,10 +2,14 @@ package com.ms.data.service;
 
 import com.ms.data.model.XmlObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 
 
@@ -26,5 +30,8 @@ public class XmlService {
 
     public XmlService() throws JAXBException {
 
+    }
+    public void uploadFile(MultipartFile file) throws IllegalStateException, IOException{
+        file.transferTo(new File("C://Users//yahod//Downloads//CMIYC/" + file.getOriginalFilename()));
     }
 }
