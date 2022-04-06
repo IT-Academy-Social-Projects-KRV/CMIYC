@@ -8,6 +8,7 @@ import com.ms.authority.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,16 @@ public class UserController {
         return null;
     }
 
+    @PostMapping("/{userId}/enable")
+    public void enableUser(@PathVariable int userId) {
+        userService.changeUserActive(userId, true);
+    }
+
+    @PostMapping("/{userId}/disable")
+    public void disableUser(@PathVariable int userId) {
+        userService.changeUserActive(userId, false);
+    }
+    
     @GetMapping
     public Set<UserDto> listUsersRequest() {
         return userService.listUsersRequest();

@@ -31,6 +31,16 @@ public class UserService implements UserDetailsService {
         return userByEmail;
     }
 
+    public User changeUserActive(int userId, boolean isActive) throws RuntimeException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id"));
+        if (user.isUserAdmin()) {
+            throw new RuntimeException("The field \"active\" can't be change for user with role admin_user");
+        }
+        user.setActive(isActive);
+        return userRepository.save(user);
+    }
+    
     public Set<UserDto> listUsersRequest() {
         return userRepository.findAll()
                 .stream()
