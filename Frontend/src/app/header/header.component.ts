@@ -8,14 +8,18 @@ import {AuthService} from "../shared/auth.service";
 })
 export class HeaderComponent implements OnInit {
   userName: string | null;
+  isSchemaAdmin: boolean;
+  isUserAdmin: boolean;
+
   constructor(private authService: AuthService) {
-    this.userName = localStorage.getItem('full_name');
+    this.userName = authService.getCurrentUserFullName();
+    this.isSchemaAdmin = authService.isSchemaAdminLoggedIn();
+    this.isUserAdmin = authService.isUserAdminLoggedIn();
   }
 
   ngOnInit(): void {
   }
   isLogout() {
-    console.log("logout work");
     this.authService.performLogout();
-    }
+  }
 }
