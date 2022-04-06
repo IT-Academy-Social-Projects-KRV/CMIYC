@@ -27,6 +27,13 @@ public class UserService implements UserDetailsService {
         return userByEmail;
     }
 
+    public User changeUserActive(String userId, boolean isActive) throws UsernameNotFoundException {
+        User user = userRepository.findById(Integer.parseInt(userId))
+                .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id"));
+        user.setActive(isActive);
+        return userRepository.save(user);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 8 Should be enough ==> https://security.stackexchange.com/a/83382
