@@ -1,7 +1,6 @@
 package com.ms.authority.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -14,7 +13,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/users/**")
-                .access("#oauth2.hasScope('admin_user')");
+                .permitAll();
+               // .access("#oauth2.hasScope('admin_user')");
     }
 
 }

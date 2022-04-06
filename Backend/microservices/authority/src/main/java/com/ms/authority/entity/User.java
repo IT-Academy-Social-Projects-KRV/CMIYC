@@ -17,7 +17,9 @@ import java.util.Set;
 @Table(name = "users")
 @NoArgsConstructor
 public class User implements UserDetails {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "email", length = 50, nullable = false)
@@ -29,7 +31,7 @@ public class User implements UserDetails {
     @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
     @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = false;
     @Column(name = "register_date", nullable = false)
     private LocalDate registerDate;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -39,6 +41,13 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_role")
     )
     private Set<Role> roles;
+
+    public User( String firstName, String lastName, String email) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+       // this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
