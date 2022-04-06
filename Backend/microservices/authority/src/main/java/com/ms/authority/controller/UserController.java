@@ -27,13 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/enable")
-    public User enableUser(@PathVariable int userId) {
-        return userService.changeUserActive(userId, true);
+    public void enableUser(@PathVariable int userId) {
+        userService.changeUserActive(userId, true);
     }
 
     @PostMapping("/{userId}/disable")
-    public User disableUser(@PathVariable int userId) {
-        return userService.changeUserActive(userId, false);
+    public void disableUser(@PathVariable int userId) {
+        userService.changeUserActive(userId, false);
     }
     
     @GetMapping
