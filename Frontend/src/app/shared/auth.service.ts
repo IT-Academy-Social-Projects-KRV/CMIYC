@@ -28,7 +28,7 @@ export class AuthService {
 
   private isScopeAuthenticated(scope: string) {
     const scopes = localStorage.getItem("scopes");
-    return scopes != null && scopes.split(", ").filter(s => s === scope).length > 0;
+    return scopes != null && scopes.split(" ").filter(s => s === scope).length > 0;
   }
 
   private saveJwtDataToStorage(jwtData: JwtData): void {

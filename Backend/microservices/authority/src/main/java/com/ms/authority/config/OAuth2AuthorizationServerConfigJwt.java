@@ -68,9 +68,9 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
                     .withClient("client-ui")
                     .secret(passwordEncoder.encode("secret"))
                     .authorizedGrantTypes("password")
-                    .scopes("user", "admin")                // We will load scopes manually, so we don't need this field
+                    .scopes("user", "admin_user", "admin_schema") // We will load scopes manually, so we don't need this field
                     .accessTokenValiditySeconds(3600 * 2)   // 2 hours
-                    .refreshTokenValiditySeconds(0);        // ?????
+                    .refreshTokenValiditySeconds(0);
     }
 
     @Bean
@@ -111,19 +111,15 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
             // Додаємо в data email та повне ім'я юзера. На етапі аутентифікації ми поклали цей об'єкт сюди в класі AuthenticationProviderImpl
             frontendData.loadToMap(data);
 
-            // Збираємо список ролей користувача в один рядок через кому
+            // Збираємо список ролей користувача в один рядок через пробіл
             String scopes = authentication
                     .getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.joining(" "));
 
-            // Кладемо ролі юзера на заміну тим що були вказані при реєстрації клієнта в конфігу
-            data.put("scope", scopes);        // Поле scope кладеться спрінгом
-
-            // Якщо є більше однієї scope, їх треба обов'язково покласти в поле scopes, інакше resource server не зрозуміє :(
-            if(authentication.getAuthorities().size() > 1)
-                data.put("scopes", scopes);
+            // Кладемо ролі юзера на як список скоупів
+            data.put("scope", scopes);
 
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(data);
             return accessToken;
