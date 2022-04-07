@@ -1,5 +1,6 @@
 package com.ms.authority.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "roles")
 @NoArgsConstructor
+@EqualsAndHashCode(of = "role")
 public class Role implements GrantedAuthority {
 
     @Id

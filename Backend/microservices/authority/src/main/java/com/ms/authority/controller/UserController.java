@@ -1,5 +1,6 @@
 package com.ms.authority.controller;
 
+import com.ms.authority.dto.RegistrationResult;
 import com.ms.authority.service.UserService;
 import com.ms.authority.dto.RegistrationRequest;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "registration")
-    public String register(@RequestBody RegistrationRequest request) {
+    public RegistrationResult register(@RequestBody RegistrationRequest request) {
         return userService.register(request);
     }
 
