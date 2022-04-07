@@ -1,4 +1,4 @@
-CREATE TABLE cmiyc_authority_db.Token (
+CREATE TABLE cmiyc_authority_db.token (
   token BINARY(16) NOT NULL,
   user_id INT NOT NULL,
   exp_date DATE NOT NULL,
