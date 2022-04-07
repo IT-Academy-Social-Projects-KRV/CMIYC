@@ -13,8 +13,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/users/**")
-                .permitAll();
-               // .access("#oauth2.hasScope('admin_user')");
+                .access("#oauth2.hasScope('admin_user')");
     }
 
 }
