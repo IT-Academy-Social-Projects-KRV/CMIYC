@@ -2,7 +2,6 @@
   <app-sidebar></app-sidebar>
 
   <div class="d-flex flex-column flex-shrink-0 border-start border-1">
-    <!-- Table -->
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
@@ -14,29 +13,41 @@
           <th scope="col">First</th>
           <th scope="col">Last</th>
           <th scope="col">Email</th>
-          <th scope="col">Role</th>
+          <th scope="col">Is active</th>
+          <th scope="col">Roles</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
 
       <tbody>
-
-        <tr>
-          <th scope="row" class="align-middle px-3">6</th>
-          <td class="align-middle">Larry</td>
-          <td class="align-middle">the Bird</td>
-          <td class="align-middle">email@example.com</td>
+        <tr *ngFor="let user of users">
+          <th scope="row" class="align-middle px-3">{{user.id}}</th>
+          <td class="align-middle">{{user.firstName}}</td>
+          <td class="align-middle">{{user.lastName}}</td>
+          <td class="align-middle">{{user.email}}</td>
+          <td class="align-middle">
+            <user-is-active-toggle
+              [userId]="user.id" [isActive]="user.active" [isDisabled]="user.isUserAdmin"
+              (onChange)="onUserActiveChange(user.id, $event)"
+            ></user-is-active-toggle>
+          </td>
           <td>
-            <div class="form-check form-switch form-check-inline ">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch"
-                id="forUserManager" disabled>
-              <label class="form-check-label " style="margin-top: 6px;" for="forUserManager">User Manager</label>
+            <div class="form-check form-switch form-check-inline">
+              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
+                     role="switch" id="user-admin-toggle-{{user.id}}" [checked]="user.isUserAdmin ? 'checked': null">
+              <label class="form-check-label " style="margin-top: 6px;" for="user-admin-toggle-{{user.id}}">User Manager</label>
             </div>
 
             <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" role="switch"
-                id="forSchemaManager" checked disabled>
-              <label class="form-check-label" style="margin-top: 6px;" for="forSchemaManager">Schema Manager</label>
+              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
+                     role="switch" id="schema-admin-toggle-{{user.id}}" [checked]="user.isSchemaAdmin ? 'checked': null">
+              <label class="form-check-label" style="margin-top: 6px;" for="schema-admin-toggle-{{user.id}}">Schema Manager</label>
+            </div>
+
+            <div class="form-check form-switch form-check-inline">
+              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
+                     role="switch" id="user-toggle-{{user.id}}" [checked]="user.isUser ? 'checked': null">
+              <label class="form-check-label" style="margin-top: 6px;" for="user-toggle-{{user.id}}">User</label>
             </div>
           </td>
           <td>

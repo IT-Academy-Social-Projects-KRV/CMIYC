@@ -1,6 +1,12 @@
 package com.ms.authority.service;
 
 import com.ms.authority.email.EmailService;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.ms.authority.dto.UserDto;
+import com.ms.authority.entity.Role;
 import com.ms.authority.entity.User;
 import com.ms.authority.entity.Token;
 import com.ms.authority.repository.UserRepository;
@@ -70,12 +76,43 @@ public class UserService implements UserDetailsService {
                         request.getFirstName(),
                         request.getLastName(),
                         request.getEmail()
-                      //  request.getRole()
+                        //  request.getRole()
                 ), token
         );
     }
 
-    public int enableUser(String email) {
-        return userRepository.enableUser(email);
+
+    public User changeUserActive(int userId, boolean isActive) throws RuntimeException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id"));
+        if (user.isUserAdmin()) {
+            throw new RuntimeException("The field \"active\" can't be change for user with role admin_user");
+        }
+        user.setActive(isActive);
+        return userRepository.save(user);
+    }
+
+    public Set<UserDto> listUsersRequest() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::convertToUserDto)
+                .collect(Collectors.toSet());
+    }
+
+    private UserDto convertToUserDto(User user) {
+
+        UserDto userDto = new UserDto();
+
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setActive(user.isEnabled());
+        userDto.setRegisterDate(user.getRegisterDate());
+        userDto.setScopes(user.getRoles().stream()
+                .map(Role::getAuthority)
+                .collect(Collectors.toSet()));
+
+        return userDto;
     }
 }
