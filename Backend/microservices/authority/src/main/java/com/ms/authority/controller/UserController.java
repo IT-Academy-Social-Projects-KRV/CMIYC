@@ -1,7 +1,7 @@
 package com.ms.authority.controller;
 
 import com.ms.authority.service.UserService;
-import com.ms.authority.utils.RegistrationRequest;
+import com.ms.authority.dto.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

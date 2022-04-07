@@ -1,10 +1,7 @@
-package com.ms.authority.utils;
+package com.ms.authority.dto;
 
 
-import com.ms.authority.entity.Role;
 import lombok.*;
-
-import java.util.Set;
 
 @Getter
 @EqualsAndHashCode

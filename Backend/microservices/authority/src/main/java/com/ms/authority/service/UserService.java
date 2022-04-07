@@ -1,11 +1,10 @@
 package com.ms.authority.service;
 
 import com.ms.authority.email.EmailService;
-import com.ms.authority.email.EmailValidator;
 import com.ms.authority.entity.User;
 import com.ms.authority.entity.Token;
 import com.ms.authority.repository.UserRepository;
-import com.ms.authority.utils.RegistrationRequest;
+import com.ms.authority.dto.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +20,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final static String USER_NOT_FOUND_MSG = "User with email %s not found";
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final VerificationTokenService verificationTokenService;
+    private final TokenService tokenService;
     private final EmailService emailService;
 
 
@@ -47,7 +45,7 @@ public class UserService implements UserDetailsService {
 
         token.setUser(user);
 
-        verificationTokenService.saveVerificationToken(token);
+        tokenService.saveVerificationToken(token);
         //TODO SEND EMAIL
         return "ok";
     }

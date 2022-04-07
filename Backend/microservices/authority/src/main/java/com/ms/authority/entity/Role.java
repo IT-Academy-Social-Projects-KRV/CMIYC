@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -18,6 +15,7 @@ import javax.persistence.Table;
 public class Role implements GrantedAuthority {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column (name = "role", length = 25, nullable = false, unique = true)

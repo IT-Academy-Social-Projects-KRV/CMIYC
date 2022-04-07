@@ -1,4 +1,4 @@
-package com.ms.authority.utils;
+package com.ms.authority.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "email", length = 50, nullable = false)
@@ -46,6 +47,7 @@ public class User implements UserDetails {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.registerDate = LocalDateTime.now().toLocalDate();
        // this.roles = roles;
     }
 
