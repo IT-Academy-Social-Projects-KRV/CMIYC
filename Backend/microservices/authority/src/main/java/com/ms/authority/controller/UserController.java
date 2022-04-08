@@ -1,30 +1,40 @@
 package com.ms.authority.controller;
 
+import com.ms.authority.dto.RegistrationResult;
+import com.ms.authority.service.UserService;
+import com.ms.authority.dto.RegistrationRequest;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Set;
 
 import com.ms.authority.dto.UserDto;
-import com.ms.authority.entity.User;
-import com.ms.authority.service.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @PostMapping("/registerNewUser")
-    public User registerNewUser() {
-        // return userService.registerNewUser(someData...);
-        return null;
+    @PostMapping(path = "registration")
+    public RegistrationResult register(@RequestBody RegistrationRequest request) {
+        return userService.register(request);
     }
+
+    /**
+     * This is next task, we are skipping it for now
+     *
+     * @GetMapping(path="registration/confirm") public String confirm(@RequestParam("token") String token) {
+     * return register.confirmToken(token);
+     * }
+     **/
 
     @PostMapping("/{userId}/enable")
     public void enableUser(@PathVariable int userId) {
@@ -35,7 +45,7 @@ public class UserController {
     public void disableUser(@PathVariable int userId) {
         userService.changeUserActive(userId, false);
     }
-    
+
     @GetMapping
     public Set<UserDto> listUsersRequest() {
         return userService.listUsersRequest();
