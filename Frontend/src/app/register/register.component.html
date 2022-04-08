@@ -4,44 +4,61 @@
       <div class="card-body p-4">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <h1 class="h3 mb-3 fw-normal">Register</h1>
-          <h6 class="h6 mb-3 fw-normal text-muted">Enter and confirm your password to finish registration.</h6>
+          <h6 class="h6 mb-3 fw-normal text-muted" *ngIf="!tokenIsValid">Enter the activation token you received in letter.</h6>
+          <h6 class="h6 mb-3 fw-normal text-muted" *ngIf="tokenIsValid">Enter and confirm your password to finish registration.</h6>
+
           <div class="form-floating">
-            <input type="email" readonly class="form-control" id="floatingEmail" placeholder="{{email}}" disabled>
+            <input type="email" readonly class="form-control is-valid" id="floatingEmail" placeholder="{{email}}" disabled>
             <label for="floatingEmail">{{email}}</label>
           </div>
+
           <div class="form-floating">
-            <input type="password" formControlName="password" class="form-control" id="floatingPassword"
-                   placeholder="Password" [ngClass]="{ 'is-invalid': submitted && password.errors }">
+            <input formControlName="token" class="form-control" id="floatingToken" autocomplete="token"
+                   placeholder="Activation token" [ngClass]="{ 'is-invalid': token.errors && token.errors['uuid'], 'is-valid': tokenIsValid }">
+            <label for="floatingToken">Activation token</label>
+          </div>
+
+          <div class="form-floating" [ngClass]="{ 'd-none': !tokenIsValid }">
+            <input type="password" formControlName="password" class="form-control"
+                   id="floatingPassword" placeholder="Password" autocomplete="new-password"
+                   [ngClass]="{
+                    'is-invalid': (submitted || password.value.length) && password.errors,
+                    'is-valid': password.value.length && !password.errors
+                    }">
             <label for="floatingPassword">Password</label>
-            <div *ngIf="submitted && password.errors" class="invalid-feedback mb-2">
-              <div *ngIf="password.errors['required']">Password is required</div>
+            <div *ngIf="password.errors" class="invalid-feedback">
               <div *ngIf="password.errors['minlength']">
                 Password must be at least 8 characters
+              </div>
+              <div *ngIf="password.errors['pattern'] && !password.errors['minlength']">
+                Password should contain one number,one lowercase letters, one uppercase letters, and one special
+                character
               </div>
               <div *ngIf="password.errors['maxlength']">
                 Password must not exceed 40 characters
               </div>
-              <div *ngIf="password.errors['pattern']">
-                Password should contain one number,one lowercase letters, one uppercase letters, and one special
-                character
-              </div>
             </div>
           </div>
-          <div class="form-floating">
+
+          <div class="form-floating" [ngClass]="{ 'd-none': !tokenIsValid }">
             <input type="password" formControlName="confirmPassword" class="form-control" id="floatingConfirmPassword"
                    placeholder="Confirm password"
-                   [ngClass]="{ 'is-invalid': submitted && passwordConfirm.errors }">
+                   [ngClass]="{
+                    'is-invalid': (submitted || confirmPassword.value.length) && confirmPassword.errors,
+                    'is-valid': confirmPassword.value.length && !confirmPassword.errors
+                    }">
             <label for="floatingConfirmPassword">Confirm password</label>
-            <div *ngIf="submitted && passwordConfirm.errors" class="invalid-feedback mb-2">
-              <div *ngIf="passwordConfirm.errors['required']">
-                Confirm Password is required
+            <div *ngIf="confirmPassword.errors" class="invalid-feedback mb-2">
+              <div *ngIf="confirmPassword.errors['required']">
+                Confirm password is required
               </div>
-              <div *ngIf="passwordConfirm.errors['matching']">
+              <div *ngIf="confirmPassword.errors['matching']">
                 Confirm Password does not match
               </div>
             </div>
           </div>
-          <button class="w-100 btn btn-lg btn-primary" type="submit">Finish</button>
+
+          <button class="w-100 btn btn-lg btn-primary" [ngClass]="{'disabled': !tokenIsValid, 'mt-2': tokenIsValid}" type="submit">Finish</button>
         </form>
       </div>
     </div>

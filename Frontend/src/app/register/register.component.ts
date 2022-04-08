@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import Validation from '../utils/validation';
 import {Router} from "@angular/router";
-import {router} from "ngx-bootstrap-icons";
 
 @Component({
   selector: 'app-register',
@@ -15,6 +14,20 @@ export class RegisterComponent implements OnInit {
   readonly email: string;
 
   submitted = false;
+  tokenIsValid = false;
+
+  private readonly uuidValidator = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    this.tokenIsValid = false;
+    if(!value.length) return null;
+
+    if(value.match('^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')) {
+      this.tokenIsValid = true;
+      return null;
+    }
+
+    return {uuid: true};
+  };
 
   constructor(private formBuilder: FormBuilder, private router: Router) {
     const currentNavigation = this.router.getCurrentNavigation();
@@ -25,9 +38,9 @@ export class RegisterComponent implements OnInit {
 
     this.form = this.formBuilder.group(
       {
+        token: ['', this.uuidValidator],
         password: ['', Validation.passwordValidator()],
-        confirmPassword: ['', Validators.required],
-        token: ['', Validation.uuid()]
+        confirmPassword: ['']
       },
       {
         validators: [Validation.match('password', 'confirmPassword')]
@@ -41,8 +54,12 @@ export class RegisterComponent implements OnInit {
     return this.form.controls['password'];
   }
 
-  get passwordConfirm(): AbstractControl {
-    return this.form.controls['password'];
+  get confirmPassword(): AbstractControl {
+    return this.form.controls['confirmPassword'];
+  }
+
+  get token(): AbstractControl {
+    return this.form.controls['token'];
   }
 
   onSubmit(): void {
@@ -50,7 +67,7 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    // console.log(JSON.stringify(this.form.value, null, 2));
+    console.log('submit')
   }
 
 }
