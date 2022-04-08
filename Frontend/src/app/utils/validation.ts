@@ -17,6 +17,10 @@ export default class Validation {
     };
   }
 
+  static uuid(): ValidatorFn {
+    return Validators.pattern('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+  }
+
   static passwordValidator(): ValidatorFn[] {
     return [
       Validators.required,
