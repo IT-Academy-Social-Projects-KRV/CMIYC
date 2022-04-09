@@ -1,5 +1,10 @@
 <div class="d-flex vw-100 vh-100">
-  <main class="form-signin w-100 m-auto">
+  <main class="form-signin w-100">
+    <div class="alert alert-success mb-5" *ngIf="showSuccessMessage">
+      <strong>Activation completed!</strong><br><br>
+      You can now log in using the email and password you chose during the registration.
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <h1 class="h3 mb-3 fw-normal">Please enter your email address and password to continue logging in.</h1>
 

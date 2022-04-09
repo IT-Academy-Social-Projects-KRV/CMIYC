@@ -4,21 +4,10 @@
       <div class="card-body p-4">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <h1 class="h3 mb-3 fw-normal">Register</h1>
-          <h6 class="h6 mb-3 fw-normal text-muted" *ngIf="!tokenIsValid">Enter the activation token you received in letter.</h6>
-          <h6 class="h6 mb-3 fw-normal text-muted" *ngIf="tokenIsValid">Enter and confirm your password to finish registration.</h6>
+          <h6 class="h6 mb-3 fw-normal text-muted">Enter and confirm your password to finish registration.</h6>
+          <h6 class="h6 mb-3 fw-normal text-danger">{{errorMessage}}</h6>
 
           <div class="form-floating">
-            <input type="email" readonly class="form-control is-valid" id="floatingEmail" placeholder="{{email}}" disabled>
-            <label for="floatingEmail">{{email}}</label>
-          </div>
-
-          <div class="form-floating">
-            <input formControlName="token" class="form-control" id="floatingToken" autocomplete="token"
-                   placeholder="Activation token" [ngClass]="{ 'is-invalid': token.errors && token.errors['uuid'], 'is-valid': tokenIsValid }">
-            <label for="floatingToken">Activation token</label>
-          </div>
-
-          <div class="form-floating" [ngClass]="{ 'd-none': !tokenIsValid }">
             <input type="password" formControlName="password" class="form-control"
                    id="floatingPassword" placeholder="Password" autocomplete="new-password"
                    [ngClass]="{
@@ -40,7 +29,7 @@
             </div>
           </div>
 
-          <div class="form-floating" [ngClass]="{ 'd-none': !tokenIsValid }">
+          <div class="form-floating">
             <input type="password" formControlName="confirmPassword" class="form-control" id="floatingConfirmPassword"
                    placeholder="Confirm password"
                    [ngClass]="{
@@ -58,7 +47,7 @@
             </div>
           </div>
 
-          <button class="w-100 btn btn-lg btn-primary" [ngClass]="{'disabled': !tokenIsValid, 'mt-2': tokenIsValid}" type="submit">Finish</button>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Finish</button>
         </form>
       </div>
     </div>

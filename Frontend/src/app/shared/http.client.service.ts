@@ -7,7 +7,8 @@ import {LoginRequest} from "./data/login-request";
 import {JwtData} from "./data/jwt-data";
 import {LoginResult} from "./data/login-result";
 import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
-import { User } from './data/user';
+import {User} from './data/user';
+import {RequestResult} from "./data/request-result";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class HttpClientService {
   private readonly URL_USERS: string = this.AUTH_SERVER + '/users';
   private readonly URL_ENABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/enable';
   private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
+  private readonly URL_ACTIVATE: string = this.AUTH_SERVER + "/users/activate";
 
   // Search API
   private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
@@ -76,7 +78,7 @@ export class HttpClientService {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
 
-  login(email: string, password: string, callback: Function): void {
+  public login(email: string, password: string, callback: Function): void {
     const headers = new HttpHeaders({
       'Authorization': 'Basic ' + btoa('client-ui:secret'),
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -117,5 +119,27 @@ export class HttpClientService {
 
   public sendSchema<T>(formData: FormData): Observable<T> {
     return this.postFile(this.URL_DATA, formData);
+  }
+
+  public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {
+    const data = {
+      'token': token,
+      'password': password,
+      'confirmPassword': confirmPassword
+    }
+
+    this.http
+      .post(this.URL_ACTIVATE, data, {headers: new HttpHeaders({'Content-Type': 'application/json'})})
+      .subscribe({
+        next: () => {
+          callback(RequestResult.success("Ok"))
+        },
+        error: (err) => {
+          callback(RequestResult.error(
+            err.error.error_description ||
+            err.error.error ||
+            "Unexpected error occurred. Please, try again later"))
+        }
+      });
   }
 }

@@ -11,24 +11,28 @@ import com.ms.authority.entity.Token;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
 import com.ms.authority.dto.RegistrationRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 
+@RequiredArgsConstructor
 @Service
-@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
     private final static String USER_NOT_FOUND_MSG = "User with email %s not found";
+
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenService tokenService;
     private final EmailService emailService;
     private final RoleRepository roleRepository;
 
+    @Value("${routes.ui.activation-page")
+    private String activationPage;
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -59,7 +63,7 @@ public class UserService implements UserDetailsService {
     public RegistrationResult register(RegistrationRequest request) {
         Token token = new Token();
 
-        String link = "http://localhost:8090/users/registration/confirm?token=" + token.getToken();
+        String link = activationPage + token.getToken();
         try {
             emailService.sendActivationLink(
                     request.getEmail(),

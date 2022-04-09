@@ -9,10 +9,13 @@ import {AuthService} from "../shared/auth.service";
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
+  readonly showSuccessMessage: boolean;
+
   form: FormGroup = new FormGroup({
     email: new FormControl(''),
     password: new FormControl('')
   });
+
   submitted: boolean = false;
   errorMessage: string | undefined;
 
@@ -20,7 +23,15 @@ export class LoginFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-  ) {}
+  ) {
+    const showSuccessMessage: boolean | undefined = this.router
+      .getCurrentNavigation()
+      ?.finalUrl
+      ?.queryParamMap
+      .has("activationSuccess");
+
+    this.showSuccessMessage = showSuccessMessage == true;
+  }
 
   readonly resetErrorMessage = () => {
     if(!this.errorMessage) return;
