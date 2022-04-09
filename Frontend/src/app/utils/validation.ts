@@ -1,5 +1,4 @@
-import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {tree} from "ngx-bootstrap-icons";
+import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {
