@@ -1,23 +1,25 @@
 package com.ms.authority.service;
 
+import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
-import com.ms.authority.email.EmailService;
-import java.util.Set;
-import java.util.stream.Collectors;
 import com.ms.authority.dto.UserDto;
+import com.ms.authority.email.EmailService;
 import com.ms.authority.entity.Role;
-import com.ms.authority.entity.User;
 import com.ms.authority.entity.Token;
+import com.ms.authority.entity.User;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
-import com.ms.authority.dto.RegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +33,7 @@ public class UserService implements UserDetailsService {
     private final EmailService emailService;
     private final RoleRepository roleRepository;
 
-    @Value("${routes.ui.activation-page")
+    @Value("${routes.ui.activation-page}")
     private String activationPage;
 
     @Override
