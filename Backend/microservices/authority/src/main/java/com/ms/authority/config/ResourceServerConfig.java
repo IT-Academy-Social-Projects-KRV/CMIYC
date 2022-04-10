@@ -12,7 +12,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/users/activate")
+                .antMatchers("/users/activation")
                 .permitAll()
                 .antMatchers("/users/**")
                 .access("#oauth2.hasScope('admin_user')");
