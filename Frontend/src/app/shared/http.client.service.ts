@@ -25,6 +25,7 @@ export class HttpClientService {
   private readonly URL_ENABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/enable';
   private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
   private readonly URL_ACTIVATION: string = this.AUTH_SERVER + "/users/activation";
+  private readonly URL_REGISTRATION: string = this.AUTH_SERVER + "/users/registration";
 
   // Search API
   private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
@@ -32,6 +33,7 @@ export class HttpClientService {
 
   // Data API
   private readonly URL_DATA: string = this.DATA_API + '/api/data';
+
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
@@ -133,6 +135,31 @@ export class HttpClientService {
       .subscribe({
         next: () => {
           callback(RequestResult.success("Ok"))
+        },
+        error: (err) => {
+          callback(RequestResult.error(
+            err.error.error_description ||
+            err.error.error ||
+            "Unexpected error occurred. Please, try again later"))
+        }
+      });
+
+  }
+
+  public createUser(firstName: string, lastName: string, email: string, roles: (string | null)[], callback: (result: RequestResult) => void) {
+    const data = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'roles': roles
+    }
+
+    this.postRequest<any>(this.URL_REGISTRATION, data)
+      .subscribe({
+        next: (res) => {
+          const error = res['error'];
+          const message = res['message'];
+          callback(error ? RequestResult.error(message) : RequestResult.success(message))
         },
         error: (err) => {
           callback(RequestResult.error(
