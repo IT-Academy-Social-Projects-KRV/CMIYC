@@ -1,10 +1,5 @@
 package com.ms.authority.service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.mail.MessagingException;
-
 import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
@@ -18,27 +13,33 @@ import com.ms.authority.exception.TokenNotFoundException;
 import com.ms.authority.exception.UserAlreadyRegistredException;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.AllArgsConstructor;
+import javax.mail.MessagingException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
-@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
     private final static String USER_NOT_FOUND_MSG = "User with email %s not found";
+
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenService tokenService;
     private final EmailService emailService;
     private final RoleRepository roleRepository;
 
+    @Value("${routes.ui.activation-page}")
+    private String activationPage;
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -69,7 +70,7 @@ public class UserService implements UserDetailsService {
     public RegistrationResult register(RegistrationRequest request) {
         Token token = new Token();
 
-        String link = "http://localhost:8090/users/registration/confirm?token=" + token.getToken();
+        String link = activationPage + token.getToken();
         try {
             emailService.sendActivationLink(
                     request.getEmail(),
