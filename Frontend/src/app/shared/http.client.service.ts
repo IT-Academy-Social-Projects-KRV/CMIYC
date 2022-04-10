@@ -24,7 +24,7 @@ export class HttpClientService {
   private readonly URL_USERS: string = this.AUTH_SERVER + '/users';
   private readonly URL_ENABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/enable';
   private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
-  private readonly URL_ACTIVATE: string = this.AUTH_SERVER + "/users/activate";
+  private readonly URL_ACTIVATION: string = this.AUTH_SERVER + "/users/activation";
 
   // Search API
   private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
@@ -129,7 +129,7 @@ export class HttpClientService {
     }
 
     this.http
-      .post(this.URL_ACTIVATE, data, {headers: new HttpHeaders({'Content-Type': 'application/json'})})
+      .post(this.URL_ACTIVATION, data, {headers: new HttpHeaders({'Content-Type': 'application/json'})})
       .subscribe({
         next: () => {
           callback(RequestResult.success("Ok"))
