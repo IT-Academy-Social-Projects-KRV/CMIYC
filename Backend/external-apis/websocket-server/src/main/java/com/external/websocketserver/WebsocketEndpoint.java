@@ -37,7 +37,4 @@ public class WebsocketEndpoint {
     public void onClose(Session session) throws IOException {
 
     }
-
-    @OnError
-    public void onError (){}
 }
