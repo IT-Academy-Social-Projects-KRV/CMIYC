@@ -1,5 +1,12 @@
 package com.ms.authority.service;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.mail.MessagingException;
+
 import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
@@ -13,7 +20,7 @@ import com.ms.authority.exception.TokenNotFoundException;
 import com.ms.authority.exception.UserAlreadyRegistredException;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,9 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import java.util.Set;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -120,11 +125,12 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Set<UserDto> listUsersRequest() {
+    public List<UserDto> listUsersRequest() {
         return userRepository.findAll()
                 .stream()
                 .map(this::convertToUserDto)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(UserDto::getId))
+                .collect(Collectors.toList());
     }
 
     private UserDto convertToUserDto(User user) {
