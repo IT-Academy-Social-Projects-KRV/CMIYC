@@ -40,7 +40,7 @@ public class UserController {
      * }
      **/
 
-    @PostMapping("/activate")
+    @PostMapping("/activation")
     public void confirmRegister(@Valid @RequestBody ConfirmRegisterData confirmRegisterData) {
         userService.confirmRegister(confirmRegisterData);
     }
