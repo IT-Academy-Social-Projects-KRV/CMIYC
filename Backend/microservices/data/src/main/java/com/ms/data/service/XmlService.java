@@ -34,6 +34,11 @@ public class XmlService {
 
     }
     public void uploadFile(MultipartFile file) throws IllegalStateException, IOException{
-        file.transferTo(new File("C://Users//yahod//Downloads//CMIYC/" + file.getOriginalFilename()));
-    }
+      String buckePath = System.getProperty("user.dir") + "/Backend/microservices/target/bucket/";
+      File bucket = new File(buckePath);
+      if (!bucket.exists()){
+          bucket.mkdirs();
+      }
+      file.transferTo(new File(buckePath + file.getOriginalFilename()));
+  }
 }
