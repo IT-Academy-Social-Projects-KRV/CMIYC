@@ -1,6 +1,6 @@
 package com.ms.authority.controller;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Set<UserDto> listUsersRequest() {
+    public List<UserDto> listUsersRequest() {
         return userService.listUsersRequest();
     }
 }
