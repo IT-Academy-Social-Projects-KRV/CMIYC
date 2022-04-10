@@ -26,8 +26,8 @@ const routes: Routes = [
   {path: "error403", component: Error403Component},
   {path: "error404", component: Error404Component},
   {path: "error500", component: Error500Component},
-  {path: "register", component: RegisterComponent},
-  {path: "register/:token", component: RegisterComponent},
+  {path: "register", component: RegisterComponent, canActivate: [UnauthorizedAuthGuard]},
+  {path: "register/:token", component: RegisterComponent, canActivate: [UnauthorizedAuthGuard]},
   {path: 'userSearch', component: UserSearchInterfaceComponent, canActivate: [UserAuthGuard]},
   {path: 'searchResponse', component: SearchResponseComponent},
   {path:'**',component:Error404Component}

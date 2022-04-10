@@ -8,15 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * UserDto
- */
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 public class UserDto {
-
     private Integer id;
     private String email;
     private String firstName;

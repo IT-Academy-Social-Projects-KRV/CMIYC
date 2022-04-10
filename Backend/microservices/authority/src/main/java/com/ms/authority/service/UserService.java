@@ -1,5 +1,6 @@
 package com.ms.authority.service;
 
+import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
 import com.ms.authority.dto.UserDto;
@@ -7,6 +8,9 @@ import com.ms.authority.email.EmailService;
 import com.ms.authority.entity.Role;
 import com.ms.authority.entity.Token;
 import com.ms.authority.entity.User;
+import com.ms.authority.exception.PasswordsDoNotMatchException;
+import com.ms.authority.exception.TokenNotFoundException;
+import com.ms.authority.exception.UserAlreadyRegistredException;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +19,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class UserService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG = "User with email %s not found";
@@ -87,9 +92,27 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public void confirmRegister(ConfirmRegisterData confirmRegisterData) throws PasswordsDoNotMatchException, TokenNotFoundException, UserAlreadyRegistredException {
+        if (!confirmRegisterData.arePasswordsEquals()) {
+            throw new PasswordsDoNotMatchException();
+        }
+
+        User user = tokenService.getToken(confirmRegisterData.getToken())
+            .orElseThrow(() -> new TokenNotFoundException())
+            .getUser();
+
+        if (user.isEnabled()) {
+            throw new UserAlreadyRegistredException();
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(confirmRegisterData.getPassword()));
+        user.setActive(true);
+        userRepository.save(user);
+    }
+
     public User changeUserActive(int userId, boolean isActive) throws RuntimeException {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id"));
+                .orElseThrow(() -> new UsernameNotFoundException("Unable to find user with this id: " + userId));
         if (user.isUserAdmin()) {
             throw new RuntimeException("The field \"active\" can't be change for user with role admin_user");
         }
