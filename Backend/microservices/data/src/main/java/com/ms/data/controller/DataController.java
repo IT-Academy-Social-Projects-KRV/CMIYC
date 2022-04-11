@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/schemes")
+@RequestMapping("/schemas")
 
 public class DataController {
 

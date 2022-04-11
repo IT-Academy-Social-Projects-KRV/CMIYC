@@ -11,6 +11,6 @@ import java.util.List;
 @FeignClient(name = "data")
 public interface DataConnect {
 
-    @GetMapping("/schemes")
+    @GetMapping("/schemas")
     List<XmlObject> xmlSchema(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) throws JAXBException;
 }
