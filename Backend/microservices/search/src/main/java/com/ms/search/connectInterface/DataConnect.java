@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import javax.xml.bind.JAXBException;
 import java.util.List;
 
-@FeignClient(name="data")
+@FeignClient(name = "data")
 public interface DataConnect {
-    @GetMapping("/api/data")
-    public List<XmlObject> xmlSchema(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) throws JAXBException ;
+
+    @GetMapping("/schemes")
+    List<XmlObject> xmlSchema(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) throws JAXBException;
 }
