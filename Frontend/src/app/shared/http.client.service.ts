@@ -16,23 +16,22 @@ import {RequestResult} from "./data/request-result";
 export class HttpClientService {
 
   private readonly AUTH_SERVER: string = 'http://localhost:8090';
-  private readonly SEARCH_API: string = 'http://localhost:8082';
-  private readonly DATA_API: string = 'http://localhost:8081';
+  private readonly SEARCH_API:  string = 'http://localhost:8082';
+  private readonly DATA_API:    string = 'http://localhost:8081';
 
   // Auth
-  private readonly URL_LOGIN: string = this.AUTH_SERVER + '/oauth/token';
-  private readonly URL_USERS: string = this.AUTH_SERVER + '/users';
-  private readonly URL_ENABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/enable';
-  private readonly URL_DISABLE_USER: string = this.AUTH_SERVER + '/users/{userId}/disable';
-  private readonly URL_ACTIVATION: string = this.AUTH_SERVER + "/users/activation";
-  private readonly URL_REGISTRATION: string = this.AUTH_SERVER + "/users/registration";
+  private readonly URL_LOGIN:           string = this.AUTH_SERVER + '/oauth/token';
+  private readonly URL_USERS:           string = this.AUTH_SERVER + '/users';
+  private readonly URL_SET_USER_ACTIVE: string = this.AUTH_SERVER + '/users/{userId}/active/';
+  private readonly URL_ACTIVATION:      string = this.AUTH_SERVER + "/users/activation";
+  private readonly URL_REGISTRATION:    string = this.AUTH_SERVER + "/users/registration";
 
   // Search API
-  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/api/search';
-  private readonly URL_SEARCH: string = this.SEARCH_API + '/api/search';
+  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/search';
+  private readonly URL_SEARCH:  string = this.SEARCH_API + '/search';
 
   // Data API
-  private readonly URL_DATA: string = this.DATA_API + '/api/data';
+  private readonly URL_DATA: string = this.DATA_API + '/schemas';
 
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
@@ -114,7 +113,7 @@ export class HttpClientService {
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
     return this.postRequest(
-      (isActive ? this.URL_ENABLE_USER : this.URL_DISABLE_USER).replace("{userId}", String(userId)),
+      this.URL_SET_USER_ACTIVE.replace("{userId}", String(userId)) + isActive,
       {}
     );
   }
