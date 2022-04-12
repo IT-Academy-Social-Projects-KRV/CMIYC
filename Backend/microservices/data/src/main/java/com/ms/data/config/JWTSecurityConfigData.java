@@ -11,8 +11,8 @@ public class JWTSecurityConfigData extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authz -> authz
                         .antMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_user")
-                        .antMatchers(HttpMethod.POST, "/**").hasAuthority("SCOPE_user")
-                        .anyRequest().authenticated())
+                        .antMatchers(HttpMethod.POST,  "/api/data").hasAuthority("SCOPE_admin_schema")
+                        .anyRequest().hasAuthority("SCOPE_user"))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt());
     }
 }

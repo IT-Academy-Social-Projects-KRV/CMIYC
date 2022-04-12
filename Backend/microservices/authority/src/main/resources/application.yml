@@ -1,6 +1,11 @@
 server:
   port: 8090
 
+routes:
+  ui:
+    root: http://localhost:4200
+    activation-page: ${routes.ui.root}/register/
+
 spring:
   application:
     name: authority

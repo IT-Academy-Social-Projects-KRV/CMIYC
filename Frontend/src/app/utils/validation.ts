@@ -1,4 +1,4 @@
-import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
+import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {

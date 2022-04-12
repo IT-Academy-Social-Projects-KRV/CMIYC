@@ -1,27 +1,25 @@
 package com.ms.authority.service;
 
 import com.ms.authority.entity.User;
-import com.ms.authority.utils.FrontendData;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ms.authority.dto.FrontendData;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
  * This bean is responsible for checking whether or not entered email and password was correct
  */
 @Service
+@AllArgsConstructor
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /**
      * This method called whenever user send his email and password via login form

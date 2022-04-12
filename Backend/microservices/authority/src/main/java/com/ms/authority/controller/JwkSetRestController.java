@@ -1,17 +1,17 @@
 package com.ms.authority.controller;
 
 import com.nimbusds.jose.jwk.JWKSet;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @RestController
+@AllArgsConstructor
 public class JwkSetRestController {
 
-    @Autowired
-    private JWKSet jwkSet;
+    private final JWKSet jwkSet;
 
     @GetMapping("/.well-known/jwks.json")
     public Map<String, Object> keys() {

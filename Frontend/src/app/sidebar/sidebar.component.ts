@@ -8,11 +8,19 @@ import { AuthService } from '../shared/auth.service';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private authService: AuthService ) { }
+  readonly isUserAdmin: boolean;
+  readonly isSchemaAdmin: boolean;
+  readonly isUser: boolean;
+
+  constructor(private authService: AuthService ) {
+    this.isUserAdmin = authService.isUserAdminLoggedIn();
+    this.isSchemaAdmin = authService.isSchemaAdminLoggedIn();
+    this.isUser = authService.isUserLoggedIn();
+  }
 
   ngOnInit(): void {
   }
   isLogout() {
-    this.authService.logout();
+    this.authService.performLogout();
     }
 }

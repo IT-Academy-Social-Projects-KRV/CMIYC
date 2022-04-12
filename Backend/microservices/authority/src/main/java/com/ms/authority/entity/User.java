@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
@@ -17,7 +18,9 @@ import java.util.Set;
 @Table(name = "users")
 @NoArgsConstructor
 public class User implements UserDetails {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "email", length = 50, nullable = false)
@@ -29,7 +32,7 @@ public class User implements UserDetails {
     @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
     @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = false;
     @Column(name = "register_date", nullable = false)
     private LocalDate registerDate;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -39,6 +42,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_role")
     )
     private Set<Role> roles;
+
+    public User(String firstName, String lastName, String email, Set<Role> roles) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.registerDate = LocalDateTime.now().toLocalDate();
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,5 +79,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive;
+    }
+
+    public boolean isUserAdmin() {
+        return roles.stream().anyMatch(r -> r.getRole().equals("admin_user"));
     }
 }

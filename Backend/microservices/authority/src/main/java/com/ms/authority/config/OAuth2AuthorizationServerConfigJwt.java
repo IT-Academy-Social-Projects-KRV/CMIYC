@@ -1,25 +1,19 @@
 package com.ms.authority.config;
 
-import com.ms.authority.utils.FrontendData;
+import com.ms.authority.dto.FrontendData;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -31,9 +25,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.util.*;
@@ -41,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableAuthorizationServer
+@AllArgsConstructor
 public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfigurerAdapter {
 
     private static final String KEY_STORE_FILE = "jwt.jks";
@@ -48,11 +40,8 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     private static final String KEY_STORE_PASSWORD = "*XNU@K(@KxAO@)";
     private static final String JWK_KID = "key-id";
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AuthenticationProvider authenticationProvider;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
@@ -68,9 +57,9 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
                     .withClient("client-ui")
                     .secret(passwordEncoder.encode("secret"))
                     .authorizedGrantTypes("password")
-                    .scopes("user", "admin")                // We will load scopes manually, so we don't need this field
+                    .scopes("user", "admin_user", "admin_schema") // We will load scopes manually, so we don't need this field
                     .accessTokenValiditySeconds(3600 * 2)   // 2 hours
-                    .refreshTokenValiditySeconds(0);        // ?????
+                    .refreshTokenValiditySeconds(0);
     }
 
     @Bean
@@ -111,19 +100,15 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
             // Додаємо в data email та повне ім'я юзера. На етапі аутентифікації ми поклали цей об'єкт сюди в класі AuthenticationProviderImpl
             frontendData.loadToMap(data);
 
-            // Збираємо список ролей користувача в один рядок через кому
+            // Збираємо список ролей користувача в один рядок через пробіл
             String scopes = authentication
                     .getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.joining(" "));
 
-            // Кладемо ролі юзера на заміну тим що були вказані при реєстрації клієнта в конфігу
-            data.put("scope", scopes);        // Поле scope кладеться спрінгом
-
-            // Якщо є більше однієї scope, їх треба обов'язково покласти в поле scopes, інакше resource server не зрозуміє :(
-            if(authentication.getAuthorities().size() > 1)
-                data.put("scopes", scopes);
+            // Кладемо ролі юзера на як список скоупів
+            data.put("scope", scopes);
 
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(data);
             return accessToken;

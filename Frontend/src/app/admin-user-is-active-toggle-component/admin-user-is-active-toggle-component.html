@@ -1,0 +1,8 @@
+<div class="form-check form-switch form-check-inline">
+  <input class="form-check-input" type="checkbox" role="switch"
+         (change)="toggleIsActive()" id="is-active-{{userId}}" [disabled]="isDisabled ? 'disabled' : null"
+         style="margin-top: 10px;" [attr.checked]="isActive ? 'checked' : null">
+  <label class="form-check-label" style="margin-top: 6px; margin-left: 2px" for="is-active-{{userId}}">
+    {{isActive ? "Active" : "Not active"}}
+  </label>
+</div>
