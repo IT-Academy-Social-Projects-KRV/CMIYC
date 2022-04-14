@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping("/api/searcher/")
+@RequestMapping("/searcher")
 public class SearchQueryController {
 
     @PostMapping

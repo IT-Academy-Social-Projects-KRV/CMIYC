@@ -11,6 +11,7 @@ import java.util.Map;
 
 @FeignClient(name="connector")
 public interface ConnectorConnect {
-    @PostMapping("/api/searcher/")
-    public Map<String, Map<String, String>> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
+
+    @PostMapping("/searcher")
+    Map<String, Map<String, String>> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
 }
