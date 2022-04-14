@@ -6,6 +6,12 @@ eureka:
   service-url:
   default-zone: http://localhost:8761/eureka
 
+routes:
+  microservices:
+    authority:
+      root: http://localhost:8090
+      jwks: ${routes.microservices.authority.root}/.well-known/jwks.json
+
 spring:
   application:
     name: data
@@ -13,4 +19,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8090/.well-known/jwks.json
+          jwk-set-uri: ${routes.microservices.authority.jwks}
