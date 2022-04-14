@@ -121,6 +121,12 @@ public class UserService implements UserDetailsService {
         if (user.isUserAdmin()) {
             throw new RuntimeException("The field \"active\" can't be change for user with role admin_user");
         }
+
+        if (isActive && bCryptPasswordEncoder.matches("user.getPassword()", user.getPassword())) {
+            throw new RuntimeException("The \"active\" field cannot be changed for an unregistered user");
+            
+        }
+
         user.setActive(isActive);
         return userRepository.save(user);
     }
