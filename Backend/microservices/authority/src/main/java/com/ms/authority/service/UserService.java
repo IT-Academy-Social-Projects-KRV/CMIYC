@@ -41,6 +41,7 @@ public class UserService implements UserDetailsService {
     private static final String USER_WITH_ID_NOT_FOUND_MSG = "User with ID %s not found";
     private static final String CANNOT_DISABLE_ADMIN_MSG = "The \"active\" field cannot be changed for an administrator with the \"User Manager\" role.";
     private static final String CANNOT_CHANGE_ACTIVE_UNREGISTRED_USER_MSG = "The \"active\" field cannot be changed for an unregistered user";
+    private static final String DEFAULT_PASSWORD = "mBpQAW8mZY235LCCy9HhcYj24ELyK25zeG9v4Sg";
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -66,7 +67,7 @@ public class UserService implements UserDetailsService {
             // TODO if email not confirmed send confirmation email
             return new RegistrationResult(true, "email already taken");
         }
-        String encodePassword = bCryptPasswordEncoder.encode("user.getPassword()");
+        String encodePassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
         user.setPassword(encodePassword);
 
         userRepository.save(user);
@@ -128,7 +129,7 @@ public class UserService implements UserDetailsService {
             throw new ImpossibleOperationException(CANNOT_DISABLE_ADMIN_MSG);
         }
 
-        if (isActive && bCryptPasswordEncoder.matches("user.getPassword()", user.getPassword())) {
+        if (isActive && bCryptPasswordEncoder.matches(DEFAULT_PASSWORD, user.getPassword())) {
             throw new ImpossibleOperationException(CANNOT_CHANGE_ACTIVE_UNREGISTRED_USER_MSG);
         }
 
