@@ -37,15 +37,20 @@ export class HttpClientService {
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
 
-  private getHeadersWithToken(contentType: string): HttpHeaders {
+  private getHeadersWithToken(contentType: string | null): HttpHeaders {
     const authService = this.injector.get(AuthService);
 
     try {
       const accessToken = authService.validateAndGetToken();
-      return new HttpHeaders({
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': contentType
-      });
+
+      return contentType == null ?
+        new HttpHeaders({
+          'Authorization': `Bearer ${accessToken}`,
+        }) :
+        new HttpHeaders({
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': contentType
+        });
     } catch (e: UnauthorizedException | SessionExpiredException | any) {
       alert(e.message);
       authService.performLogout();
@@ -56,7 +61,7 @@ export class HttpClientService {
   private getMultipartRequestOptions(): Object {
     return {
       "responseType": "json",
-      "headers": this.getHeadersWithToken('multipart/form-data')
+      "headers": this.getHeadersWithToken(null)
     }
   }
 
