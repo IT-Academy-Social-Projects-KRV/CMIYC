@@ -35,6 +35,8 @@ public class User implements UserDetails {
     private boolean isActive = false;
     @Column(name = "register_date", nullable = false)
     private LocalDate registerDate;
+    @Column(name = "tfa_secret")
+    private String secret;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

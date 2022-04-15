@@ -1,7 +1,8 @@
 package com.ms.authority.service;
 
-import com.ms.authority.entity.User;
 import com.ms.authority.dto.FrontendData;
+import com.ms.authority.entity.User;
+import dev.samstevens.totp.secret.SecretGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final SecretGenerator secretGenerator;
 
     /**
      * This method called whenever user send his email and password via login form
@@ -39,7 +41,6 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         // Extract password from authentication
         String password = authentication.getCredentials().toString();
-
         // Load user from database. Will throw exception if no such user exists
         User user = userService.loadUserByUsername(email);
 
@@ -53,6 +54,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         if (!user.isActive()) {
             throw new BadCredentialsException("Your account is not active!");
         }
+
+
+
         // Return new authentication object
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
