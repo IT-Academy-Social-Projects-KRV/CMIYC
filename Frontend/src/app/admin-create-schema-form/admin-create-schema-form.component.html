@@ -1,8 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
 
-  <input type="file" (change)="onFileChange($event)"
+  <input type="file" (change)="onFileChange($event)" formControlName="file"
+         [ngClass]="{ 'is-invalid': submitted&&f['file'].errors }"
          class="form-control" accept=".xml">
-
+  <div *ngIf="submitted&&f['file'].errors" class="invalid-feedback">
+    <div *ngIf="f['file'].errors['required']">
+      File must not exceed 500 Kb
+    </div>
+  </div>
 
   <div class="file-upload">
     <div class="d-flex justify-content-center">

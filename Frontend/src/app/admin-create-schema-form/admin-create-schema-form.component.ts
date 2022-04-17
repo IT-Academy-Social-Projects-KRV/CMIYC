@@ -9,14 +9,31 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class AdminCreateSchemaFormComponent implements OnInit {
 
-  form = new FormGroup({
+  submitted = false;
+
+ form = new FormGroup({
     file: new FormControl('', [Validators.required]),
     fileSource: new FormControl('', [Validators.required])
   });
 
+  get f () { return this.form.controls }
 
-  onFileChange(event: Event) {
+  onFileChange($event: any) {
 
+    if ($event.target.files && $event.target.files[0]) {
+      let file = $event.target.files[0];
+      let allowedSize = file.size<=500000;
+      console.log(file);
+      if(allowedSize){
+        console.log("correct");
+      }
+      else {
+        this.form.reset();
+        this.form.controls["file"].setValidators([Validators.required]);
+        // @ts-ignore
+        this.form.get('file').updateValueAndValidity();
+      }
+    }
     // @ts-ignore
     if (event.target.files.length > 0) {
       // @ts-ignore
@@ -33,9 +50,18 @@ export class AdminCreateSchemaFormComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      file: ['', [Validators.required]],
+      fileSource: ['', [Validators.required]]
+    });
   }
 
   onFormSubmit() {
+    this.submitted = true;
+
+    if (this.form.invalid) {
+      return;
+    }
     const formData = new FormData();
 
     // @ts-ignore
