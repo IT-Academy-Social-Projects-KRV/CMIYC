@@ -45,14 +45,9 @@ public class UserController {
         userService.confirmRegister(confirmRegisterData);
     }
 
-    @PostMapping("/{userId}/enable")
-    public void enableUser(@PathVariable int userId) {
-        userService.changeUserActive(userId, true);
-    }
-
-    @PostMapping("/{userId}/disable")
-    public void disableUser(@PathVariable int userId) {
-        userService.changeUserActive(userId, false);
+    @PostMapping("/{userId}/active/{newState}")
+    public void enableUser(@PathVariable("userId") int userId, @PathVariable("newState") boolean newState) {
+        userService.changeUserActive(userId, newState);
     }
 
     @GetMapping

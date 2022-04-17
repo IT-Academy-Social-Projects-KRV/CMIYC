@@ -50,6 +50,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         if (!passwordEncoder.matches(password, hashedPass))
             throw new BadCredentialsException("Wrong password!");
 
+        if (!user.isActive()) {
+            throw new BadCredentialsException("Your account is not active!");
+        }
         // Return new authentication object
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),

@@ -9,19 +9,19 @@
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
         <li>
-          <a routerLink="/admin/allUsers" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isUserAdmin}">
+          <a routerLink="/users" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isUserAdmin}">
             <i class="bi-person-square me-2"></i>
             Manage Users
           </a>
         </li>
         <li>
-          <a routerLink="/admin/allSchemas" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isSchemaAdmin}">
+          <a routerLink="/schemas" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isSchemaAdmin}">
             <i class="bi-table me-2"></i>
             Manage Schemas
           </a>
         </li>
         <li>
-          <a routerLink="/userSearch" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isUser}">
+          <a routerLink="/search" class="nav-link text-white" [ngClass]="{'disabled text-muted': !isUser}">
             <i class="bi bi-search me-2"></i>
             User search
           </a>

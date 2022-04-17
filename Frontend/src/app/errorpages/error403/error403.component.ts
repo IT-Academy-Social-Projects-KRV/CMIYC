@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-error403',
+  selector: 'app-error-403',
   templateUrl: './error403.component.html',
   styleUrls: ['./error403.component.css']
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-error500',
+  selector: 'app-error-500',
   templateUrl: './error500.component.html',
   styleUrls: ['./error500.component.css']
 })
