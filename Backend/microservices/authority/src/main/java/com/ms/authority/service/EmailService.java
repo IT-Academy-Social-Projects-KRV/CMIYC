@@ -58,15 +58,15 @@ public class EmailService {
     }
 
     @Async
-    public void sendActivationLink(String to, String email, String link) throws IllegalStateException, MessagingException {
+    public void sendActivationLink(String email, String name, String link) throws IllegalStateException, MessagingException {
         final Context ctx = new Context();
-        ctx.setVariable("name", email);
+        ctx.setVariable("name", name);
         ctx.setVariable("link", link);
         final String body = this.templateEngine.process("emailConfirmation.html", ctx);
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setFrom("cmiycpolice@gmail.com ");
-            helper.setTo(to);
+            helper.setTo(email);
             helper.setText(body,true);
             helper.setSubject("Confirm your email");
             emailSender.send(mimeMessage);
