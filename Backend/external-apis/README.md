@@ -30,6 +30,10 @@ First run mock-repository then run others
 
 ## 2.Testing in POSTMAN
 ### 2.1. rest-server:
+_new -> HTTP Request -> GET -> http://localhost:[port you chose in tomcat settings]/rest_server_war/rest?firstName=Peter&lastName=Peterson -> send_
+
+OR:
+
 _new -> HTTP Request -> POST -> http://localhost:[port you chose in tomcat settings]/rest_server_war/rest -> Body -> raw -> paste and send request:_
 
     {"firstName":"Peter","lastName":"Peterson"}

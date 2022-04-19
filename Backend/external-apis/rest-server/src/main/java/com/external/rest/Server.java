@@ -1,6 +1,7 @@
 package com.external.rest;
 
 import com.external.connection.ConnectDataSource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,54 +10,60 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "server", value = "/rest")
 public class Server extends HttpServlet {
 
-    private String message;
-    private ConnectDataSource connection;
-    private static final String DATA_HOST ="ws://localhost:9000";
+    private static final String DATA_HOST = "ws://localhost:9000";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO smth in case of GET request
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Map<String, Object> data = new HashMap<>();
+        req.getParameterMap()
+                .forEach((key, values) -> {
+                    if (values == null || values.length < 2) {
+                        String value = values == null || values.length == 0 ? "" : values[0];
+                        data.put(key, value);
+                    } else {
+                        data.put(key, values);
+                    }
+                });
+
+        String json = new ObjectMapper().writeValueAsString(data);
+
+        handleRequest(json, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        handleRequest(getBody(req), resp);
+    }
+
+    private void handleRequest(String json, HttpServletResponse response) throws IOException {
+        String answer;
+
         try {
-            connection = new ConnectDataSource(new URI(DATA_HOST));
-            connection.send("api1_" + getBody(req));
-            Thread.sleep(500);
-        } catch (InterruptedException | URISyntaxException e) {
+            ConnectDataSource connection = new ConnectDataSource(new URI(DATA_HOST));
+            connection.send("api1_" + json);
+            connection.waitForResponse();
+
+            answer = connection.getAnswer();
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
 
-        PrintWriter out = resp.getWriter();
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        out.print(connection.getAnswer());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.print(answer);
         out.flush();
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO smth in case of PUT request
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO smth in case of DELETE request
-    }
-
-    /**
-     * Method reads data from http request body
-     * @param request
-     * @return String that contains JSON
-     * @throws IOException
-     */
-    public static String getBody(HttpServletRequest request) throws IOException {
+    private String getBody(HttpServletRequest request) throws IOException {
         String body;
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = null;
@@ -66,12 +73,10 @@ public class Server extends HttpServlet {
             if (inputStream != null) {
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 char[] charBuffer = new char[128];
-                int bytesRead = -1;
+                int bytesRead;
                 while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
-            } else {
-                stringBuilder.append("");
             }
         } finally {
             if (bufferedReader != null) {
