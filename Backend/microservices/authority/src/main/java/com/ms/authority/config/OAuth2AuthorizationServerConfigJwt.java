@@ -58,7 +58,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
                     .secret(passwordEncoder.encode("secret"))
                     .authorizedGrantTypes("password")
                     .scopes("user", "admin_user", "admin_schema") // We will load scopes manually, so we don't need this field
-                    .accessTokenValiditySeconds(3600 * 1)   // 1 hour
+                    .accessTokenValiditySeconds(3600)   // 1 hour
                     .refreshTokenValiditySeconds(0);
     }
 
