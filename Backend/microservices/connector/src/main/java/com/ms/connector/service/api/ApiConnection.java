@@ -1,14 +1,13 @@
 package com.ms.connector.service.api;
 
-import com.ms.connector.model.SearchQuery;
+import com.ms.connector.dto.SearchQuery;
 
-public abstract class ApiConnection {
+public interface ApiConnection {
 
-    protected final String path;
+    String getName();
 
-    public abstract Object getData(SearchQuery query) throws Exception;
+    ApiConnectionType getType();
 
-    public ApiConnection(String path) {
-        this.path = path;
-    }
+    Object getData(SearchQuery query) throws Exception;
+
 }

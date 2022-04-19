@@ -9,14 +9,20 @@ import java.util.concurrent.TimeoutException;
 
 public class WebsocketClient extends AbstractClient {
 
+    // Check 10 times per second
+    private static final int TIMEOUT_STEP = 100;
+
+    private final int timeout;
+
     private String lastMessage = null;
     private Exception lastException = null;
 
-    private final int TIMEOUT = 10;
-    // Check 10 times per second
-    private final int TIMEOUT_STEP = 100;
-
     private WebSocketClient client;
+
+    public WebsocketClient(String baseUrl, int timeout) {
+        super(baseUrl, null);
+        this.timeout = timeout;
+    }
 
     @SneakyThrows
     private void initClient() {
@@ -43,13 +49,10 @@ public class WebsocketClient extends AbstractClient {
         };
 
         this.client.connectBlocking();
+        Thread.sleep(100);
 
         if(!this.client.isOpen())
             throw new RuntimeException("Client was unable to connect to websocket " + getBaseUrl());
-    }
-
-    public WebsocketClient(String baseUrl) {
-        super(baseUrl, null);
     }
 
     public synchronized void send(String dataToSend) {
@@ -85,7 +88,7 @@ public class WebsocketClient extends AbstractClient {
 
     @SneakyThrows
     private void waitForResponseOrError() {
-        int steps = TIMEOUT * 1000 / TIMEOUT_STEP;
+        int steps = timeout / TIMEOUT_STEP;
         for (int i = 0; i < steps; i++) {
             Thread.sleep(TIMEOUT_STEP);
             if(lastMessage != null || lastException != null)

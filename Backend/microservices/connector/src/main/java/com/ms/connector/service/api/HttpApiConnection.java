@@ -1,26 +1,25 @@
 package com.ms.connector.service.api;
 
-import com.ms.connector.model.SearchQuery;
+import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.service.api.converter.BodyConverter;
 import com.ms.connector.service.client.HttpClient;
 import org.jsoup.Connection;
 
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public abstract class HttpApiConnection extends ApiConnection {
+public abstract class HttpApiConnection implements ApiConnection {
 
     protected final Connection.Method method;
 
-    public HttpApiConnection(Connection.Method method, String path) {
-        super(path);
+    public HttpApiConnection(Connection.Method method) {
         this.method = method;
     }
 
     protected String readQueryToUrlString(SearchQuery query) {
-        Map<String, String> data = convertQueryToMap(query);
+        Map<String, String> data = query.toMap();
 
         return data.entrySet()
                 .stream()
@@ -28,32 +27,21 @@ public abstract class HttpApiConnection extends ApiConnection {
                 .collect(Collectors.joining("&"));
     }
 
-    protected Map<String, String> convertQueryToMap(SearchQuery query) {
-        Map<String, String> data = new HashMap<>();
-        data.put("firstName", query.getFirstName());
-        data.put("lastName", query.getLastName());
-        data.put("birthDayDate", query.getBirthDayDate());
-        data.put("sex", query.getSex());
-        while (data.values().remove(null));
-
-        return data;
-    }
-
     @Override
-    public final Object getData(SearchQuery query) throws Exception {
-        String result;
+    public final Object getData(SearchQuery query) {
+        String response;
         if(method.hasBody()) {
-            String requestBody = prepareRequestBody(query);
-            result = getClient().request(method, "", requestBody);
+            String requestBody = getBodyConverter().queryToRequestBody(query);
+            response = getClient().request(method, "", requestBody);
         } else {
             String queryString = "?" + readQueryToUrlString(query);
-            result = getClient().request(method, queryString, null);
+            response = getClient().request(method, queryString, null);
         }
 
-        return result;
+        return getBodyConverter().responseBodyToObject(response);
     }
 
     protected abstract HttpClient getClient();
 
-    protected abstract String prepareRequestBody(SearchQuery query);
+    protected abstract BodyConverter getBodyConverter();
 }

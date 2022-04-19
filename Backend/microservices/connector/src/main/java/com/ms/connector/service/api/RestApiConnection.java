@@ -1,19 +1,21 @@
 package com.ms.connector.service.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.connector.model.SearchQuery;
+import com.ms.connector.service.api.converter.BodyConverter;
+import com.ms.connector.service.api.converter.JsonBodyConverter;
 import com.ms.connector.service.client.HttpClient;
 import com.ms.connector.service.client.RestClient;
-import lombok.SneakyThrows;
 import org.jsoup.Connection;
 
 public class RestApiConnection extends HttpApiConnection {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final BodyConverter converter = new JsonBodyConverter();
+
+    private final String name;
     private final RestClient client;
 
-    public RestApiConnection(Connection.Method method, String path) {
-        super(method, path);
+    public RestApiConnection(String name, String path, Connection.Method method) {
+        super(method);
+        this.name = name;
         this.client = new RestClient(path);
     }
 
@@ -22,9 +24,18 @@ public class RestApiConnection extends HttpApiConnection {
         return client;
     }
 
-    @SneakyThrows
     @Override
-    protected String prepareRequestBody(SearchQuery query) {
-        return mapper.writeValueAsString(query);
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public ApiConnectionType getType() {
+        return ApiConnectionType.REST;
+    }
+
+    @Override
+    protected BodyConverter getBodyConverter() {
+        return converter;
     }
 }
