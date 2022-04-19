@@ -10,7 +10,7 @@ public class SoapClient extends HttpClient {
         this(baseUrl, null);
     }
 
-        public SoapClient(String baseUrl, String authorizationHeader) {
+    public SoapClient(String baseUrl, String authorizationHeader) {
         this(baseUrl, authorizationHeader, "text/xml");
     }
 
