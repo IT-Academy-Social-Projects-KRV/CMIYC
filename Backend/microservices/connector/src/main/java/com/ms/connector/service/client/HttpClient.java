@@ -4,6 +4,8 @@ import lombok.SneakyThrows;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import java.util.Objects;
+
 public abstract class HttpClient extends AbstractClient {
 
     public HttpClient(String baseUrl, String authorizationHeader) {
@@ -37,6 +39,8 @@ public abstract class HttpClient extends AbstractClient {
     }
 
     protected Connection prepareRequest(Connection.Method method, String url) {
+        Objects.requireNonNull(url);
+
         return Jsoup
                 .connect(getBaseUrl() + url)
                 .method(method)

@@ -1,6 +1,10 @@
 package com.ms.connector.config;
 
-import com.ms.connector.service.api.*;
+import com.ms.connector.exception.UnknownApiConnectionTypeException;
+import com.ms.connector.service.api.ApiConnection;
+import com.ms.connector.service.api.RestApiConnection;
+import com.ms.connector.service.api.SoapApiConnection;
+import com.ms.connector.service.api.WebsocketApiConnection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,26 +34,18 @@ public class ConnectionsConfig {
         private String method = "POST";
         private int timeout = 5000;
 
-        public void setType(String type) {
-            this.type = type.toUpperCase();
-        }
-
-        public void setMethod(String method) {
-            this.method = method.toUpperCase();
-        }
-
         public ApiConnection buildApiConnection() {
-            ApiConnectionType connectionType = ApiConnectionType.valueOf(type);
+            ApiConnection.Type connectionType = ApiConnection.Type.valueOf(type.toUpperCase());
 
             switch (connectionType) {
                 case WEBSOCKET:
                     return new WebsocketApiConnection(name, path, timeout);
                 case REST:
-                    return new RestApiConnection(name, path, Connection.Method.valueOf(method));
+                    return new RestApiConnection(name, path, Connection.Method.valueOf(method.toUpperCase()));
                 case SOAP:
-                    return new SoapApiConnection(name, path, Connection.Method.valueOf(method));
+                    return new SoapApiConnection(name, path, Connection.Method.valueOf(method.toUpperCase()));
                 default:
-                    throw new IllegalArgumentException("Unknown api connection type: " + type);
+                    throw new UnknownApiConnectionTypeException(type);
             }
         }
     }

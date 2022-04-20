@@ -12,10 +12,6 @@ public class WebsocketApiConnection implements ApiConnection {
     private final String name;
     private final WebsocketClient client;
 
-    public WebsocketApiConnection(String name, String path) {
-        this(name, path, 5 * 1000);
-    }
-
     public WebsocketApiConnection(String name, String path, int timeout) {
         this.name = name;
         this.client = new WebsocketClient(path, timeout);
@@ -27,8 +23,8 @@ public class WebsocketApiConnection implements ApiConnection {
     }
 
     @Override
-    public ApiConnectionType getType() {
-        return ApiConnectionType.WEBSOCKET;
+    public ApiConnection.Type getType() {
+        return ApiConnection.Type.WEBSOCKET;
     }
 
     @Override

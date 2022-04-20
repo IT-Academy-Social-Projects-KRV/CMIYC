@@ -11,7 +11,7 @@ public class JsonBodyConverter implements BodyConverter {
 
     // TODO: probably need to configure objectMapper bean and autowire it in here
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final TypeReference<HashMap<String,Object>> typeRef = new TypeReference<>() {};
+    private static final TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
 
     @SneakyThrows
     @Override

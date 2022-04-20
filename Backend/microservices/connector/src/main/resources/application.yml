@@ -8,17 +8,17 @@ eureka:
 
 api:
   connections:
-    api1:
+    rest-server:
       name: api1
       path: http://localhost:9001/rest
       type: rest
       method: post
-    api2:
+    soap-server:
       name: api2
       path: http://localhost:9003/soap
       type: soap
       method: post
-    api3:
+    websocket-server:
       name: api3
       path: ws://localhost:9002/ws
       type: websocket

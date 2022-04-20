@@ -20,18 +20,19 @@ import java.util.Collections;
 
 public class Server extends WebSocketServer {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    static {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     private PersonRepository pr = new PersonRepository();
 
     public Server(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public Server(InetSocketAddress address) {
         super(address);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public Server(int port, Draft_6455 draft) {

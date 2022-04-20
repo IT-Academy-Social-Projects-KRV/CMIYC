@@ -12,10 +12,16 @@ import java.util.stream.Collectors;
 
 public abstract class HttpApiConnection implements ApiConnection {
 
-    protected final Connection.Method method;
+    private final Connection.Method method;
+    private final String name;
+    private final HttpClient client;
+    private final BodyConverter converter;
 
-    public HttpApiConnection(Connection.Method method) {
+    public HttpApiConnection(Connection.Method method, String name, HttpClient client, BodyConverter converter) {
         this.method = method;
+        this.name = name;
+        this.client = client;
+        this.converter = converter;
     }
 
     protected String readQueryToUrlString(SearchQuery query) {
@@ -31,17 +37,18 @@ public abstract class HttpApiConnection implements ApiConnection {
     public final Object getData(SearchQuery query) {
         String response;
         if(method.hasBody()) {
-            String requestBody = getBodyConverter().queryToRequestBody(query);
-            response = getClient().request(method, "", requestBody);
+            String requestBody = converter.queryToRequestBody(query);
+            response = client.request(method, "", requestBody);
         } else {
             String queryString = "?" + readQueryToUrlString(query);
-            response = getClient().request(method, queryString, null);
+            response = client.request(method, queryString, null);
         }
 
-        return getBodyConverter().responseBodyToObject(response);
+        return converter.responseBodyToObject(response);
     }
 
-    protected abstract HttpClient getClient();
-
-    protected abstract BodyConverter getBodyConverter();
+    @Override
+    public final String getName() {
+        return name;
+    }
 }

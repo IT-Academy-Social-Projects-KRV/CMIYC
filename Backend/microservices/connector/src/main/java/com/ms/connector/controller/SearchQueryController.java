@@ -18,7 +18,7 @@ public class SearchQueryController {
 
     @PostMapping
     public Map<String, Object> searcher(@RequestBody SearchQuery searchQuery) {
-        return apiService.processRequest(searchQuery);
+        return apiService.handleSearchRequest(searchQuery);
     }
 
     //for test only.  Get test search query JSON response

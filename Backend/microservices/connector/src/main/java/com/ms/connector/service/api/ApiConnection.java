@@ -6,8 +6,12 @@ public interface ApiConnection {
 
     String getName();
 
-    ApiConnectionType getType();
+    Type getType();
 
     Object getData(SearchQuery query) throws Exception;
 
+    enum Type {
+
+        REST, SOAP, WEBSOCKET
+    }
 }

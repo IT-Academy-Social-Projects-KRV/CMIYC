@@ -1,7 +1,8 @@
 package com.ms.connector.service.api.converter;
 
-import com.ms.connector.dto.GetPersonResponse;
 import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.dto.SoapResponse;
+import com.ms.connector.utils.MapAdapter;
 import com.ms.connector.utils.SoapHelper;
 import com.ms.connector.utils.XMLReaderWithoutNamespace;
 import lombok.SneakyThrows;
@@ -70,13 +71,15 @@ public class SoapBodyConverter implements BodyConverter {
             xmlReader.nextTag();
         }
 
-        JAXBContext jaxbContext = JAXBContext.newInstance(GetPersonResponse.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(SoapResponse.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        JAXBElement<GetPersonResponse> jaxbElement = unmarshaller.unmarshal(xmlReader, GetPersonResponse.class);
+        unmarshaller.setAdapter(new MapAdapter());
+
+        JAXBElement<SoapResponse> jaxbElement = unmarshaller.unmarshal(xmlReader, SoapResponse.class);
 
         xmlReader.close();
         xmlStreamReader.close();
 
-        return jaxbElement.getValue().getPerson().toMap();
+        return jaxbElement.getValue().getData();
     }
 }
