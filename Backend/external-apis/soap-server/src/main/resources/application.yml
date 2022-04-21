@@ -1,0 +1,6 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: soap-server

@@ -1,6 +1,5 @@
 package com.ms.data.controller;
 
-import com.google.api.services.storage.Storage;
 import com.ms.data.model.XmlObject;
 import com.ms.data.resource.XmlResource;
 import com.ms.data.service.XmlService;
@@ -22,31 +21,25 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/data")
-
+@RequestMapping("/schemas")
 
 public class DataController {
 
     @Autowired
     private XmlService xmlService;
-    
-    
 
     @GetMapping
     public List<XmlObject> xmlSchema() throws JAXBException {
-        List<XmlObject> result = new ArrayList<XmlObject>();
+        List<XmlObject> result = new ArrayList<>();
         result.add(xmlService.getData(XmlResource.xmldata1));
         result.add(xmlService.getData(XmlResource.xmldata2));
         result.add(xmlService.getData(XmlResource.xmldata3));
+
         return result;
     }
 
-  
-     @PostMapping
-    public void uploadFile(@RequestParam("file") MultipartFile file ) throws IllegalStateException, IOException{
+    @PostMapping
+    public void uploadFile(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
         xmlService.uploadFile(file);
-      
     }
-
-
 }

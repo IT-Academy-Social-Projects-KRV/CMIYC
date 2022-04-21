@@ -50,13 +50,13 @@ export class AuthService {
   public getUrlToNavigateAfterLogin(): string {
     switch (true) {
       case this.isUserAdminLoggedIn(): {
-        return 'admin/allUsers';
+        return 'users';
       }
       case this.isSchemaAdminLoggedIn(): {
-        return 'admin/allSchemas';
+        return 'schemas';
       }
       default: {
-        return 'userSearch';
+        return 'search';
       }
     }
   }

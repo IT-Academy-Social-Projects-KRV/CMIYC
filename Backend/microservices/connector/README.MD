@@ -1,6 +1,6 @@
 > ### how to use Connector API:
-* without Eureka server - http://localhost:8080/api/searcher/
-* with Eureka server - name = connector, url for requests = /api/searcher/
+* without Eureka server - http://localhost:8080/searcher
+* with Eureka server - name = connector, url for requests = /searcher
 * use method POST with valid token in header and body with json like this:
 
 {

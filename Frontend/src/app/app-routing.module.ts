@@ -19,17 +19,17 @@ import {UnauthorizedAuthGuard} from "./shared/auth-guards/unauthorized.auth.guar
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: 'admin/allSchemas', component: AdminManageSchemaListComponent, canActivate: [SchemaAdminAuthGuard]},
-  {path: 'admin/allUsers', component: AdminManageUserListComponent, canActivate: [UserAdminAuthGuard]},
+  {path: 'schemas', component: AdminManageSchemaListComponent, canActivate: [SchemaAdminAuthGuard]},
+  {path: 'users', component: AdminManageUserListComponent, canActivate: [UserAdminAuthGuard]},
   {path: "login", component: LoginFormComponent, canActivate: [UnauthorizedAuthGuard]},
   {path: "twoFactor", component: TwoFactorAuthenticationFormComponent, canActivate: [UnauthorizedAuthGuard]},
-  {path: "error403", component: Error403Component},
-  {path: "error404", component: Error404Component},
-  {path: "error500", component: Error500Component},
+  {path: "error-403", component: Error403Component},
+  {path: "error-404", component: Error404Component},
+  {path: "error-500", component: Error500Component},
   {path: "register", component: RegisterComponent, canActivate: [UnauthorizedAuthGuard]},
   {path: "register/:token", component: RegisterComponent, canActivate: [UnauthorizedAuthGuard]},
-  {path: 'userSearch', component: UserSearchInterfaceComponent, canActivate: [UserAuthGuard]},
-  {path: 'searchResponse', component: SearchResponseComponent},
+  {path: 'search', component: UserSearchInterfaceComponent, canActivate: [UserAuthGuard]},
+  {path: 'search/response', component: SearchResponseComponent},
   {path:'**',component:Error404Component}
 ];
 
