@@ -1,4 +1,4 @@
-package com.ms.authority.email;
+package com.ms.authority.service;
 
 import org.springframework.stereotype.Service;
 
