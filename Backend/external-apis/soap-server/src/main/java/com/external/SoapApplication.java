@@ -1,11 +1,11 @@
-package com.external.soap;
+package com.external;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SoapApp {
+public class SoapApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SoapApp.class, args);
+        SpringApplication.run(SoapApplication.class, args);
     }
 }
