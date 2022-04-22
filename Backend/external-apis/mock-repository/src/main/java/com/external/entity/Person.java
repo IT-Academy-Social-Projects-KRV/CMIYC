@@ -15,14 +15,19 @@ import lombok.ToString;
 public class Person {
 
     private int id;
+
     private String firstName;
     private String lastName;
     private String birthDayDate;
     private Gender gender;
-    private String additionalInfo;
-    private String carModel;
-    private String isbn;
-    private String job;
-    private String location;
 
+    private String country;
+    private String address;
+    private String phone;
+
+    private String email;
+    private String job;
+
+    private String carModel;
+    private String carVin;
 }

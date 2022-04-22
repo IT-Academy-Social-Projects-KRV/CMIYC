@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,8 +17,9 @@ public class RequestPayloadThree extends RequestPayloadTwo {
 
     @Override
     public boolean isEqualToPerson(Person person) {
-        return super.isEqualToPerson(person) && person.getBirthDayDate()
-                .equals(birthDayDate) && (gender == Gender.UNKNOWN || gender == person.getGender());
+        return super.isEqualToPerson(person) &&
+                Objects.equals(birthDayDate, person.getBirthDayDate()) &&
+                (gender == Gender.UNKNOWN || gender == person.getGender());
     }
 
     @Override
