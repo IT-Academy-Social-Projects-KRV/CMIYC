@@ -9,24 +9,25 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GoogleHttpRequestInitializer implements HttpRequestInitializer {
+
     GoogleCredentials credentials;
     HttpCredentialsAdapter adapter;
+
     @Override
     public void initialize(HttpRequest httpRequest) throws IOException {
-        credentials = GoogleCredentials
-                .getApplicationDefault()
+        credentials = GoogleCredentials.getApplicationDefault()
                 .createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform"));
         adapter = new HttpCredentialsAdapter(credentials);
 
         adapter.initialize(httpRequest);
         httpRequest.setConnectTimeout(60000); // 1 minute connect timeout
         httpRequest.setReadTimeout(60000);
-
     }
 
     public GoogleCredentials getCredentials() {
         return credentials;
     }
+
     public void setCredentials(GoogleCredentials credentials) {
         this.credentials = credentials;
     }
@@ -38,4 +39,5 @@ public class GoogleHttpRequestInitializer implements HttpRequestInitializer {
     public void setAdapter(HttpCredentialsAdapter adapter) {
         this.adapter = adapter;
     }
+
 }
