@@ -45,11 +45,12 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    public User(String firstName, String lastName, String email, Set<Role> roles) {
+    public User(String firstName, String lastName, String email, String secret, Set<Role> roles) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.registerDate = LocalDateTime.now().toLocalDate();
+        this.secret = secret;
         this.roles = roles;
     }
 

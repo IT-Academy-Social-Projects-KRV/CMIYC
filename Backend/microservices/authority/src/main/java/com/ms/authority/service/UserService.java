@@ -1,12 +1,5 @@
 package com.ms.authority.service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.mail.MessagingException;
-
 import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
@@ -21,7 +14,9 @@ import com.ms.authority.exception.UserAlreadyRegistredException;
 import com.ms.authority.exception.UserNotFoundException;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
-
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import javax.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +24,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,6 +45,7 @@ public class UserService implements UserDetailsService {
     private final TokenService tokenService;
     private final EmailService emailService;
     private final RoleRepository roleRepository;
+    private final TfaService tfaService;
 
     @Value("${routes.ui.activation-page}")
     private String activationPage;
@@ -58,8 +57,7 @@ public class UserService implements UserDetailsService {
     }
 
     public RegistrationResult signUpUser(User user, Token token) {
-        boolean userExist = userRepository
-                .findByEmail(user.getEmail())
+        boolean userExist = userRepository.findByEmail(user.getEmail())
                 .isPresent();
         if (userExist) {
             // TODO check of attributes are the same and
@@ -80,24 +78,25 @@ public class UserService implements UserDetailsService {
         Token token = new Token();
 
         String link = activationPage + token.getToken();
+        String secret = tfaService.generateSecretKey();
+        String qrCode = null;
         try {
-            emailService.sendActivationLink(
-                    request.getEmail(),
-                    request.getFirstName(),
-                    link);
+            qrCode = tfaService.getQRCode(request.getEmail(), secret);
+        } catch (QrGenerationException e) {
+            e.printStackTrace();
+        }
+        try {
+            emailService.sendActivationLink(request.getEmail(), request.getFirstName(), link, qrCode);
         } catch (MessagingException e) {
             return new RegistrationResult(true, "Email is invalid");
         }
         // TODO registration result (boolean)
-        Set<Role> roleSet = request.getRoles().stream().map(roleRepository::findByRole).collect(Collectors.toSet());
+        Set<Role> roleSet = request.getRoles()
+                .stream()
+                .map(roleRepository::findByRole)
+                .collect(Collectors.toSet());
 
-        return signUpUser(
-                new User(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getEmail(),
-                        roleSet),
-                token);
+        return signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(), secret, roleSet), token);
     }
 
     public void confirmRegister(ConfirmRegisterData confirmRegisterData)
@@ -153,9 +152,11 @@ public class UserService implements UserDetailsService {
         userDto.setLastName(user.getLastName());
         userDto.setActive(user.isEnabled());
         userDto.setRegisterDate(user.getRegisterDate());
-        userDto.setScopes(user.getRoles().stream()
+        userDto.setScopes(user.getRoles()
+                .stream()
                 .map(Role::getAuthority)
                 .collect(Collectors.toSet()));
         return userDto;
     }
+
 }
