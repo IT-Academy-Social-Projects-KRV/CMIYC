@@ -7,36 +7,51 @@
 **soap-server** must receive request and response in xml.
 
 ### 1.2. How to run
-### 1.2.1. Soap-server
-**soap-server** is Spring based application. Before running, jaxb plugin must be started.
-
-Go to maven tab in IDEA, click _soap-server -> Plugins -> jaxb2 -> jaxb:xjc -> Reload all maven projects_. Then run SoapApp class.
-
-### 1.2.2. Rest-server and websocket-server 
-**rest-server** and **websocket-server** are Servlet based. Tomcat server must be installed on PC. 
+### 1.2.1. Rest-server
+**rest-server** and **websocket-server** are Servlet based. Tomcat server must be installed on PC.
 
 You can install Tomcat here: https://tomcat.apache.org/download-90.cgi#9.0.62
 
-To run apps in IDEA: go to: _Run -> Edit configuration... -> +(left top) -> Tomcat Server -> Local -> HTTP Port 
-               (change if necessary) -> Deployment tab -> + -> Artifact.. -> chose rest-server:war, websocket-server:war_
+To run apps in IDEA:
+>Run -> Edit configuration... -> +(left top) -> Smart Tomcat <br>
+> Name: rest-server<br>
+> Tomcat Server: select your tomcat<br>
+> Context path: /<br>
+> Server port: 9001<br>
+> Admin port: 8001
 
-Run tomcat
+Save and run configuration
+
+### 1.2.2. Websocket-server
+>Run -> Edit configuration... -> +(left top) -> Smart Tomcat <br>
+> Name: websocket-server<br>
+> Tomcat Server: select your tomcat<br>
+> Context path: /<br>
+> Server port: 9002<br>
+> Admin port: 8002
+
+Save and run configuration
+
+### 1.2.3. Soap-server
+**soap-server** is Spring based application. Before running, jaxb plugin must be started.
+
+Go to maven tab in IDEA, click _soap-server -> Plugins -> jaxb2 -> jaxb:xjc -> Reload all maven projects_. Then run SoapApp class.
 
 ### 1.2.3. Mock-repository 
 **mock-repository** runs just as command line app. Find Main class in directory and run.
 
 ### 1.3. Order of running apps
-First run mock-repository then run others
+First run **mock-repository** then run others
 
 ## 2.Testing in POSTMAN
 ### 2.1. rest-server:
-_new -> HTTP Request -> GET -> http://localhost:[port you chose in tomcat settings]/rest_server_war/rest?firstName=Peter&lastName=Peterson -> send_
+_new -> HTTP Request -> GET -> http://localhost:9001/rest?firstName=Peter&lastName=Peterson -> send_
 
 OR:
 
-_new -> HTTP Request -> POST -> http://localhost:[port you chose in tomcat settings]/rest_server_war/rest -> Body -> raw -> paste and send request:_
+_new -> HTTP Request -> POST -> http://localhost:9001/rest -> Body -> raw -> paste and send request:_
 
-    {"firstName":"Peter","lastName":"Peterson"}
+    {"firstName":"John","lastName":"Johnson"}
 
 ### 2.2. soap-server:
 _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content-Type change to text/xml -> Body -> raw -> XML -> paste and send request:_
@@ -53,7 +68,7 @@ _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content
     </soapenv:Envelope>
 
 ### 2.3. websocket-server:
-_new -> WebSocket Request -> ws://localhost:[port you chose in tomcat settings]/websocket_server_war/ws -> Connect -> paste and send request:_
+_new -> WebSocket Request -> ws://localhost:9002/ws -> Connect -> paste and send request:_
 
     {"firstName":"Amanda","lastName":"Armstrong","birthDayDate":"04.04.1984","gender":"FEMALE"}
 
