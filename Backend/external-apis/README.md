@@ -62,7 +62,7 @@ _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content
             <gs:getPersonRequest>
                 <gs:firstName>Steven</gs:firstName>
                 <gs:lastName>Stevenson</gs:lastName>
-                <gs:birthDayDate>03.03.1983</gs:birthDayDate>
+                <gs:birthDayDate>01.01.1981</gs:birthDayDate>
             </gs:getPersonRequest>
         </soapenv:Body>
     </soapenv:Envelope>
