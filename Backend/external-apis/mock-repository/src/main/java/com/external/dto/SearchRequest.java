@@ -30,15 +30,18 @@ public class SearchRequest {
         String apiName = message.substring(0, message.indexOf(REQUEST_SPLIT));
         String json = message.substring(message.indexOf(REQUEST_SPLIT) + REQUEST_SPLIT.length());
 
-        for (API value : API.values()) {
-            if (!value.getName()
+        for (API api : API.values()) {
+            if (!api.getName()
                     .equals(apiName)) {
                 continue;
             }
 
             try {
-                RequestPayload requestPayload = (RequestPayload) MapperUtils.objectMapper.readValue(json, value.getRequestClass());
-                return new SearchRequest(value, requestPayload);
+                RequestPayload requestPayload = (RequestPayload) MapperUtils.objectMapper.readValue(
+                        json,
+                        api.getRequestClass()
+                );
+                return new SearchRequest(api, requestPayload);
             } catch (Exception e) {
                 throw new BadRequestException(json);
             }
