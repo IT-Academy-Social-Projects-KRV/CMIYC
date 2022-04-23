@@ -11,7 +11,6 @@ import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequest;
 import com.ms.authority.dto.RegistrationResult;
 import com.ms.authority.dto.UserDto;
-import com.ms.authority.email.EmailService;
 import com.ms.authority.entity.Role;
 import com.ms.authority.entity.Token;
 import com.ms.authority.entity.User;
