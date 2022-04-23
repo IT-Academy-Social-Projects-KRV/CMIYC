@@ -3,7 +3,7 @@ package com.external.server;
 import com.external.dto.API;
 import com.external.dto.PersonData;
 import com.external.dto.SearchRequest;
-import com.external.dto.SearchResult;
+import com.external.dto.SearchResponse;
 import com.external.entity.Person;
 import com.external.repository.PersonRepository;
 import com.external.utils.MapperUtils;
@@ -58,7 +58,7 @@ public class Server extends WebSocketServer {
     }
 
     public void process(String message, WebSocket webSocket) throws JsonProcessingException {
-        SearchResult result;
+        SearchResponse result;
 
         try {
             SearchRequest request = SearchRequest.fromMessage(message);
@@ -69,9 +69,9 @@ public class Server extends WebSocketServer {
                     .map(person -> api.createPersonData(person, request.getRequestPayload()))
                     .collect(Collectors.toList());
 
-            result = SearchResult.success(personDataList);
+            result = SearchResponse.success(personDataList);
         } catch (Exception e) {
-            result = SearchResult.error(e.getMessage());
+            result = SearchResponse.error(e.getMessage());
         }
 
         String json = MapperUtils.objectMapper.writeValueAsString(result);

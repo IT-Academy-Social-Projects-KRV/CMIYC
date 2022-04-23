@@ -10,17 +10,17 @@ import java.util.List;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SearchResult {
+public class SearchResponse {
 
     private final boolean isError;
     private final String errorMessage;
     private final List<PersonData> data;
 
-    public static SearchResult success(List<PersonData> data) {
-        return new SearchResult(false, null, data);
+    public static SearchResponse success(List<PersonData> data) {
+        return new SearchResponse(false, null, data);
     }
 
-    public static SearchResult error(String errorMessage) {
-        return new SearchResult(true, errorMessage, null);
+    public static SearchResponse error(String errorMessage) {
+        return new SearchResponse(true, errorMessage, null);
     }
 }
