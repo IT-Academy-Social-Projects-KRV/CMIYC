@@ -1,9 +1,9 @@
 package com.ms.data.service;
 
-import com.google.api.client.http.AbstractInputStreamContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.model.StorageObject;
+import com.ms.data.config.InputStreamContent;
 import com.ms.data.model.XmlObject;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class CloudStorageService {
     private final Storage storage;
 
     @Value("${cloud-storage.path}")
-    private  String bucketName;
+    private String bucketName;
 
     public XmlObject getData(String xmldata) throws JAXBException {
         StringReader reader = new StringReader(xmldata);
@@ -45,22 +45,9 @@ public class CloudStorageService {
         object.setName(file.getOriginalFilename());
         InputStream targetStream = new ByteArrayInputStream(file.getBytes());
         storage.objects()
-                .insert(bucketName, object, new AbstractInputStreamContent(file.getOriginalFilename()) {
-                    @Override
-                    public long getLength() {
-                        return file.getSize();
-                    }
-
-                    @Override
-                    public boolean retrySupported() {
-                        return false;
-                    }
-
-                    @Override
-                    public InputStream getInputStream() {
-                        return targetStream;
-                    }
-                })
+                .insert(bucketName, object,
+                        new InputStreamContent(file.getOriginalFilename(), targetStream, file.getSize())
+                )
                 .execute();
 
         return true;
