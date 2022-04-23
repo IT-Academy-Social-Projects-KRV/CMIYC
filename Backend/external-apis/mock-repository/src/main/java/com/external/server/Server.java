@@ -5,6 +5,7 @@ import com.external.dto.ApiThreeReq;
 import com.external.dto.ApiTwoReq;
 import com.external.dto.PersonRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.java_websocket.WebSocket;
@@ -19,7 +20,11 @@ import java.util.Collections;
 
 public class Server extends WebSocketServer {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    static {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
     private PersonRepository pr = new PersonRepository();
 
     public Server(int port) throws UnknownHostException {
