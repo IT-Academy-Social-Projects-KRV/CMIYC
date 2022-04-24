@@ -2,9 +2,8 @@ package com.ms.data.controller;
 
 import com.ms.data.model.XmlObject;
 import com.ms.data.resource.XmlResource;
-import com.ms.data.service.XmlService;
+import com.ms.data.service.CloudStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,31 +14,29 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.xml.bind.JAXBException;
 
 import java.io.IOException;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/schemas")
-
 public class DataController {
 
     @Autowired
-    private XmlService xmlService;
+    private CloudStorageService cloudStorageService;
 
     @GetMapping
     public List<XmlObject> xmlSchema() throws JAXBException {
         List<XmlObject> result = new ArrayList<>();
-        result.add(xmlService.getData(XmlResource.xmldata1));
-        result.add(xmlService.getData(XmlResource.xmldata2));
-        result.add(xmlService.getData(XmlResource.xmldata3));
+        result.add(cloudStorageService.getData(XmlResource.xmldata1));
+        result.add(cloudStorageService.getData(XmlResource.xmldata2));
+        result.add(cloudStorageService.getData(XmlResource.xmldata3));
 
         return result;
     }
 
     @PostMapping
     public void uploadFile(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
-        xmlService.uploadFile(file);
+        cloudStorageService.uploadFile(file);
     }
+
 }
