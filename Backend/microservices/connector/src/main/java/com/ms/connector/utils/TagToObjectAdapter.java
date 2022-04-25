@@ -21,6 +21,16 @@ public class TagToObjectAdapter extends XmlAdapter<AdaptedMap.Entry.Value, Objec
         private final String[] xmlTypes;
         private final Function<String, Object> mapperFunction;
 
+        private boolean supports(String type) {
+            for (String xmlType : this.xmlTypes) {
+                if (xmlType.equals(type)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         Object createObject(String value) {
             return this.mapperFunction.apply(value);
         }
@@ -34,9 +44,8 @@ public class TagToObjectAdapter extends XmlAdapter<AdaptedMap.Entry.Value, Objec
     @Override
     public Object unmarshal(AdaptedMap.Entry.Value value) {
         for (XMLTypeMapper xmlTypeMapper : XMLTypeMapper.values()) {
-            for (String type : xmlTypeMapper.getXmlTypes()) {
-                if(type.equals(value.getType()))
-                    return xmlTypeMapper.createObject(value.getValue());
+            if (xmlTypeMapper.supports(value.getType())) {
+                return xmlTypeMapper.createObject(value.getValue());
             }
         }
 
