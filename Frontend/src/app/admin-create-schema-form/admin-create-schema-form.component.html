@@ -1,13 +1,22 @@
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
 
-  <input type="file" (change)="onFileChange($event)" formControlName="file"
-         [ngClass]="{ 'is-invalid': submitted&&f['file'].errors }"
+  <table>
+    <tr>
+      <th>
+  <input type="file" (change)="onFileChange($event)"
+         formControlName="file" style="width: 90px; height: 35px; overflow: hidden;"
+         [ngClass]="{ 'is-invalid': submitted&&f['file'].errors&&f['fileSource'].errors||errorMessage}"
          class="form-control" accept=".xml">
-  <div *ngIf="submitted&&f['file'].errors" class="invalid-feedback">
-    <div *ngIf="f['file'].errors['required']">
-      File must not exceed 500 Kb
-    </div>
+  <div *ngIf="f['file'].errors" class="invalid-feedback">
+    <div *ngIf="!fileName&&f['file'].errors['required']">Choose file</div>
+    <div *ngIf="fileName&&errorMessage">File must not exceed 500 Kb</div>
   </div>
+      </th>
+      <th>
+        <div *ngIf = "fileName" > You've selected {{fileName}}</div>
+      </th>
+    </tr>
+  </table>
 
   <div class="file-upload">
     <div class="d-flex justify-content-center">
