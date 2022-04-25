@@ -3,7 +3,7 @@
 ##How to work with:
 1) You must have valid token in header
 2) Get schemas from Data API: http://localhost:8082/search
-3) Post to get data from Connector API: http://localhost:8082/searcher in body you should have json like this:
+3) Post to get data from Connector API: http://localhost:8082/search in body you should have json like this:
 ```json
 {
  "firstName": "John",
