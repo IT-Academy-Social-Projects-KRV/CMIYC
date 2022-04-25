@@ -45,7 +45,7 @@ Save and run configuration
 Go to maven tab in IDEA, click _soap-server -> Plugins -> jaxb2 -> jaxb:xjc -> Reload all maven projects_. Then run
 SoapApp class.
 
-### 1.2.3. Mock-repository
+### 1.2.4. Mock-repository
 
 **mock-repository** runs just as command line app. Find Main class in directory and run.
 
@@ -105,7 +105,7 @@ Every external service represents one API:
 > **returns:** email, job, and phone number
 
 **websocket-server** - **api3**
-> **required fields:** firstName, lastName, gender and birthDayDate (format: dd.MM.yyyy)<br>
+> **required fields:** firstName, lastName, gender and birthDayDate (format: yyyy-MM-dd)<br>
 > **returns:** carModel and carVin
 
 All person data can be found in mock-repository/src/main/resources/mock_data.json
