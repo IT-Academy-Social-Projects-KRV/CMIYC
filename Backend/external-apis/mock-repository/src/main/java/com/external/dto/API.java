@@ -15,13 +15,14 @@ public enum API {
 
     API1("api1", RequestPayloadOne.class, (person, map) -> {
         map.put("country", person.getCountry());
+        map.put("city", person.getCity());
         map.put("address", person.getAddress());
-        map.put("phone", person.getPhone());
     }),
 
     API2("api2", RequestPayloadTwo.class, (person, map) -> {
         map.put("email", person.getEmail());
         map.put("job", person.getJob());
+        map.put("phone", person.getPhone());
     }),
 
     API3("api3", RequestPayloadThree.class, (person, map) -> {

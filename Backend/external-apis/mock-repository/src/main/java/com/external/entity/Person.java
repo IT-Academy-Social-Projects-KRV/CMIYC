@@ -21,9 +21,10 @@ public class Person {
     private Gender gender;
 
     private String country;
+    private String city;
     private String address;
-    private String phone;
 
+    private String phone;
     private String email;
     private String job;
 
