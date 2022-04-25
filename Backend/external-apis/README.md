@@ -89,7 +89,7 @@ _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content
 _new -> WebSocket Request -> ws://localhost:9002/ws -> Connect -> paste and send request:_
 
 ```json
-{"firstName":"Amanda","lastName":"Armstrong","birthDayDate":"04.04.1984","gender":"FEMALE"}
+{"firstName":"Amanda","lastName":"Armstrong","birthDayDate":"1984-04-04","gender":"FEMALE"}
 ```
 
 ## 3.API
@@ -120,7 +120,7 @@ Some of this data:
     "lastName": "Johnson",
     "email": null,
     "phone": "704-570-9750",
-    "birthDayDate": "01.01.1981",
+    "birthDayDate": "1981-01-01",
     "carVin": "WAUMF98K69A080368",
     "carModel": "Tacoma",
     "country": "China",
@@ -134,7 +134,7 @@ Some of this data:
     "lastName": "Peterson",
     "email": "jpiniur1@over-blog.com",
     "phone": "947-793-9775",
-    "birthDayDate": "02.02.1982",
+    "birthDayDate": "1982-02-02",
     "carVin": "3C6TD5GT5CG918011",
     "carModel": "XK Series",
     "country": "Greece",
@@ -148,7 +148,7 @@ Some of this data:
     "lastName": "Stevenson",
     "email": null,
     "phone": "444-453-1779",
-    "birthDayDate": "03.03.1983",
+    "birthDayDate": "1983-03-03",
     "carVin": "2GKALMEKXF6505805",
     "carModel": "Fox",
     "country": "China",
@@ -162,7 +162,7 @@ Some of this data:
     "lastName": "Armstrong",
     "email": "lfrearson3@soup.io",
     "phone": "529-544-9508",
-    "birthDayDate": "04.04.1984",
+    "birthDayDate": "1984-04-04",
     "carVin": "5FNRL5H23CB727110",
     "carModel": "Scirocco",
     "country": "Botswana",

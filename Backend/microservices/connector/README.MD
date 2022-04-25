@@ -7,7 +7,7 @@
 {
  "firstName": "John",
  "lastName": "Johnson",
- "birthDayDate": "01.01.1981",
+ "birthDayDate": "1981-01-01",
  "sex": "Male",
  "foreignDataSource": [
    "api1",
