@@ -70,26 +70,12 @@ export class AuthService {
   public performLogin(email: string, password: string, onErrorCallback: Function): void {
     this.httpClientService.login(email, password, (loginResult: LoginResult) => {
       this.handleLoginRequest(onErrorCallback,loginResult)
-      /*if (loginResult.isError || loginResult.jwtData == null) {
-        onErrorCallback.call(this, loginResult.errorMessage);
-      } else {
-        const response: JwtData | null = loginResult.jwtData;
-        this.saveJwtDataToStorage(response);
-        this.router.navigate([this.getUrlToNavigateAfterLogin()]);
-      }*/
     });
   }
 
   public performSecondFactor (code: string, onErrorCallback: Function): void {
     this.httpClientService.secondFactor(code, (loginResult: LoginResult) => {
       this.handleLoginRequest(onErrorCallback,loginResult)
-  /*    if (loginResult.isError || loginResult.jwtData == null) {
-        onErrorCallback.call(this, loginResult.errorMessage);
-      } else {
-        const response: JwtData | null = loginResult.jwtData;
-        this.saveJwtDataToStorage(response);
-        this.router.navigate([this.getUrlToNavigateAfterLogin()]);
-      }*/
     });
   }
 
@@ -103,7 +89,7 @@ export class AuthService {
       throw new UnauthorizedException();
 
     const expiresAt = new Date(expiresAtString);
-    // Якщо час дії токену вийшов, викидаємо помилку
+    // Throws an error if token expires
     if (expiresAt.getTime() < new Date().getTime())
       throw new SessionExpiredException();
 

@@ -99,6 +99,7 @@ export class HttpClientService {
   public secondFactor(code: string, callback: Function): void {
 
     let token = localStorage.getItem("access_token")
+
     if(token!=null) {
       const params = new TfaRequest(code, token);
       this.handleLoginRequest(callback,params,this.HEADERS)
