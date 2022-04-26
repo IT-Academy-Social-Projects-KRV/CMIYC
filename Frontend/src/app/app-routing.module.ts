@@ -16,13 +16,14 @@ import {UserAuthGuard} from './shared/auth-guards/user.auth.guard';
 import {UserAdminAuthGuard} from './shared/auth-guards/user.admin.auth.guard';
 import {SchemaAdminAuthGuard} from "./shared/auth-guards/schema.admin.auth.guard";
 import {UnauthorizedAuthGuard} from "./shared/auth-guards/unauthorized.auth.guard";
+import {TwoFactorAuthGuard} from "./shared/auth-guards/tfa.auth.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'schemas', component: AdminManageSchemaListComponent, canActivate: [SchemaAdminAuthGuard]},
   {path: 'users', component: AdminManageUserListComponent, canActivate: [UserAdminAuthGuard]},
   {path: "login", component: LoginFormComponent, canActivate: [UnauthorizedAuthGuard]},
-  {path: "twoFactor", component: TwoFactorAuthenticationFormComponent, canActivate: [UnauthorizedAuthGuard]},
+  {path: "twoFactor", component: TwoFactorAuthenticationFormComponent, canActivate: [TwoFactorAuthGuard]},
   {path: "error-403", component: Error403Component},
   {path: "error-404", component: Error404Component},
   {path: "error-500", component: Error500Component},
