@@ -35,7 +35,9 @@ export class AuthService {
   private saveJwtDataToStorage(jwtData: JwtData): void {
     localStorage.setItem('access_token', jwtData.access_token);
     localStorage.setItem('scopes', jwtData.scope);
-    localStorage.setItem('full_name', jwtData.fullName);
+    if(jwtData.fullName){
+        localStorage.setItem('full_name', jwtData.fullName);
+    }
 
     const expiresAt = new Date(new Date().getTime() + (jwtData.expires_in - 5) * 1000);
     localStorage.setItem('expires_at', expiresAt.toString());
@@ -57,7 +59,7 @@ export class AuthService {
         return 'schemas';
       }
       case this.isPreAuthUser():{
-        return "twoFactor";
+        return "two-factor";
       }
       default: {
         return 'search';
@@ -67,25 +69,27 @@ export class AuthService {
 
   public performLogin(email: string, password: string, onErrorCallback: Function): void {
     this.httpClientService.login(email, password, (loginResult: LoginResult) => {
-      if (loginResult.isError || loginResult.jwtData == null) {
+      this.handleLoginRequest(onErrorCallback,loginResult)
+      /*if (loginResult.isError || loginResult.jwtData == null) {
         onErrorCallback.call(this, loginResult.errorMessage);
       } else {
         const response: JwtData | null = loginResult.jwtData;
         this.saveJwtDataToStorage(response);
         this.router.navigate([this.getUrlToNavigateAfterLogin()]);
-      }
+      }*/
     });
   }
 
   public performSecondFactor (code: string, onErrorCallback: Function): void {
     this.httpClientService.secondFactor(code, (loginResult: LoginResult) => {
-      if (loginResult.isError || loginResult.jwtData == null) {
+      this.handleLoginRequest(onErrorCallback,loginResult)
+  /*    if (loginResult.isError || loginResult.jwtData == null) {
         onErrorCallback.call(this, loginResult.errorMessage);
       } else {
         const response: JwtData | null = loginResult.jwtData;
         this.saveJwtDataToStorage(response);
         this.router.navigate([this.getUrlToNavigateAfterLogin()]);
-      }
+      }*/
     });
   }
 
@@ -132,5 +136,15 @@ export class AuthService {
 
   public getCurrentUserFullName(): string | null {
     return localStorage.getItem('full_name');
+  }
+
+  private handleLoginRequest (onErrorCallback: Function, loginResult: LoginResult){
+    if (loginResult.isError || loginResult.jwtData == null) {
+      onErrorCallback.call(this, loginResult.errorMessage);
+    } else {
+      const response: JwtData | null = loginResult.jwtData;
+      this.saveJwtDataToStorage(response);
+      this.router.navigate([this.getUrlToNavigateAfterLogin()]);
+    }
   }
 }

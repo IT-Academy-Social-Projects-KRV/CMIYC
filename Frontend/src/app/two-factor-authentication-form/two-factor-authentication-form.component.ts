@@ -51,5 +51,7 @@ export class TwoFactorAuthenticationFormComponent implements OnInit {
     );
     // console.log(JSON.stringify(this.form.value, null, 2));
   }
-
+  isLogout() {
+    this.authService.performLogout();
+  }
 }

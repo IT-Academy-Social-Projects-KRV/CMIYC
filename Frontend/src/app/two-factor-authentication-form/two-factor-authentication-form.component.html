@@ -2,10 +2,14 @@
   <main class="form-signin  w-100 m-auto">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <h1 class="h3 mb-3 fw-normal">Please enter your authentication code.</h1>
-      <div class="form-floating">
-        <input type="password" formControlName="code" class="form-control" id="floatingCode"
+      <div class="input-group mb-3">
+        <div class = "form-floating flex-grow-1">
+
+        <input  formControlName="code" class="form-control" id="floatingCode"
           placeholder="Authentication code" [ngClass]="{ 'is-invalid': submitted && f['code'].errors }">
-        <label for="floatingCode">Authentication code</label>
+          <label for="floatingCode">Authentication code</label>
+        </div>
+        <button class="btn btn-outline-primary input-group-text" type="button" (click)="isLogout()"><i class="bi bi-arrow-left">&nbsp;Back</i></button>
         <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
           <div *ngIf="f['code'].errors['required']">Code is required</div>
           <div *ngIf="f['code'].errors['minlength']">
@@ -18,6 +22,7 @@
             Code should contain only numbers
           </div>
         </div>
+
       </div>
 
       <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>

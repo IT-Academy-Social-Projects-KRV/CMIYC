@@ -13,6 +13,7 @@ export class LoginResult {
   private constructor(isError: boolean, errorMessage: string | null, jwtData: JwtData | null) {
     this.isError = isError;
     this.errorMessage = errorMessage;
+
     this.jwtData = jwtData;
   }
 

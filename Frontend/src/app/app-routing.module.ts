@@ -23,7 +23,7 @@ const routes: Routes = [
   {path: 'schemas', component: AdminManageSchemaListComponent, canActivate: [SchemaAdminAuthGuard]},
   {path: 'users', component: AdminManageUserListComponent, canActivate: [UserAdminAuthGuard]},
   {path: "login", component: LoginFormComponent, canActivate: [UnauthorizedAuthGuard]},
-  {path: "twoFactor", component: TwoFactorAuthenticationFormComponent, canActivate: [TwoFactorAuthGuard]},
+  {path: "two-factor", component: TwoFactorAuthenticationFormComponent, canActivate: [TwoFactorAuthGuard]},
   {path: "error-403", component: Error403Component},
   {path: "error-404", component: Error404Component},
   {path: "error-500", component: Error500Component},
