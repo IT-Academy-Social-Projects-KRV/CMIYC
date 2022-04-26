@@ -111,7 +111,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
         return (accessToken, authentication) -> {
             Map<String, Object> data = new HashMap<>();
 
-            if (authentication.getUserAuthentication() instanceof FrontendData) {
+            if (authentication.getUserAuthentication().getDetails() != null) {
                 FrontendData frontendData = (FrontendData) authentication.getUserAuthentication().getDetails();
                 frontendData.loadToMap(data);
             }
