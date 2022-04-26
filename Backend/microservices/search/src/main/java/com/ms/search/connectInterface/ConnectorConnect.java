@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
-@FeignClient(name="connector")
+@FeignClient(name = "connector", url = "${ROUTES_MICROSERVICES_CONNECTOR}")
 @CacheConfig(cacheNames = CaffeineConfig.CACHE_SEARCH)
 public interface ConnectorConnect {
 
     @PostMapping("/searcher")
-    Map<String, Map<String, String>> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
+    Map<String, Map<String, String>> searcher(
+            @RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery
+    );
+
 }

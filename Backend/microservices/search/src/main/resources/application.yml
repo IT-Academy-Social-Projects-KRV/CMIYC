@@ -1,17 +1,12 @@
 server:
-  port: 8082
+  port: ${PORTS_MICROSERVICES_SEARCH}
 
 eureka:
   client:
     service-url:
       default-zone:
         http://localhost:8761/eureka
-
-routes:
-  microservices:
-    authority:
-      root: http://localhost:8090
-      jwks: ${routes.microservices.authority.root}/.well-known/jwks.json
+    enabled: false
 
 spring:
   application:
@@ -20,7 +15,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${routes.microservices.authority.jwks}
+          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY}/.well-known/jwks.json
   cache:
     caffeine:
       spec: maximumSize=500,expireAfterWrite=8h

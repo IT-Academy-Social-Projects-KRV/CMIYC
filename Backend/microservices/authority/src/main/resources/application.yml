@@ -1,10 +1,9 @@
 server:
-  port: 8090
+  port: ${PORTS_MICROSERVICES_AUTHORITY}
 
 routes:
   ui:
-    root: http://localhost:4200
-    activation-page: ${routes.ui.root}/register/
+    activation-page: ${ROUTES_UI}/register/
 
 spring:
   application:
