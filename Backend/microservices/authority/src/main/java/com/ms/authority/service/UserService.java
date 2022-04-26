@@ -158,4 +158,30 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toSet()));
         return userDto;
     }
+
+    public void deleteUser( User user){
+        tokenService.deleteTokenByUser(user);
+        userRepository.delete(user);
+    }
+
+    public User updateUserById(User user, RegistrationRequest request){
+        userRepository.findById(user.getId()).map(userUpdated -> {
+            if (request.getFirstName() != null){
+                user.setFirstName(request.getFirstName());
+            }
+            if (request.getLastName() != null){
+                user.setLastName(request.getLastName());
+            }
+            if (request.getEmail() !=null){
+                user.setEmail(request.getEmail());
+            }
+            if(request.getRoles() !=null){
+                user.setRoles(request.getRoles().stream().map(
+                        roleRepository::findByRole).collect(Collectors.toSet()));
+            }
+            return userRepository.save(user);
+//
+        });
+        return user;
+    }
 }
