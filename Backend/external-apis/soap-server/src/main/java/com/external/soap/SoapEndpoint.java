@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 @Endpoint
 public class SoapEndpoint {
     private static final String NAMESPACE_URI = "http://soap.api/xsd";
-    private static final String DATA_HOST = "ws://localhost:9000";
+    private static final String DATA_HOST = System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY");
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPersonRequest")
     @ResponsePayload

@@ -16,10 +16,12 @@ import java.util.Map;
 @WebServlet(name = "server", value = "/rest")
 public class Server extends HttpServlet {
 
-    private static final String DATA_HOST = "ws://localhost:9000";
+    private static final String DATA_HOST = System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println(DATA_HOST);
+
         Map<String, Object> data = new HashMap<>();
         req.getParameterMap()
                 .forEach((key, values) -> {
