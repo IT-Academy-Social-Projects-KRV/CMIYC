@@ -1,6 +1,7 @@
 package com.ms.authority.service;
 
 import com.ms.authority.entity.Token;
+import com.ms.authority.entity.User;
 import com.ms.authority.repository.TokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,10 @@ public class TokenService {
 
     public Optional<Token> getToken (String token) {
         return verificationTokenRepository.findByToken(UUID.fromString(token));
+    }
+
+    public void deleteTokenByUser(User user){
+        Optional<Token> token = verificationTokenRepository.findByUser(user);
+        token.ifPresent(verificationTokenRepository::delete);
     }
 }
