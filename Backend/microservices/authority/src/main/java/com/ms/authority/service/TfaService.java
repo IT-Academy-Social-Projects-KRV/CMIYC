@@ -39,19 +39,15 @@ public class TfaService {
     }
 
     public boolean verifyCode(String secret, String code) {
+        validateCode(code);
         return verifier.isValidCode(secret, code);
     }
 
-    public void isCodeValid(String code) {
-        if (code == null) {
-            return;
-        }
-
+    private void validateCode(String code) {
         try {
-            double d = Double.parseDouble(code);
+            Integer.parseInt(code);
         } catch (NumberFormatException nfe) {
             throw new InvalidGrantException(INVALID_TFA_CODE_MSG);
         }
-
     }
 }

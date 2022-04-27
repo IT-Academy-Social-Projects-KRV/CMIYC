@@ -74,8 +74,6 @@ public class TfaTokenGranter extends AbstractTokenGranter {
         String code = parameters.get("tfa_code");
         String secret = userService.loadUserByUsername(authentication.getName()).getSecret();
 
-        tfaService.isCodeValid(code);
-
         if (!tfaService.verifyCode(secret, code)) {
             throw new InvalidGrantException(INVALID_TFA_CODE_MSG);
         }
