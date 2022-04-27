@@ -9,15 +9,16 @@ import {LoginResult} from "./data/login-result";
 import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly AUTH_SERVER: string = 'http://localhost:8090';
-  private readonly SEARCH_API:  string = 'http://localhost:8082';
-  private readonly DATA_API:    string = 'http://localhost:8081';
+  private readonly AUTH_SERVER: string = environment.authServer;
+  private readonly SEARCH_API:  string = environment.searchAPI;
+  private readonly DATA_API:    string = environment.dataAPI;
 
   // Auth
   private readonly URL_LOGIN:           string = this.AUTH_SERVER + '/oauth/token';
@@ -32,7 +33,6 @@ export class HttpClientService {
 
   // Data API
   private readonly URL_DATA: string = this.DATA_API + '/schemas';
-
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }
