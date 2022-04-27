@@ -22,6 +22,7 @@ export class AuthService {
   public static readonly SCOPE_ADMIN_USER = "admin_user";
   public static readonly SCOPE_ADMIN_SCHEMA = "admin_schema";
   public static readonly SCOPE_USER = "user";
+  public static readonly SCOPE_PRE_AUTH_USER = "pre_auth";
 
   constructor(private router: Router, private httpClientService: HttpClientService) {
   }
@@ -55,6 +56,9 @@ export class AuthService {
       case this.isSchemaAdminLoggedIn(): {
         return 'schemas';
       }
+      case this.isPreAuthUser():{
+        return "two-factor";
+      }
       default: {
         return 'search';
       }
@@ -63,16 +67,15 @@ export class AuthService {
 
   public performLogin(email: string, password: string, onErrorCallback: Function): void {
     this.httpClientService.login(email, password, (loginResult: LoginResult) => {
-      if (loginResult.isError || loginResult.jwtData == null) {
-        onErrorCallback.call(this, loginResult.errorMessage);
-      } else {
-        const response: JwtData | null = loginResult.jwtData;
-        this.saveJwtDataToStorage(response);
-        this.router.navigate([this.getUrlToNavigateAfterLogin()]);
-      }
+      this.handleLoginRequest(onErrorCallback,loginResult)
     });
   }
 
+  public performSecondFactor (code: string, onErrorCallback: Function): void {
+    this.httpClientService.secondFactor(code, (loginResult: LoginResult) => {
+      this.handleLoginRequest(onErrorCallback,loginResult)
+    });
+  }
   // Returns accessToken
   // Throws error if token is absent or expired so the calling class can handle this
   public validateAndGetToken(): string {
@@ -95,6 +98,10 @@ export class AuthService {
     this.router.navigate(['login']);
   }
 
+  public isPreAuthUser(): boolean{
+    return this.isScopeAuthenticated(AuthService.SCOPE_PRE_AUTH_USER);
+  }
+
   public isUserAdminLoggedIn(): boolean {
     return this.isScopeAuthenticated(AuthService.SCOPE_ADMIN_USER);
   }
@@ -113,5 +120,15 @@ export class AuthService {
 
   public getCurrentUserFullName(): string | null {
     return localStorage.getItem('full_name');
+  }
+
+  private handleLoginRequest (onErrorCallback: Function, loginResult: LoginResult){
+    if (loginResult.isError || loginResult.jwtData == null) {
+      onErrorCallback.call(this, loginResult.errorMessage);
+    } else {
+      const response: JwtData | null = loginResult.jwtData;
+      this.saveJwtDataToStorage(response);
+      this.router.navigate([this.getUrlToNavigateAfterLogin()]);
+    }
   }
 }

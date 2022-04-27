@@ -3,6 +3,9 @@ body {
   height: 100%;
 }
 
+.max-height {
+  max-height: 58px;
+}
 
 .form-signin {
   width: 100%;

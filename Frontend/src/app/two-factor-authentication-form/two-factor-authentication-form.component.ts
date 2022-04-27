@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {Router} from "@angular/router";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-two-factor-authentication-form',
@@ -12,7 +14,22 @@ export class TwoFactorAuthenticationFormComponent implements OnInit {
     code: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  errorMessage: string | undefined;
+
+  constructor(private formBuilder: FormBuilder,private router: Router,
+              private authService: AuthService) { }
+
+  readonly resetErrorMessage = () => {
+    if(!this.errorMessage) return;
+    console.log('reset')
+    this.errorMessage = undefined;
+    this.form.controls['code'].updateValueAndValidity();
+  }
+
+  private readonly showErrorValidator = (): ValidationErrors | null => {
+    return this.errorMessage ? {errorMessage: true} : null;
+  };
+
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
@@ -22,7 +39,8 @@ export class TwoFactorAuthenticationFormComponent implements OnInit {
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(6),
-            Validators.pattern('^[0-9]*$')
+            Validators.pattern('^[0-9]*$'),
+            this.showErrorValidator
           ]
         ]
       }
@@ -37,7 +55,20 @@ export class TwoFactorAuthenticationFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
+    let code = this.form.get('code')?.value;
+
+    this.authService.performSecondFactor(
+      code,
+      (errorMessage: string) => {
+        this.errorMessage = errorMessage;
+        this.form.controls['code'].updateValueAndValidity();
+      }
+    );
     // console.log(JSON.stringify(this.form.value, null, 2));
   }
 
+  isLogout() {
+    this.authService.performLogout();
+  }
 }

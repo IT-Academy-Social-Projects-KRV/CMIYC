@@ -1,48 +1,37 @@
 package com.external.server;
 
-import com.external.dto.ApiOneReq;
-import com.external.dto.ApiThreeReq;
-import com.external.dto.ApiTwoReq;
-import com.external.dto.PersonRepository;
+import com.external.dto.API;
+import com.external.dto.PersonData;
+import com.external.dto.SearchRequest;
+import com.external.dto.SearchResponse;
+import com.external.entity.Person;
+import com.external.repository.PersonRepository;
+import com.external.utils.MapperUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.java_websocket.WebSocket;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Server extends WebSocketServer {
 
-    private ObjectMapper mapper = new ObjectMapper();
-    private PersonRepository pr = new PersonRepository();
+    private final PersonRepository personRepository = new PersonRepository();
 
-    public Server(int port) throws UnknownHostException {
+    public Server(int port) {
         super(new InetSocketAddress(port));
-    }
-
-    public Server(InetSocketAddress address) {
-        super(address);
-    }
-
-    public Server(int port, Draft_6455 draft) {
-        super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        System.out.println(
-                webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " connected to server");
+        System.out.println(getHostAddress(webSocket) + " connected to server");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        System.out.println(webSocket + " has disconnected from server!");
+        System.out.println(getHostAddress(webSocket) + " has disconnected from server!");
     }
 
     @Override
@@ -51,7 +40,7 @@ public class Server extends WebSocketServer {
             process(s, webSocket);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             webSocket.close();
         }
     }
@@ -68,28 +57,31 @@ public class Server extends WebSocketServer {
         setConnectionLostTimeout(100);
     }
 
-    public String getApi(String s) {
-        return s.substring(0, 4);
-    }
+    public void process(String message, WebSocket webSocket) throws JsonProcessingException {
+        SearchResponse result;
 
-    public String getMessage(String s) {
-        return s.substring(5);
-    }
+        try {
+            SearchRequest request = SearchRequest.fromMessage(message);
+            List<Person> people = personRepository.findAllByRequest(request.getRequestPayload());
 
-    public void process(String s, WebSocket ws) throws JsonProcessingException {
-        if (getApi(s).equals("api1")) {
-            ApiOneReq apiOneReq = mapper.readValue(getMessage(s), ApiOneReq.class);
-            ws.send(new Gson().toJson(pr.findPerson(apiOneReq)));
+            API api = request.getApi();
+            List<PersonData> personDataList = people.stream()
+                    .map(person -> api.createPersonData(person, request.getRequestPayload()))
+                    .collect(Collectors.toList());
+
+            result = SearchResponse.success(personDataList);
+        } catch (Exception e) {
+            result = SearchResponse.error(e.getMessage());
         }
 
-        if (getApi(s).equals("api2")) {
-            ApiTwoReq apiTwoReq = mapper.readValue(getMessage(s), ApiTwoReq.class);
-            ws.send(new Gson().toJson(pr.findPerson(apiTwoReq)));
-        }
-
-        if (getApi(s).equals("api3")) {
-            ApiThreeReq apiThreeReq = mapper.readValue(getMessage(s), ApiThreeReq.class);
-            ws.send(new Gson().toJson(pr.findPerson(apiThreeReq)));
-        }
+        String json = MapperUtils.objectMapper.writeValueAsString(result);
+        webSocket.send(json);
     }
+
+    private String getHostAddress(WebSocket webSocket) {
+        return webSocket.getRemoteSocketAddress()
+                .getAddress()
+                .getHostAddress();
+    }
+
 }

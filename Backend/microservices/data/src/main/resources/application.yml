@@ -3,14 +3,17 @@ server:
 
 eureka:
   client:
-  service-url:
-  default-zone: http://localhost:8761/eureka
+    service-url:
+      default-zone: http://localhost:8761/eureka
 
 routes:
   microservices:
     authority:
       root: http://localhost:8090
       jwks: ${routes.microservices.authority.root}/.well-known/jwks.json
+
+cloud-storage:
+      path: "b-u-c"
 
 spring:
   application:
@@ -20,3 +23,4 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${routes.microservices.authority.jwks}
+

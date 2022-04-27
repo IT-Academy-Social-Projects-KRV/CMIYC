@@ -1,6 +1,10 @@
 package com.ms.authority.config;
 
+import com.ms.authority.config.granters.PasswordTokenGranter;
+import com.ms.authority.config.granters.TfaTokenGranter;
 import com.ms.authority.dto.FrontendData;
+import com.ms.authority.service.TfaService;
+import com.ms.authority.service.UserService;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -19,16 +23,31 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.ms.authority.utils.Authorities.PASSWORD_GRANT_TYPE;
+import static com.ms.authority.utils.Authorities.TFA_GRANT_TYPE;
 
 @Configuration
 @EnableAuthorizationServer
@@ -42,24 +61,24 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 
     private final AuthenticationProvider authenticationProvider;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final TfaService tfaService;
+    private final UserService userService;
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
-        oauthServer
-                .tokenKeyAccess("permitAll()")
+        oauthServer.tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
     }
 
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .inMemory()
-                    .withClient("client-ui")
-                    .secret(passwordEncoder.encode("secret"))
-                    .authorizedGrantTypes("password")
-                    .scopes("user", "admin_user", "admin_schema") // We will load scopes manually, so we don't need this field
-                    .accessTokenValiditySeconds(3600 * 2)   // 2 hours
-                    .refreshTokenValiditySeconds(0);
+        clients.inMemory()
+                .withClient("client-ui")
+                .secret(passwordEncoder.encode("secret"))
+                .authorizedGrantTypes(PASSWORD_GRANT_TYPE, TFA_GRANT_TYPE)
+                .scopes("user", "admin_user", "admin_schema", "pre_auth")
+                .accessTokenValiditySeconds(3600)
+                .refreshTokenValiditySeconds(0);
     }
 
     @Bean
@@ -75,13 +94,11 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     @Override
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain
-                .setTokenEnhancers(Arrays.asList(customTokenEnhancer(), accessTokenConverter()));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer(), accessTokenConverter()));
 
-        endpoints
-                .tokenStore(tokenStore())
+        endpoints.tokenStore(tokenStore())
                 .tokenEnhancer(tokenEnhancerChain)
-                .authenticationManager(authentication -> authenticationProvider.authenticate(authentication));
+                .tokenGranter(tokenGranter(endpoints));
     }
 
     @Bean
@@ -89,29 +106,26 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
         return new JwtTokenStore(accessTokenConverter());
     }
 
-    // Об'єкт що "прикрашає" наш JWT токен - додає додаткові дані перед відправкою клієнту
     @Bean
     public TokenEnhancer customTokenEnhancer() {
         return (accessToken, authentication) -> {
-            // data це json об'єкт що повернеться на фронт
             Map<String, Object> data = new HashMap<>();
 
-            FrontendData frontendData = (FrontendData) authentication.getUserAuthentication().getDetails();
-            // Додаємо в data email та повне ім'я юзера. На етапі аутентифікації ми поклали цей об'єкт сюди в класі AuthenticationProviderImpl
-            frontendData.loadToMap(data);
+            if (authentication.getUserAuthentication().getDetails() != null) {
+                FrontendData frontendData = (FrontendData) authentication.getUserAuthentication().getDetails();
+                frontendData.loadToMap(data);
+            }
 
-            // Збираємо список ролей користувача в один рядок через пробіл
-            String scopes = authentication
-                    .getAuthorities()
+            Set<String> scopes = authentication.getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.joining(" "));
+                    .collect(Collectors.toSet());
 
-            // Кладемо ролі юзера на як список скоупів
-            data.put("scope", scopes);
+            DefaultOAuth2AccessToken defaultOAuth2AccessToken = (DefaultOAuth2AccessToken) accessToken;
+            defaultOAuth2AccessToken.setAdditionalInformation(data);
+            defaultOAuth2AccessToken.setScope(scopes);
 
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(data);
-            return accessToken;
+            return defaultOAuth2AccessToken;
         };
     }
 
@@ -123,6 +137,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
         DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter() {
             @Override
             public OAuth2Authentication extractAuthentication(Map<String, ?> claims) {
+
                 OAuth2Authentication authentication = super.extractAuthentication(claims);
                 authentication.setDetails(claims);
                 return authentication;
@@ -130,6 +145,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
         };
 
         converter.setAccessTokenConverter(defaultAccessTokenConverter);
+
         return converter;
     }
 
@@ -137,6 +153,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
     public KeyPair keyPair() {
         ClassPathResource ksFile = new ClassPathResource(KEY_STORE_FILE);
         KeyStoreKeyFactory ksFactory = new KeyStoreKeyFactory(ksFile, KEY_STORE_PASSWORD.toCharArray());
+
         return ksFactory.getKeyPair(KEY_ALIAS);
     }
 
@@ -149,6 +166,14 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
                 .keyID(JWK_KID);
 
         return new JWKSet(builder.build());
+    }
+
+    private TokenGranter tokenGranter(final AuthorizationServerEndpointsConfigurer endpoints) {
+        List<TokenGranter> granters = new ArrayList<>();
+        granters.add(new PasswordTokenGranter(endpoints, authenticationProvider::authenticate));
+        granters.add(new TfaTokenGranter(endpoints, authenticationProvider::authenticate, tfaService, userService));
+
+        return new CompositeTokenGranter(granters);
     }
 
 }

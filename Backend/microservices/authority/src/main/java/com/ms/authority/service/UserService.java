@@ -1,17 +1,9 @@
 package com.ms.authority.service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.mail.MessagingException;
-
 import com.ms.authority.dto.ConfirmRegisterData;
-import com.ms.authority.dto.RegistrationRequest;
-import com.ms.authority.dto.RegistrationResult;
-import com.ms.authority.dto.UserDto;
-import com.ms.authority.email.EmailService;
+import com.ms.authority.dto.RegistrationRequestData;
+import com.ms.authority.dto.RegistrationResultData;
+import com.ms.authority.dto.UserData;
 import com.ms.authority.entity.Role;
 import com.ms.authority.entity.Token;
 import com.ms.authority.entity.User;
@@ -22,7 +14,8 @@ import com.ms.authority.exception.UserAlreadyRegistredException;
 import com.ms.authority.exception.UserNotFoundException;
 import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
-
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +23,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
+import javax.mail.MessagingException;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -48,6 +46,7 @@ public class UserService implements UserDetailsService {
     private final TokenService tokenService;
     private final EmailService emailService;
     private final RoleRepository roleRepository;
+    private final TfaService tfaService;
 
     @Value("${routes.ui.activation-page}")
     private String activationPage;
@@ -58,14 +57,13 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public RegistrationResult signUpUser(User user, Token token) {
-        boolean userExist = userRepository
-                .findByEmail(user.getEmail())
+    public RegistrationResultData signUpUser(User user, Token token) {
+        boolean userExist = userRepository.findByEmail(user.getEmail())
                 .isPresent();
         if (userExist) {
             // TODO check of attributes are the same and
             // TODO if email not confirmed send confirmation email
-            return new RegistrationResult(true, "email already taken");
+            return new RegistrationResultData(true, "email already taken");
         }
         String encodePassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
         user.setPassword(encodePassword);
@@ -74,29 +72,33 @@ public class UserService implements UserDetailsService {
         token.setUser(user);
         tokenService.saveVerificationToken(token);
 
-        return new RegistrationResult(false, "All it is okay");
+        return new RegistrationResultData(false, "All it is okay");
     }
 
-    public RegistrationResult register(RegistrationRequest request) {
+    public RegistrationResultData register(RegistrationRequestData request) {
         Token token = new Token();
 
         String link = activationPage + token.getToken();
+        String secret = tfaService.generateSecretKey();
+        String qrCode = null;
         try {
-            emailService.sendActivationLink(
-                    request.getEmail(),
-                    request.getFirstName(),
-                    link);
+            qrCode = tfaService.getQRCode(request.getEmail(), secret);
+        } catch (QrGenerationException e) {
+            e.printStackTrace();
+        }
+        try {
+            emailService.sendActivationLink(request.getEmail(), request.getFirstName(), link, qrCode);
         } catch (MessagingException e) {
-            return new RegistrationResult(true, "Email is invalid");
+            return new RegistrationResultData(true, "Email is invalid");
         }
         // TODO registration result (boolean)
-        Set<Role> roleSet = request.getRoles().stream().map(roleRepository::findByRole).collect(Collectors.toSet());
-
+        Set<Role> roleSet = extractRolesFromStrings(request.getRoles());
         return signUpUser(
                 new User(
                         request.getFirstName(),
                         request.getLastName(),
                         request.getEmail(),
+                        secret,
                         roleSet),
                 token);
     }
@@ -108,7 +110,7 @@ public class UserService implements UserDetailsService {
         }
 
         User user = tokenService.getToken(confirmRegisterData.getToken())
-                .orElseThrow(() -> new TokenNotFoundException())
+                .orElseThrow(TokenNotFoundException::new)
                 .getUser();
 
         if (user.isEnabled()) {
@@ -120,7 +122,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User changeUserActive(int userId, boolean isActive)
+    public void changeUserActive(int userId, boolean isActive)
             throws UserNotFoundException, ImpossibleOperationException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_WITH_ID_NOT_FOUND_MSG, userId)));
@@ -135,28 +137,46 @@ public class UserService implements UserDetailsService {
 
         user.setActive(isActive);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
-    public List<UserDto> listUsersRequest() {
+    public List<UserData> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::convertToUserDto)
-                .sorted(Comparator.comparing(UserDto::getId))
+                .map(UserData::convertToUserData)
+                .sorted(Comparator.comparing(UserData::getId))
                 .collect(Collectors.toList());
     }
 
-    private UserDto convertToUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setActive(user.isEnabled());
-        userDto.setRegisterDate(user.getRegisterDate());
-        userDto.setScopes(user.getRoles().stream()
-                .map(Role::getAuthority)
-                .collect(Collectors.toSet()));
-        return userDto;
+    public void deleteUser( User user){
+        tokenService.deleteTokenByUser(user);
+        userRepository.delete(user);
     }
+
+    public User updateUserById(User user, RegistrationRequestData request) {
+        userRepository.findById(user.getId()).map(userUpdated -> {
+            if (request.getFirstName() != null){
+                user.setFirstName(request.getFirstName());
+            }
+            if (request.getLastName() != null){
+                user.setLastName(request.getLastName());
+            }
+            if (request.getEmail() != null){
+                user.setEmail(request.getEmail());
+            }
+            if(request.getRoles() != null){
+                user.setRoles(extractRolesFromStrings(request.getRoles()));
+            }
+            return userRepository.save(user);
+
+        });
+        return user;
+    }
+
+    private Set<Role> extractRolesFromStrings(Set<String> strings) {
+        return strings.stream()
+                .map(roleRepository::findByRole)
+                .collect(Collectors.toSet());
+    }
+
 }

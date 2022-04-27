@@ -6,6 +6,24 @@ eureka:
   service-url:
   default-zone: http://localhost:8761/eureka
 
+api:
+  connections:
+    rest-server:
+      name: api1
+      path: http://localhost:9001/rest
+      type: rest
+      method: post
+    soap-server:
+      name: api2
+      path: http://localhost:9003/soap
+      type: soap
+      method: post
+    websocket-server:
+      name: api3
+      path: ws://localhost:9002/ws
+      type: websocket
+      timeout: 10000
+
 routes:
   microservices:
     authority:
