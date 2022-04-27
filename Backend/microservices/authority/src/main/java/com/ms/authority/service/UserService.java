@@ -89,8 +89,7 @@ public class UserService implements UserDetailsService {
             return new RegistrationResult(true, "Email is invalid");
         }
         // TODO registration result (boolean)
-        Set<Role> roleSet = request.getRoles().stream().map(roleRepository::findByRole).collect(Collectors.toSet());
-
+        Set<Role> roleSet = extractRolesFromStrings(request.getRoles());
         return signUpUser(
                 new User(
                         request.getFirstName(),
@@ -158,4 +157,36 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toSet()));
         return userDto;
     }
+
+    public void deleteUser( User user){
+        tokenService.deleteTokenByUser(user);
+        userRepository.delete(user);
+    }
+
+    public User updateUserById(User user, RegistrationRequest request){
+        Set<Role> userRoles = extractRolesFromStrings(request.getRoles());
+
+        userRepository.findById(user.getId()).map(userUpdated -> {
+            if (request.getFirstName() != null){
+                user.setFirstName(request.getFirstName());
+            }
+            if (request.getLastName() != null){
+                user.setLastName(request.getLastName());
+            }
+            if (request.getEmail() !=null){
+                user.setEmail(request.getEmail());
+            }
+            if(request.getRoles() !=null){
+                user.setRoles(extractRolesFromStrings(request.getRoles()));
+            }
+            return userRepository.save(user);
+
+        });
+        return user;
+    }
+
+    private Set<Role> extractRolesFromStrings(Set<String> strings) {
+        return strings.stream().map(roleRepository::findByRole).collect(Collectors.toSet());
+    }
+
 }
