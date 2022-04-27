@@ -86,4 +86,5 @@ public class SearchControllerIntegrationTests {
                 .andDo(print())
                 .andReturn();
     }
+
 }
