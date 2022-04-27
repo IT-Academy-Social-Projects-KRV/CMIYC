@@ -22,7 +22,7 @@ api:
       name: api3
       path: ws://localhost:9002/ws
       type: websocket
-      timeout: 2000
+      timeout: 10000
 
 routes:
   microservices:

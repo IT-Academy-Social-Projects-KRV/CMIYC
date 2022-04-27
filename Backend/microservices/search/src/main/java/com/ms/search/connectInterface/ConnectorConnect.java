@@ -15,5 +15,5 @@ import java.util.Map;
 public interface ConnectorConnect {
 
     @PostMapping("/searcher")
-    Map<String, Map<String, String>> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
+    Map<String, Object> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
 }

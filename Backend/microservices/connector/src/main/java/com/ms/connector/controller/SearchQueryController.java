@@ -2,6 +2,7 @@ package com.ms.connector.controller;
 
 import com.ms.connector.dto.SearchQuery;
 
+import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class SearchQueryController {
     private ApiService apiService;
 
     @PostMapping
-    public Map<String, Object> searcher(@RequestBody SearchQuery searchQuery) {
+    public Map<String, SearchResponse> searcher(@RequestBody SearchQuery searchQuery) {
         return apiService.handleSearchRequest(searchQuery);
     }
 

@@ -13,7 +13,7 @@ routes:
       jwks: ${routes.microservices.authority.root}/.well-known/jwks.json
 
 cloud-storage:
-      path: "test_bucket_for_cmiyc"
+      path: "b-u-c"
 
 spring:
   application:
