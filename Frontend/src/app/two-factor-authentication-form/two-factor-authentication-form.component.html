@@ -8,9 +8,7 @@
         <input  formControlName="code" class="form-control" id="floatingCode"
           placeholder="Authentication code" [ngClass]="{ 'is-invalid': submitted && f['code'].errors }">
           <label for="floatingCode">Authentication code</label>
-        </div>
-        <button class="btn btn-outline-primary input-group-text" type="button" (click)="isLogout()"><i class="bi bi-arrow-left">&nbsp;Back</i></button>
-        <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
+          <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
           <div *ngIf="f['code'].errors['required']">Code is required</div>
           <div *ngIf="f['code'].errors['minlength']">
             Code must be at least 6 numbers
@@ -22,6 +20,9 @@
             Code should contain only numbers
           </div>
         </div>
+        </div>
+        <button class="btn btn-outline-primary input-group-text" type="button" (click)="isLogout()"><i class="bi bi-arrow-left">&nbsp;Back</i></button>
+
 
       </div>
 
