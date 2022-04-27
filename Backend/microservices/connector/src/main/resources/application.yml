@@ -1,5 +1,5 @@
 server:
-  port: ${PORTS_MICROSERVICES_CONNECTOR}
+  port: ${PORTS_MICROSERVICES_CONNECTOR:8080}
 
 eureka:
   client:
@@ -11,17 +11,17 @@ api:
   connections:
     rest-server:
       name: api1
-      path: ${ROUTES_EXTERNAL_REST}/rest
+      path: ${ROUTES_EXTERNAL_REST:http://localhost:9001}/rest
       type: rest
       method: post
     soap-server:
       name: api2
-      path: ${ROUTES_EXTERNAL_SOAP}/soap
+      path: ${ROUTES_EXTERNAL_SOAP:http://localhost:9003}/soap
       type: soap
       method: post
     websocket-server:
       name: api3
-      path: ${ROUTES_EXTERNAL_WEBSOCKET}/ws
+      path: ${ROUTES_EXTERNAL_WEBSOCKET:ws://localhost:9002}/ws
       type: websocket
       timeout: 2000
 
@@ -32,4 +32,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY}/.well-known/jwks.json
+          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY:http://localhost:8090}/.well-known/jwks.json

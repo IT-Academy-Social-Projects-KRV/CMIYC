@@ -8,20 +8,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @WebServlet(name = "server", value = "/rest")
 public class Server extends HttpServlet {
 
-    private static final String DATA_HOST = System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY");
+    private static final String DATA_HOST = Objects.requireNonNullElse(
+            System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY"),
+            "ws://localhost:9000"
+    );
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println(DATA_HOST);
-
         Map<String, Object> data = new HashMap<>();
         req.getParameterMap()
                 .forEach((key, values) -> {
@@ -89,4 +92,5 @@ public class Server extends HttpServlet {
         body = stringBuilder.toString();
         return body;
     }
+
 }

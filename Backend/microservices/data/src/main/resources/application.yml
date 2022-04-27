@@ -1,5 +1,5 @@
 server:
-  port: ${PORTS_MICROSERVICES_DATA}
+  port: ${PORTS_MICROSERVICES_DATA:8081}
 
 eureka:
   client:
@@ -17,4 +17,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY}/.well-known/jwks.json
+          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY:http://localhost:8090}/.well-known/jwks.json

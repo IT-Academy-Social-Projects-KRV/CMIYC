@@ -8,11 +8,15 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @ServerEndpoint(value = "/ws")
 public class WebsocketEndpoint {
 
-    private static final String DATA_HOST = System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY");
+    private static final String DATA_HOST = Objects.requireNonNullElse(
+            System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY"),
+            "ws://localhost:9000"
+    );
 
     private Session session;
     private ConnectDataSource connection;

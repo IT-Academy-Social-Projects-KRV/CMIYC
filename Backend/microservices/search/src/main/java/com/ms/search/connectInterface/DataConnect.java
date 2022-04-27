@@ -11,7 +11,7 @@ import javax.xml.bind.JAXBException;
 
 import java.util.List;
 
-@FeignClient(name = "data", url = "${ROUTES_MICROSERVICES_DATA}")
+@FeignClient(name = "data", url = "${ROUTES_MICROSERVICES_DATA:http://localhost:8081}")
 @CacheConfig(cacheNames = CaffeineConfig.CACHE_SCHEMAS)
 public interface DataConnect {
 

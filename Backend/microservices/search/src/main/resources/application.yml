@@ -1,5 +1,5 @@
 server:
-  port: ${PORTS_MICROSERVICES_SEARCH}
+  port: ${PORTS_MICROSERVICES_SEARCH:8082}
 
 eureka:
   client:
@@ -15,7 +15,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY}/.well-known/jwks.json
+          jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY:http://localhost:8090}/.well-known/jwks.json
   cache:
     caffeine:
       spec: maximumSize=500,expireAfterWrite=8h

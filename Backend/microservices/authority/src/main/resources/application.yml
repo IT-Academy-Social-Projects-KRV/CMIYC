@@ -1,9 +1,9 @@
 server:
-  port: ${PORTS_MICROSERVICES_AUTHORITY}
+  port: ${PORTS_MICROSERVICES_AUTHORITY:8090}
 
 routes:
   ui:
-    activation-page: ${ROUTES_UI}/register/
+    activation-page: ${ROUTES_UI:http://localhost:4200}/register/
 
 spring:
   application:
@@ -13,7 +13,7 @@ spring:
       ddl-auto: validate
     show-sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/cmiyc_authority_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3306}/cmiyc_authority_db?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   mail:
