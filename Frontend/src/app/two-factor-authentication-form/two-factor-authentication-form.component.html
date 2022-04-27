@@ -19,6 +19,7 @@
           <div *ngIf="f['code'].errors['pattern']">
             Code should contain only numbers
           </div>
+            <div *ngIf="f['code'].errors && f['code'].errors['errorMessage']">{{ errorMessage }}</div>
         </div>
         </div>
         <button class="btn btn-outline-primary input-group-text" type="button" (click)="isLogout()"><i class="bi bi-arrow-left">&nbsp;Back</i></button>
