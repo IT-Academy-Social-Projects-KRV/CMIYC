@@ -9,6 +9,7 @@ import {LoginResult} from "./data/login-result";
 import {AuthService, SessionExpiredException, UnauthorizedException} from "./auth.service";
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
+import {TfaRequest} from "./data/tfa-request";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,11 @@ export class HttpClientService {
 
   // Data API
   private readonly URL_DATA: string = this.DATA_API + '/schemas';
+
+  private readonly HEADERS = new HttpHeaders({
+    'Authorization': 'Basic ' + btoa('client-ui:secret'),
+    'Content-Type': 'application/x-www-form-urlencoded'
+  });
 
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
@@ -85,23 +91,18 @@ export class HttpClientService {
   }
 
   public login(email: string, password: string, callback: Function): void {
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa('client-ui:secret'),
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-
     const params = new LoginRequest(email, password);
-    this
-      .http
-      .post<JwtData>(this.URL_LOGIN, params, {headers})
-      .subscribe({
-        next: jwtData => {
-          callback.call(this, LoginResult.success(jwtData))
-        },
-        error: err => {
-          callback.call(this, LoginResult.error(err.error.error_description || "Server is temporary unavailable. Please, try again later!"));
-        }
-      });
+    this.handleLoginRequest(callback,params,this.HEADERS)
+  }
+
+  public secondFactor(code: string, callback: Function): void {
+
+    let token = localStorage.getItem("access_token")
+
+    if(token!=null) {
+      const params = new TfaRequest(code, token);
+      this.handleLoginRequest(callback,params,this.HEADERS)
+    }
   }
 
   public getSchemas<T>(): Observable<T> {
@@ -170,6 +171,20 @@ export class HttpClientService {
             err.error.error_description ||
             err.error.error ||
             "Unexpected error occurred. Please, try again later"))
+        }
+      });
+  }
+
+  private handleLoginRequest (callback:Function,params:URLSearchParams,headers:HttpHeaders){
+    this
+      .http
+      .post<JwtData>(this.URL_LOGIN, params, {headers})
+      .subscribe({
+        next: jwtData => {
+          callback.call(this, LoginResult.success(jwtData))
+        },
+        error: err => {
+          callback.call(this, LoginResult.error(err.error.error_description || "Server is temporary unavailable. Please, try again later!"));
         }
       });
   }
