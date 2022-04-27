@@ -32,7 +32,7 @@ public class ConnectionsConfig {
         private String name;
         private String type;
         private String method = "POST";
-        private int timeout = 5000;
+        private int timeout = 10000;
 
         public ApiConnection buildApiConnection() {
             ApiConnection.Type connectionType = ApiConnection.Type.valueOf(type.toUpperCase());

@@ -6,9 +6,9 @@
 3) Post to get data from Connector API: http://localhost:8082/search in body you should have json like this:
 ```json
 {
- "firstName": "Sherlock",
- "lastName": null,
- "birthDayDate": "13/05/1983",
+ "firstName": "John",
+ "lastName": "Johnson",
+ "birthDayDate": "1981-01-01",
  "sex": "Male",
  "foreignDataSource": [
    "api1",

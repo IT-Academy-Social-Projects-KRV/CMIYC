@@ -1,6 +1,7 @@
 package com.ms.connector.service.api;
 
 import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.service.api.converter.BodyConverter;
 import com.ms.connector.service.client.HttpClient;
 import org.jsoup.Connection;
@@ -34,7 +35,7 @@ public abstract class HttpApiConnection implements ApiConnection {
     }
 
     @Override
-    public final Object getData(SearchQuery query) {
+    public final SearchResponse getData(SearchQuery query) {
         String response;
         if(method.hasBody()) {
             String requestBody = converter.queryToRequestBody(query);

@@ -1,6 +1,7 @@
 package com.ms.connector.service.api;
 
 import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.service.api.converter.BodyConverter;
 import com.ms.connector.service.api.converter.JsonBodyConverter;
 import com.ms.connector.service.client.WebsocketClient;
@@ -28,7 +29,7 @@ public class WebsocketApiConnection implements ApiConnection {
     }
 
     @Override
-    public Object getData(SearchQuery query) {
+    public SearchResponse getData(SearchQuery query) {
         String body = converter.queryToRequestBody(query);
         String response = client.sendAndReceive(body);
 

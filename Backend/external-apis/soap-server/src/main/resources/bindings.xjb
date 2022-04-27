@@ -1,0 +1,11 @@
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.1">
+
+    <jaxb:bindings schemaLocation="persons.xsd">
+        <jaxb:bindings node="//*[@name='PersonData']//*[@name='data']">
+            <jaxb:property>
+                <jaxb:baseType name="com.external.utils.StringObjectMap" />
+            </jaxb:property>
+        </jaxb:bindings>
+    </jaxb:bindings>
+
+</jaxb:bindings>
