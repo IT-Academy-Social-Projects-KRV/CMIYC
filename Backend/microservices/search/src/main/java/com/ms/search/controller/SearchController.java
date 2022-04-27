@@ -20,7 +20,7 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getSchemas(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
+    public ResponseEntity<?> getSchemas(@RequestHeader(value = "Authorization") String authorizationHeader) {
         try {
             return new ResponseEntity<> (dataConnect.xmlSchema(authorizationHeader), HttpStatus.OK);
         } catch (Exception exception) {
@@ -29,7 +29,7 @@ public class SearchController {
     }
 
     @PostMapping
-    public ResponseEntity<?> search(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery) {
+    public ResponseEntity<?> search(@RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery) {
         try {
             return new ResponseEntity<>(connectorConnect.searcher(authorizationHeader, searchQuery), HttpStatus.OK);
         } catch (Exception exception) {
