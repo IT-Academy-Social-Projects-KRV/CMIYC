@@ -154,8 +154,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUserById(User user, RegistrationRequestData request) {
-        Set<Role> userRoles = extractRolesFromStrings(request.getRoles());
-
         userRepository.findById(user.getId()).map(userUpdated -> {
             if (request.getFirstName() != null){
                 user.setFirstName(request.getFirstName());
