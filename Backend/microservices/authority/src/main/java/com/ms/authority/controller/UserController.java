@@ -42,6 +42,6 @@ public class UserController {
 
     @GetMapping
     public List<UserData> listUsersRequest() {
-        return userService.listUsersRequest();
+        return userService.getAllUsers();
     }
 }

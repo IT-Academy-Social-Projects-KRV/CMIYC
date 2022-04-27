@@ -42,11 +42,16 @@ public class TfaService {
         return verifier.isValidCode(secret, code);
     }
 
-    public void checkCode(String codeString) {
+    public void isCodeValid(String code) {
+        if (code == null) {
+            return;
+        }
+
         try {
-            Integer.parseInt(codeString);
-        } catch (NumberFormatException e) {
+            double d = Double.parseDouble(code);
+        } catch (NumberFormatException nfe) {
             throw new InvalidGrantException(INVALID_TFA_CODE_MSG);
         }
+
     }
 }

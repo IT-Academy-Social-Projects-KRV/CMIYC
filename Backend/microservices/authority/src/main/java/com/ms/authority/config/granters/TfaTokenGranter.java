@@ -60,65 +60,69 @@ public class TfaTokenGranter extends AbstractTokenGranter {
     protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
         Map<String, String> parameters = new LinkedHashMap<>(tokenRequest.getRequestParameters());
         final String tfaToken = parameters.get("tfa_token");
-        if (tfaToken != null) {
-            OAuth2Authentication authentication = loadAuthentication(tfaToken);
 
-            if (parameters.containsKey("tfa_code")) {
-                String code = parameters.get("tfa_code");
-                String secret = userService.loadUserByUsername(authentication.getName()).getSecret();
-
-                tfaService.checkCode(code);
-
-                if (tfaService.verifyCode(secret, code)) {
-                    return getAuthentication(tokenRequest, authentication);
-                }
-            } else {
-                throw new InvalidRequestException(MISSING_TFA_CODE_MSG);
-            }
-            throw new InvalidGrantException(INVALID_TFA_CODE_MSG);
-        } else {
+        if (tfaToken == null) {
             throw new InvalidRequestException(MISSING_TFA_TOKEN_MSG);
         }
+
+        OAuth2Authentication authentication = loadAuthentication(tfaToken);
+
+        if (!parameters.containsKey("tfa_code")) {
+            throw new InvalidRequestException(MISSING_TFA_CODE_MSG);
+        }
+
+        String code = parameters.get("tfa_code");
+        String secret = userService.loadUserByUsername(authentication.getName()).getSecret();
+
+        tfaService.isCodeValid(code);
+
+        if (!tfaService.verifyCode(secret, code)) {
+            throw new InvalidGrantException(INVALID_TFA_CODE_MSG);
+        }
+
+        return getAuthentication(tokenRequest, authentication);
     }
 
     private OAuth2Authentication loadAuthentication(String accessTokenValue) {
         OAuth2AccessToken accessToken = this.tokenStore.readAccessToken(accessTokenValue);
+
         if (accessToken == null) {
             throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
         } else if (accessToken.isExpired()) {
             this.tokenStore.removeAccessToken(accessToken);
             throw new InvalidTokenException(ACCESS_TOKEN_EXPIRED_MSG + accessTokenValue);
-        } else {
-            OAuth2Authentication result = this.tokenStore.readAuthentication(accessToken);
-
-            if (result == null) {
-                throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
-            }
-
-            return result;
         }
+
+        OAuth2Authentication result = this.tokenStore.readAuthentication(accessToken);
+
+        if (result == null) {
+            throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
+        }
+
+        return result;
     }
 
     private OAuth2Authentication getAuthentication(TokenRequest tokenRequest, OAuth2Authentication authentication) {
         Authentication user = authenticationManager.authenticate(authentication.getUserAuthentication());
         Object details = authentication.getDetails();
+
         authentication = new OAuth2Authentication(authentication.getOAuth2Request(), user);
         authentication.setDetails(details);
         String clientId = authentication.getOAuth2Request().getClientId();
 
-        if (clientId != null && clientId.equals(tokenRequest.getClientId())) {
-            if (this.clientDetailsService != null) {
-                try {
-                    this.clientDetailsService.loadClientByClientId(clientId);
-                } catch (ClientRegistrationException e) {
-                    throw new InvalidTokenException(INVALID_CLIENT_MSG + clientId, e);
-                }
-            }
-
-            return authentication;
-        } else {
+        if (clientId == null || !clientId.equals(tokenRequest.getClientId())) {
             throw new InvalidGrantException(MISSING_CLIENT_MSG);
         }
+
+        if (this.clientDetailsService != null) {
+            try {
+                this.clientDetailsService.loadClientByClientId(clientId);
+            } catch (ClientRegistrationException e) {
+                throw new InvalidTokenException(INVALID_CLIENT_MSG + clientId, e);
+            }
+        }
+
+        return authentication;
     }
 
 }

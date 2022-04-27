@@ -137,7 +137,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public List<UserData> listUsersRequest() {
+    public List<UserData> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(UserData::convertToUserData)

@@ -41,9 +41,11 @@ public class PasswordTokenGranter extends AbstractTokenGranter {
     @Override
     protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
         Map<String, String> parameters = new LinkedHashMap<>(tokenRequest.getRequestParameters());
+
         String username = parameters.get("username");
         String password = parameters.get("password");
         parameters.remove("password");
+
         Authentication userAuth = new UsernamePasswordAuthenticationToken(username, password);
         ((AbstractAuthenticationToken) userAuth).setDetails(parameters);
 
@@ -53,14 +55,14 @@ public class PasswordTokenGranter extends AbstractTokenGranter {
             throw new InvalidGrantException(e.getMessage());
         }
 
-        if (userAuth != null && userAuth.isAuthenticated()) {
-            OAuth2Request storedOAuth2Request = this.getRequestFactory()
-                    .createOAuth2Request(client, tokenRequest);
-            userAuth = new UsernamePasswordAuthenticationToken(username, password, Collections.singleton(PRE_AUTH));
-            return new OAuth2Authentication(storedOAuth2Request, userAuth);
-        } else {
+        if (userAuth == null || !userAuth.isAuthenticated()) {
             throw new InvalidGrantException(COULD_NOT_AUTHENTICATE_USER_MSG + username);
         }
+
+        OAuth2Request storedOAuth2Request = this.getRequestFactory().createOAuth2Request(client, tokenRequest);
+        userAuth = new UsernamePasswordAuthenticationToken(username, password, Collections.singleton(PRE_AUTH));
+
+        return new OAuth2Authentication(storedOAuth2Request, userAuth);
     }
 
 }
