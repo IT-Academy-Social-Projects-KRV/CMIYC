@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class RegistrationResult {
+public class RegistrationResultData {
     private final boolean isError;
     private final String message;
 }
