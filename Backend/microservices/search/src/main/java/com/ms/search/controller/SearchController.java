@@ -33,7 +33,7 @@ public class SearchController {
         try {
             return new ResponseEntity<>(connectorConnect.searcher(authorizationHeader, searchQuery), HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

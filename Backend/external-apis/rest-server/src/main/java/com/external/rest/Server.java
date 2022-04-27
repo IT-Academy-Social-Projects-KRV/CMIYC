@@ -48,9 +48,10 @@ public class Server extends HttpServlet {
 
     private void handleRequest(String json, HttpServletResponse response) throws IOException {
         String answer;
+        ConnectDataSource connection = null;
 
         try {
-            ConnectDataSource connection = new ConnectDataSource(new URI(DATA_HOST));
+            connection = new ConnectDataSource(new URI(DATA_HOST));
             connection.send("api1_" + json);
             connection.waitForResponse();
 
@@ -58,6 +59,12 @@ public class Server extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
+        } finally {
+            try {
+                if(connection != null) connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         response.setContentType("application/json");

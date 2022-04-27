@@ -1,4 +1,4 @@
-package com.external.soap;
+package com.external.config;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -15,11 +15,13 @@ import org.springframework.xml.xsd.XsdSchema;
 @EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
+
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
+
         return new ServletRegistrationBean<>(servlet, "/*");
     }
 
@@ -30,6 +32,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         wsdl11Definition.setLocationUri("/soap");
         wsdl11Definition.setTargetNamespace("http://soap.api/xsd");
         wsdl11Definition.setSchema(countriesSchema);
+
         return wsdl11Definition;
     }
 
@@ -37,5 +40,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     public XsdSchema personsSchema() {
         return new SimpleXsdSchema(new ClassPathResource("persons.xsd"));
     }
+
 }
 

@@ -1,17 +1,14 @@
 package com.ms.connector.service.api.converter;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.dto.SearchResponse;
 import lombok.SneakyThrows;
-
-import java.util.HashMap;
 
 public class JsonBodyConverter implements BodyConverter {
 
     // TODO: probably need to configure objectMapper bean and autowire it in here
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
 
     @SneakyThrows
     @Override
@@ -21,7 +18,7 @@ public class JsonBodyConverter implements BodyConverter {
 
     @SneakyThrows
     @Override
-    public Object responseBodyToObject(String response) {
-        return objectMapper.readValue(response, typeRef);
+    public SearchResponse responseBodyToObject(String response) {
+        return objectMapper.readValue(response, SearchResponse.class);
     }
 }

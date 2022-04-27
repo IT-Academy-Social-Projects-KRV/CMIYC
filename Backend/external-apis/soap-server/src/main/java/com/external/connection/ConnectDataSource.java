@@ -35,7 +35,8 @@ public class ConnectDataSource extends WebSocketClient {
 
     }
 
-    public String getAnswer () {
+    public String getAnswer() {
         return answer;
     }
+
 }

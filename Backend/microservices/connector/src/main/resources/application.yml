@@ -23,7 +23,7 @@ api:
       name: api3
       path: ${ROUTES_EXTERNAL_WEBSOCKET:ws://localhost:9002}/ws
       type: websocket
-      timeout: 2000
+      timeout: 10000
 
 spring:
   application:

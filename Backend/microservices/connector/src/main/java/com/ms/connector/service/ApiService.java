@@ -2,11 +2,14 @@ package com.ms.connector.service;
 
 import com.ms.connector.config.ConnectionsConfig;
 import com.ms.connector.dto.SearchQuery;
+import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.service.api.ApiConnection;
+import com.ms.connector.service.api.converter.SoapBodyConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,12 +30,12 @@ public class ApiService {
                 .forEach(connection -> apis.put(connection.getName(), connection));
     }
 
-    public Map<String, Object> handleSearchRequest(SearchQuery searchQuery) {
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, SearchResponse> handleSearchRequest(SearchQuery searchQuery) {
+        Map<String, SearchResponse> result = new HashMap<>();
 
         for (String apiName : searchQuery.getForeignDataSource()) {
             ApiConnection apiConnection = apis.get(apiName);
-            if(apiConnection != null) {
+            if (apiConnection != null) {
                 try {
                     result.put(apiName, apiConnection.getData(searchQuery));
                 } catch (Exception e) {
@@ -43,4 +46,5 @@ public class ApiService {
 
         return result;
     }
+
 }
