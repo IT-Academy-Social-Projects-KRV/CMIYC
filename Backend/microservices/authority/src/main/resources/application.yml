@@ -13,7 +13,7 @@ spring:
       ddl-auto: validate
     show-sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3306}/cmiyc_authority_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/cmiyc_authority_db?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   mail:
