@@ -5,7 +5,7 @@
       <div class="input-group mb-3">
         <div class = "form-floating flex-grow-1">
 
-          <input  formControlName="code" class="form-control" id="floatingCode"
+          <input  formControlName="code" class="form-control" id="floatingCode" (ngModelChange)="resetErrorMessage()"
                   placeholder="Authentication code" [ngClass]="{ 'is-invalid': submitted && f['code'].errors }">
           <label for="floatingCode">Authentication code</label>
           <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
