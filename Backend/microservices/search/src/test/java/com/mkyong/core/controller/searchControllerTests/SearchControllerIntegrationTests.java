@@ -1,4 +1,4 @@
-package com.mkyong.core.controller.SearchControllerTests;
+package com.mkyong.core.controller.searchControllerTests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +13,7 @@ import com.ms.search.model.SearchQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,9 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-//auth shuld work
+/**
+ * Authority App should work when you start this tests (because requests will check token)
+ * **/
 @WebMvcTest(SearchController.class)
-@ContextConfiguration(classes=SearchController.class)
+@ContextConfiguration(classes = SearchController.class)
+
 public class SearchControllerIntegrationTests {
 
     @Autowired

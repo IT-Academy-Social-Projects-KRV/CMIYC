@@ -1,4 +1,4 @@
-package com.mkyong.core.controller.ConnectorConnectTests;
+package com.mkyong.core.controller.connectorConnectTests;
 
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.model.SearchQuery;
@@ -14,31 +14,32 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes=ConnectorConnect.class)
+@SpringBootTest(classes = ConnectorConnect.class)
 public class ConnectorConnectUnitTests {
+
     @MockBean
     private ConnectorConnect connectorConnect;
 
     SearchQuery searchQuery;
     String authorizationHeader;
-    Map<String, Map<String, String>> response =new HashMap<>();
+    final Map<String, Map<String, String>> response = new HashMap<>();
 
     @BeforeEach
     void setUp() {
-        searchQuery= new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("Api1"));
+        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("Api1"));
 
-        authorizationHeader ="hi1";
+        authorizationHeader = "hi1";
 
         Map<String, String> api1Response = new HashMap<>();
-        api1Response.put("middlename", "Aristarhovich");
+        api1Response.put("middle", "Aristarchus");
         api1Response.put("email", "test@gmail.com");
         response.put("api1", api1Response);
     }
 
     @Test
-    public void searcher_getDataFromConnector_MapReturned() throws Exception {
-        when(connectorConnect.searcher(authorizationHeader,searchQuery)).thenReturn((response));
-        assertThat(connectorConnect.searcher(authorizationHeader,searchQuery)).isEqualTo(response);
+    public void searcher_getDataFromConnector_MapReturned() {
+        when(connectorConnect.searcher(authorizationHeader, searchQuery)).thenReturn((response));
+        assertThat(connectorConnect.searcher(authorizationHeader, searchQuery)).isEqualTo(response);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.mkyong.core.controller.DataConnectTests;
+package com.mkyong.core.controller.dataConnectTests;
 
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.model.XmlObject;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes= DataConnect.class)
+@SpringBootTest(classes = DataConnect.class)
 public class DataConnectUnitTests {
 
     @MockBean
@@ -24,7 +24,7 @@ public class DataConnectUnitTests {
 
     @BeforeEach
     void setUp() {
-        authorizationHeader ="hi1";
+        authorizationHeader = "hi1";
 
 
         result = new ArrayList<>();
