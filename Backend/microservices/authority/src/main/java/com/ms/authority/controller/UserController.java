@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public User updatedUser (@PathVariable ("userId") User user, @RequestBody RegistrationRequest request){
+    public User updateUser (@PathVariable ("userId") User user, @RequestBody RegistrationRequest request){
         return userService.updateUserById(user, request);
     }
 
