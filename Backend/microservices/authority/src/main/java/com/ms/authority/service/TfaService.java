@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.stereotype.Service;
 
-import static com.ms.authority.utils.Authorities.INVALID_TFA_CODE_MSG;
+import static com.ms.authority.utils.Authorities.Messages.INVALID_TFA_CODE_MSG;
 import static com.ms.authority.utils.Authorities.PROJECT_NAME;
 
 @Service

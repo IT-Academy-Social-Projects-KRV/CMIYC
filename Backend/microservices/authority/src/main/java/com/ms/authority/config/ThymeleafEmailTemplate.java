@@ -13,6 +13,7 @@ public class ThymeleafEmailTemplate {
     public SpringTemplateEngine emailTemplateEngine(){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.addTemplateResolver(htmlTemplateResolver());
+
         return templateEngine;
     }
 
@@ -23,6 +24,7 @@ public class ThymeleafEmailTemplate {
         htmlTemplateResolver.setTemplateMode(TemplateMode.HTML);
         htmlTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         htmlTemplateResolver.setCacheable(false);
+
         return htmlTemplateResolver;
     }
 

@@ -9,14 +9,25 @@ import org.springframework.security.oauth2.common.exceptions.InvalidGrantExcepti
 import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.*;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.ms.authority.utils.Authorities.*;
+import static com.ms.authority.utils.Authorities.Messages.ACCESS_TOKEN_EXPIRED_MSG;
+import static com.ms.authority.utils.Authorities.Messages.INVALID_ACCESS_TOKEN_MSG;
+import static com.ms.authority.utils.Authorities.Messages.INVALID_CLIENT_MSG;
+import static com.ms.authority.utils.Authorities.Messages.INVALID_TFA_CODE_MSG;
+import static com.ms.authority.utils.Authorities.Messages.MISSING_CLIENT_MSG;
+import static com.ms.authority.utils.Authorities.Messages.MISSING_TFA_CODE_MSG;
+import static com.ms.authority.utils.Authorities.Messages.MISSING_TFA_TOKEN_MSG;
+import static com.ms.authority.utils.Authorities.TFA_GRANT_TYPE;
 
 public class TfaTokenGranter extends AbstractTokenGranter {
 
@@ -54,8 +65,9 @@ public class TfaTokenGranter extends AbstractTokenGranter {
 
             if (parameters.containsKey("tfa_code")) {
                 String code = parameters.get("tfa_code");
-                tfaService.checkCode(code);
                 String secret = userService.loadUserByUsername(authentication.getName()).getSecret();
+
+                tfaService.checkCode(code);
 
                 if (tfaService.verifyCode(secret, code)) {
                     return getAuthentication(tokenRequest, authentication);
@@ -78,9 +90,11 @@ public class TfaTokenGranter extends AbstractTokenGranter {
             throw new InvalidTokenException(ACCESS_TOKEN_EXPIRED_MSG + accessTokenValue);
         } else {
             OAuth2Authentication result = this.tokenStore.readAuthentication(accessToken);
+
             if (result == null) {
                 throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
             }
+
             return result;
         }
     }
@@ -100,6 +114,7 @@ public class TfaTokenGranter extends AbstractTokenGranter {
                     throw new InvalidTokenException(INVALID_CLIENT_MSG + clientId, e);
                 }
             }
+
             return authentication;
         } else {
             throw new InvalidGrantException(MISSING_CLIENT_MSG);

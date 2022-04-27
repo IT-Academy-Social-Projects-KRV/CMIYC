@@ -1,14 +1,12 @@
 package com.ms.authority.service;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.ms.authority.entity.Token;
 import com.ms.authority.repository.TokenRepository;
-
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor

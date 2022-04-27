@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.ms.authority.utils.Authorities.COULD_NOT_AUTHENTICATE_USER_MSG;
+import static com.ms.authority.utils.Authorities.Messages.COULD_NOT_AUTHENTICATE_USER_MSG;
 import static com.ms.authority.utils.Authorities.PASSWORD_GRANT_TYPE;
 import static com.ms.authority.utils.Authorities.PRE_AUTH;
 
@@ -57,8 +57,6 @@ public class PasswordTokenGranter extends AbstractTokenGranter {
             OAuth2Request storedOAuth2Request = this.getRequestFactory()
                     .createOAuth2Request(client, tokenRequest);
             userAuth = new UsernamePasswordAuthenticationToken(username, password, Collections.singleton(PRE_AUTH));
-            //OAuth2AccessToken accessToken = getTokenServices().createAccessToken(new OAuth2Authentication(storedOAuth2Request, userAuth));
-            /* throw new MfaRequiredException(accessToken.getValue()); */
             return new OAuth2Authentication(storedOAuth2Request, userAuth);
         } else {
             throw new InvalidGrantException(COULD_NOT_AUTHENTICATE_USER_MSG + username);
