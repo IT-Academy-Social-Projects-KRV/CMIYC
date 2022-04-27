@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
-@Configuration  // Цей клас дозволяє використовувати в конфігу вирази типу "#oauth2.hasScope('user')"
-@Primary        // Потрібно завантажити цей конфіг в першу чергу, щоб коли завантажувалась конфігурація web security, такі вирази вже були зрозумілі
+@Configuration
+@Primary
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
