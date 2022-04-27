@@ -21,3 +21,6 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${routes.microservices.authority.jwks}
+  cache:
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=8h
