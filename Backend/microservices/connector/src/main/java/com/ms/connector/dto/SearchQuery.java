@@ -28,7 +28,7 @@ public class SearchQuery {
         data.put("lastName", lastName);
         data.put("birthDayDate", birthDayDate);
         // TODO: rename field in this class or in mock repository
-        data.put("gender", sex.toUpperCase());
+        data.put("gender", sex != null ? sex.toUpperCase() : null);
 
         while (data.containsValue(null))
             data.values().remove(null);
