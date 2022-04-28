@@ -3,6 +3,7 @@ package com.ms.search.connectInterface;
 import com.ms.search.config.CaffeineConfig;
 import com.ms.search.model.SearchQuery;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,5 +16,6 @@ import java.util.Map;
 public interface ConnectorConnect {
 
     @PostMapping("/searcher")
+    @Cacheable
     Map<String, Object> searcher(@RequestHeader(value = "Authorization", required = true) String authorizationHeader, @RequestBody SearchQuery searchQuery);
 }
