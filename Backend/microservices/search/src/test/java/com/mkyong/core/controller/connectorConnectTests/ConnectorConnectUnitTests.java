@@ -22,11 +22,11 @@ public class ConnectorConnectUnitTests {
 
     SearchQuery searchQuery;
     String authorizationHeader;
-    final Map<String, Map<String, String>> response = new HashMap<>();
+    final Map<String, Object> response = new HashMap<>();
 
     @BeforeEach
     void setUp() {
-        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("Api1"));
+        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("api1"));
 
         authorizationHeader = "hi1";
 
@@ -38,7 +38,7 @@ public class ConnectorConnectUnitTests {
 
     @Test
     public void searcher_getDataFromConnector_MapReturned() {
-        when(connectorConnect.searcher(authorizationHeader, searchQuery)).thenReturn((response));
+        when(connectorConnect.searcher(authorizationHeader, searchQuery)).thenReturn(response);
         assertThat(connectorConnect.searcher(authorizationHeader, searchQuery)).isEqualTo(response);
     }
 
