@@ -28,6 +28,7 @@ public class JwtCustomHeadersAccessTokenConverter extends JwtAccessTokenConverte
     @Override
     protected String encode(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         String content;
+
         try {
             content = this.objectMapper.formatMap(getAccessTokenConverter().convertAccessToken(accessToken, authentication));
         } catch (Exception ex) {
