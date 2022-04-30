@@ -18,7 +18,8 @@
 }
 ```
 ###[Class diagram](https://drive.google.com/file/d/1_v5K_qAytpAQvTl_efTj0dLoffYO5Og6/view?usp=sharing)
-![img.png](img.png)
+![img.jpg](img.jpg)
+
 
 ##Start Microservices
 1) start eureka
