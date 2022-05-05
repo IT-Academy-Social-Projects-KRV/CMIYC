@@ -10,15 +10,16 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
+import {environment} from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly AUTH_SERVER: string = 'http://localhost:8090';
-  private readonly SEARCH_API:  string = 'http://localhost:8082';
-  private readonly DATA_API:    string = 'http://localhost:8081';
+  private readonly AUTH_SERVER: string = environment.authServer;
+  private readonly SEARCH_API:  string = environment.searchAPI;
+  private readonly DATA_API:    string = environment.dataAPI;
 
   // Auth
   private readonly URL_LOGIN:           string = this.AUTH_SERVER + '/oauth/token';
@@ -38,7 +39,6 @@ export class HttpClientService {
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
     'Content-Type': 'application/x-www-form-urlencoded'
   });
-
 
   constructor(private router: Router, private http: HttpClient, private injector: Injector) {
   }

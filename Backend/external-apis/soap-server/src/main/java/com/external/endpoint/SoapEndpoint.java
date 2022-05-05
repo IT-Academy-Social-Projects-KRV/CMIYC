@@ -12,12 +12,16 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @Endpoint
 public class SoapEndpoint {
 
     private static final String NAMESPACE_URI = "http://soap.api/xsd";
-    private static final String DATA_HOST = "ws://localhost:9000";
+    private static final String DATA_HOST = Objects.requireNonNullElse(
+            System.getenv("ROUTES_EXTERNAL_MOCK_REPOSITORY"),
+            "ws://localhost:9000"
+    );
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "SearchRequest")
     @ResponsePayload

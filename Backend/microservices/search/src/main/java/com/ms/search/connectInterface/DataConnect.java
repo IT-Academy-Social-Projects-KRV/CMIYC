@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.xml.bind.JAXBException;
+
 import java.util.List;
 
-@FeignClient(name = "data")
+@FeignClient(name = "data", url = "${routes.data}")
 @CacheConfig(cacheNames = CaffeineConfig.CACHE_SCHEMAS)
 public interface DataConnect {
 
     @GetMapping("/schemas")
     @Cacheable
     List<XmlObject> xmlSchema(@RequestHeader(value = "Authorization") String authorizationHeader) throws JAXBException;
+
 }
