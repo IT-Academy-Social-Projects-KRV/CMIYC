@@ -8,14 +8,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private BCryptPasswordEncoder passwordEncoder;
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
@@ -25,14 +23,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/.well-known/jwks.json")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .csrf()
-                .disable();
+        http.authorizeRequests()
+            .antMatchers("/.well-known/jwks.json")
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .csrf()
+            .disable();
     }
 }

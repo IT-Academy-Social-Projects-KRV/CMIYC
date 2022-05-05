@@ -3,6 +3,7 @@ package com.ms.search.connectInterface;
 import com.ms.search.config.CaffeineConfig;
 import com.ms.search.model.XmlObject;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -16,6 +17,7 @@ import java.util.List;
 public interface DataConnect {
 
     @GetMapping("/schemas")
+    @Cacheable
     List<XmlObject> xmlSchema(@RequestHeader(value = "Authorization") String authorizationHeader) throws JAXBException;
 
 }
