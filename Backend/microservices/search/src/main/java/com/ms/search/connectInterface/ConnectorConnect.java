@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
-@FeignClient(name = "connector", url = "${ROUTES_MICROSERVICES_CONNECTOR:http://localhost:8080}")
+@FeignClient(name = "connector", url = "${routes.connector}")
 @CacheConfig(cacheNames = CaffeineConfig.CACHE_SEARCH)
 public interface ConnectorConnect {
 

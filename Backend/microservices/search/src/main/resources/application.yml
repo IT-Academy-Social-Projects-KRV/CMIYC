@@ -1,6 +1,10 @@
 server:
   port: ${PORTS_MICROSERVICES_SEARCH:8082}
 
+routes:
+  connector: ${ROUTES_MICROSERVICES_CONNECTOR:http://localhost:8080}
+  data: ${ROUTES_MICROSERVICES_DATA:http://localhost:8081}
+
 eureka:
   client:
     service-url:
