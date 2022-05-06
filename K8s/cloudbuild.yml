@@ -1,0 +1,15 @@
+steps:
+  # Build, push frontend
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_FRONTEND_IMAGE', '-f', 'K8s/frontend.Dockerfile', '.']
+
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_FRONTEND_IMAGE']
+
+
+
+substitutions:
+  _REGION                 : europe-central2
+  _PROJECT_ID             : cmiyc-manage-349411
+  _ARTIFACT_REGISTRY      : cmiyc-docker-repo
+  _FRONTEND_IMAGE         : ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_ARTIFACT_REGISTRY}/frontend:latest
