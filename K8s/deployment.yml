@@ -1,3 +1,17 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: frontend-backendconfig
+spec:
+  healthCheck:
+    checkIntervalSec: 10
+    timeoutSec: 10
+    healthyThreshold: 3
+    unhealthyThreshold: 3
+    type: HTTP
+    requestPath: /index.html
+    port: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
