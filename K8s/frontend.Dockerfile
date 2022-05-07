@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 FROM node:latest AS build
 WORKDIR /usr/src/app
-COPY Frontend/package.json Frontend/package-lock.json ./
+COPY Frontend/package.json  ./
 RUN npm install
 COPY Frontend .
 RUN npm run build
