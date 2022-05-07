@@ -23,7 +23,7 @@ steps:
 
 
 substitutions:
-  _REGION                 : europe-central2-c
+  _REGION                 : europe-central2
   _PROJECT_ID             : cmiyc-manage-349411
   _ARTIFACT_REGISTRY      : cmiyc-docker-repo
   _FRONTEND_IMAGE         : ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_ARTIFACT_REGISTRY}/frontend:latest

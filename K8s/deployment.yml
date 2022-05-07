@@ -9,7 +9,7 @@ spec:
     healthyThreshold: 3
     unhealthyThreshold: 3
     type: HTTP
-    requestPath: /index.html
+    requestPath: /
     port: 80
 ---
 apiVersion: apps/v1
