@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: EUREKA_HOST
+              value: eureka
+            - name: EUREKA_PORT
+              value: "8761"
+            - name: CURRENCYEXCHANGE_HOST
+              value: currencyexchange
+            - name: CURRENCYEXCHANGE_PORT
+              value: "8100"
