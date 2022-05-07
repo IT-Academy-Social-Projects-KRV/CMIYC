@@ -21,11 +21,9 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: EUREKA_HOST
-              value: eureka
-            - name: EUREKA_PORT
-              value: "8761"
-            - name: CURRENCYEXCHANGE_HOST
-              value: currencyexchange
-            - name: CURRENCYEXCHANGE_PORT
-              value: "8100"
+            - name: authServer
+              value: http://localhost:8090
+            - name: dataAPI
+              value: http://localhost:8081
+            - name: searchAPI
+              value: http://localhost:8080

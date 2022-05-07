@@ -6,6 +6,20 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: ['push', '$_FRONTEND_IMAGE']
 
+  # deploy frontend
+  - name: gcr.io/cloud-builders/kubectl
+    args: [ 'delete', 'deployments', '--all' ]
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=${_REGION}
+      - CLOUDSDK_CONTAINER_CLUSTER=cmiyc-cluster
+      - CLOUDSDK_CORE_PROJECT=cmiyc-346518
+
+  - name: gcr.io/cloud-builders/kubectl
+    args: [ 'apply', '-f', 'K8s/deployment.yml' ]
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=${_REGION}
+      - CLOUDSDK_CONTAINER_CLUSTER=cmiyc-cluster
+      - CLOUDSDK_CORE_PROJECT=cmiyc-346518
 
 
 substitutions:
