@@ -10,3 +10,15 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authority
+spec:
+  selector:
+    app: authority
+  ports:
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090

@@ -6,7 +6,14 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: ['push', '$_FRONTEND_IMAGE']
 
-  # deploy frontend
+  # Build, push authority
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_AUTHORITY_IMAGE', '-f', 'K8s/authority.Dockerfile', '.']
+
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_AUTHORITY_IMAGE']
+
+  # delete all old deployments
   - name: gcr.io/cloud-builders/kubectl
     args: [ 'delete', 'deployments', '--all' ]
     env:
@@ -14,6 +21,7 @@ steps:
       - CLOUDSDK_CONTAINER_CLUSTER=cmiyc-cluster
       - CLOUDSDK_CORE_PROJECT=cmiyc-346518
 
+  # create new deployments
   - name: gcr.io/cloud-builders/kubectl
     args: [ 'apply', '-f', 'K8s/deployment.yml' ]
     env:
@@ -23,7 +31,5 @@ steps:
 
 
 substitutions:
-  _REGION                 : europe-central2
-  _PROJECT_ID             : cmiyc-manage-349411
-  _ARTIFACT_REGISTRY      : cmiyc-docker-repo
-  _FRONTEND_IMAGE         : ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_ARTIFACT_REGISTRY}/frontend:latest
+  _FRONTEND_IMAGE         : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+  _AUTHORITY_IMAGE        : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/authority:latest

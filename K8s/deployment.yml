@@ -1,6 +1,80 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: mysql:latest
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authority
+  labels:
+    app: authority
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authority
+  template:
+    metadata:
+      labels:
+        app: authority
+    spec:
+      containers:
+        - name: authority
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/authority:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: PORTS_MICROSERVICES_AUTHORITY
+              value: "8090"
+            - name: ROUTES_UI
+              value: http://frontend:80
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: frontend
   labels:
     app: frontend
@@ -22,9 +96,10 @@ spec:
             - containerPort: 80
           env:
             - name: authServer
-              value: http://localhost:8090
+              value: http://authority:8090
             - name: dataAPI
               value: http://localhost:8081
             - name: searchAPI
               value: http://localhost:8080
+
 
