@@ -98,8 +98,8 @@ spec:
             - name: authServer
               value: http://authority:8090
             - name: dataAPI
-              value: http://localhost:8081
+              value: http://dataapi:8081
             - name: searchAPI
-              value: http://localhost:8080
+              value: http://searchapi:8080
 
 
