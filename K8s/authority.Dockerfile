@@ -7,3 +7,4 @@ RUN mvn -f /home/app/pom.xml clean package
 FROM openjdk:11-jre-slim
 COPY --from=build /home/app/target/authority-1.jar /app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
+EXPOSE 8090
