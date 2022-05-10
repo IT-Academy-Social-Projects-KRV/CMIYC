@@ -9,7 +9,7 @@ spec:
       port:
         number: 80
   rules:
-    - host: "authority.ms"
+    - host: "authority"
       http:
         paths:
           - pathType: Prefix
