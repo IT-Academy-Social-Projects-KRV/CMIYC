@@ -142,7 +142,6 @@ public class UserService implements UserDetailsService {
     }
 
     public Page<UserData> getAllUsers(int page, int size) {
-
         return userRepository.findAll(PageRequest.of(page, size, Sort.by("firstName")))
                 .map(UserData::convertToUserData);
     }
