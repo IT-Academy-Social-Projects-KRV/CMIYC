@@ -8,3 +8,14 @@ spec:
       name: frontend
       port:
         number: 80
+  rules:
+    - host: "authority.ms"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: authority
+                port:
+                  number: 8090
