@@ -72,10 +72,10 @@ spec:
                   name: mysql-secret
                   key: password
             - name: MAIL_PASS
-                valueFrom:
-                  secretKeyRef:
-                    name: mail-secret
-                    key: password
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: password
 ---
 apiVersion: apps/v1
 kind: Deployment
