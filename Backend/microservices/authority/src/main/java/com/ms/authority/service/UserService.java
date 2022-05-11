@@ -17,6 +17,9 @@ import com.ms.authority.repository.UserRepository;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -140,31 +141,28 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public List<UserData> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(UserData::convertToUserData)
-                .sorted(Comparator.comparing(UserData::getId))
-                .collect(Collectors.toList());
+    public Page<UserData> getAllUsers(int page, int size) {
+        return userRepository.findAll(PageRequest.of(page, size, Sort.by("firstName")))
+                .map(UserData::convertToUserData);
     }
 
-    public void deleteUser( User user){
+    public void deleteUser(User user) {
         tokenService.deleteTokenByUser(user);
         userRepository.delete(user);
     }
 
     public User updateUserById(User user, RegistrationRequestData request) {
         userRepository.findById(user.getId()).map(userUpdated -> {
-            if (request.getFirstName() != null){
+            if (request.getFirstName() != null) {
                 user.setFirstName(request.getFirstName());
             }
-            if (request.getLastName() != null){
+            if (request.getLastName() != null) {
                 user.setLastName(request.getLastName());
             }
-            if (request.getEmail() != null){
+            if (request.getEmail() != null) {
                 user.setEmail(request.getEmail());
             }
-            if(request.getRoles() != null){
+            if (request.getRoles() != null) {
                 user.setRoles(extractRolesFromStrings(request.getRoles()));
             }
             return userRepository.save(user);
