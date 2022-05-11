@@ -101,7 +101,7 @@ spec:
             - containerPort: 80
           env:
             - name: AUTH_URL
-              value: http://34.116.181.83:8090/
+              value: http://34.116.181.83:8090
             - name: DATA_URL
               value: http://dataapi:8081
             - name: SEARCH_URL
