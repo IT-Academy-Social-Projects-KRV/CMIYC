@@ -3,24 +3,24 @@ kind: Ingress
 metadata:
   name: frontend-ingress
 spec:
-  defaultBackend:
-    service:
-      name: frontend
-      port:
-        number: 80
+#  defaultBackend:
+#    service:
+#      name: frontend
+#      port:
+#        number: 80
   rules:
     - http:
         paths:
-          - path: /authority
+          - path: /authority/?(.*)
             pathType: Prefix
             backend:
               service:
                 name: authority
                 port:
-                  number: 8090
+                  number: 80
     - http:
         paths:
-          - path: /
+          - path: /?(.*)
             pathType: Prefix
             backend:
               service:
