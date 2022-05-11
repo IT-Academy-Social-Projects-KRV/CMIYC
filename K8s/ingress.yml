@@ -11,16 +11,16 @@ spec:
   rules:
     - http:
         paths:
-          - path: /authority/?(.*)
+          - path: /authority/
             pathType: Prefix
             backend:
               service:
                 name: authority
                 port:
-                  number: 80
+                  number: 8090
     - http:
         paths:
-          - path: /?(.*)
+          - path: /
             pathType: Prefix
             backend:
               service:

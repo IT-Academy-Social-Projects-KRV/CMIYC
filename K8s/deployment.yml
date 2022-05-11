@@ -54,7 +54,7 @@ spec:
           image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/authority:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8090
           env:
             - name: PORTS_MICROSERVICES_AUTHORITY
               value: "8090"
@@ -100,11 +100,11 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: authServer
-              value: http://authority:8090
-            - name: dataAPI
+            - name: AUTH_URL
+              value: http://34.116.181.83:8090/
+            - name: DATA_URL
               value: http://dataapi:8081
-            - name: searchAPI
+            - name: SEARCH_URL
               value: http://searchapi:8080
 
 
