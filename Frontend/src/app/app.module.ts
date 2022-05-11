@@ -28,6 +28,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {
   AdminUserIsActiveToggleComponent
 } from "./admin-user-is-active-toggle-component/admin-user-is-active-toggle-component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    NgxPaginationModule
   ],
   providers: [AuthService, UserAuthGuard, UserAdminAuthGuard],
   bootstrap: [AppComponent]
