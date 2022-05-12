@@ -113,6 +113,11 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.teststarter</groupId>
+            <artifactId>custom-app</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -164,6 +169,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
