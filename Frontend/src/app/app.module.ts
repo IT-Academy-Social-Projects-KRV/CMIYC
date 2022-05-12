@@ -27,7 +27,8 @@ import {AuthService} from './shared/auth.service';
 import {HttpClientModule} from '@angular/common/http';
 import {
   AdminUserIsActiveToggleComponent
-} from "./admin-user-is-active-toggle-component/admin-user-is-active-toggle-component";
+} from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
+import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {
     AdminCreateSchemaFormComponent,
     AdminManageUserListComponent,
     AdminUserIsActiveToggleComponent,
+    AdminViewSchemaComponent,
     LoginFormComponent,
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,

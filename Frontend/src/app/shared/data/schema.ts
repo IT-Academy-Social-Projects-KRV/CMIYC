@@ -1,9 +1,6 @@
 export class Schema {
   constructor(schemaFile: SchemaFile) {
     this.file = schemaFile;
-
-    console.log(schemaFile.uploadedAt)
-    console.log(new Date(schemaFile.uploadedAt).getDay())
   }
 
   readonly file: SchemaFile;
