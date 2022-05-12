@@ -112,22 +112,12 @@
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.6.7</version>
-        </dependency>
+
         <dependency>
             <groupId>com.teststarter</groupId>
             <artifactId>custom-app</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>2.6.7</version>
-        </dependency>
-
 
     </dependencies>
 
