@@ -106,5 +106,108 @@ spec:
               value: http://dataapi:8081
             - name: SEARCH_URL
               value: http://searchapi:8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mock-repository
+  labels:
+    app: mock-repository
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-repository
+  template:
+    metadata:
+      labels:
+        app: mock-repository
+    spec:
+      containers:
+        - name: mock-repository
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/mock-repository:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soap-server
+  labels:
+    app: soap-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soap-server
+  template:
+    metadata:
+      labels:
+        app: soap-server
+    spec:
+      containers:
+        - name: soap-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/soap-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9003
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-server
+  labels:
+    app: rest-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-server
+  template:
+    metadata:
+      labels:
+        app: rest-server
+    spec:
+      containers:
+        - name: rest-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/rest-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-server
+  labels:
+    app: websocket-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket-server
+  template:
+    metadata:
+      labels:
+        app: websocket-server
+    spec:
+      containers:
+        - name: websocket-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/websocket-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+
+
 
 
