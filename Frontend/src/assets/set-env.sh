@@ -1,14 +1,13 @@
 #!/bin/bash
 
-exec 3<> env.json
+foo=$(cat <<EOF
+{
+  "production": true,
+  "authServer": "$AUTH_SERVER",
+  "dataAPI": "$SEARCH_API",
+  "searchAPI": "$DATA_API"
+}
+EOF
+)
 
-    echo "{" >&3
-    echo "  \"production\": true," >&3
-    echo "  \"authServer\": \"$AUTH_SERVER\"," >&3
-    echo "  \"dataAPI\": \"$SEARCH_API\"," >&3
-    echo "  \"searchAPI\": \"$DATA_API\"" >&3
-    echo "}" >&3
-
-exec 3>&-
-
-
+echo $foo > /usr/share/nginx/html/assets/env.json
