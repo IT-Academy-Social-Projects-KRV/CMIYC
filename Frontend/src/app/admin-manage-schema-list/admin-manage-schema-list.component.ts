@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
+import {Component, OnInit} from '@angular/core';
+import {HttpClientService} from "../shared/http.client.service";
+import {Schema, SchemaFile} from "../shared/data/schema";
 
 @Component({
   selector: 'app-admin-manage-schema-list',
@@ -8,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminManageSchemaListComponent implements OnInit {
 
-  constructor() { }
+  schemas: Schema[] = [];
 
-  ngOnInit(): void {
+  constructor(private httpClientService: HttpClientService) {
+    this.httpClientService
+      .getSchemas()
+      .subscribe(schemas => {
+        this.schemas = schemas.map(schemaFile => new Schema(
+          new SchemaFile(schemaFile.name, schemaFile.selected, new Date(schemaFile.uploadedAt))
+        ));
+      });
   }
 
+  ngOnInit(): void {
+
+  }
 }

@@ -10,7 +10,8 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
-import {environment} from './../../environments/environment';
+import {environment} from '../../environments/environment';
+import {SchemaFile} from "./data/schema";
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +30,13 @@ export class HttpClientService {
   private readonly URL_REGISTRATION:    string = this.AUTH_SERVER + "/users/registration";
 
   // Search API
-  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/search';
+  private readonly URL_SCHEMA:  string = this.SEARCH_API + '/search';
   private readonly URL_SEARCH:  string = this.SEARCH_API + '/search';
 
   // Data API
-  private readonly URL_DATA: string = this.DATA_API + '/schemas';
+  private readonly URL_SCHEMAS:        string = this.DATA_API + '/schemas';
+  private readonly URL_SCHEMA_CONTENT: string = this.DATA_API + '/schemas/{name}/content';
+  private readonly URL_SCHEMA_JSON:    string = this.DATA_API + '/schemas/{name}/json';
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
@@ -96,7 +99,6 @@ export class HttpClientService {
   }
 
   public secondFactor(code: string, callback: Function): void {
-
     let token = localStorage.getItem("access_token")
 
     if(token!=null) {
@@ -105,8 +107,8 @@ export class HttpClientService {
     }
   }
 
-  public getSchemas<T>(): Observable<T> {
-    return this.getRequest(this.URL_SCHEMAS);
+  public getSelectedSchema<T>(): Observable<T> {
+    return this.getRequest(this.URL_SCHEMA);
   }
 
   public search<T>(body: FormGroup): Observable<T> {
@@ -124,8 +126,12 @@ export class HttpClientService {
     );
   }
 
+  public getSchemas(): Observable<SchemaFile[]> {
+    return this.getRequest<SchemaFile[]>(this.URL_SCHEMAS);
+  }
+
   public sendSchema<T>(formData: FormData): Observable<T> {
-    return this.postFile(this.URL_DATA, formData);
+    return this.postFile(this.URL_SCHEMAS, formData);
   }
 
   public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {

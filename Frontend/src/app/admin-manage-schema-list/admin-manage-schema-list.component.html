@@ -2,7 +2,6 @@
   <app-sidebar></app-sidebar>
 
   <div class="d-flex flex-column flex-shrink-0 border-start border-1">
-    <!-- Table -->
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
@@ -12,26 +11,24 @@
             </button>
           </th>
           <th scope="col">Name</th>
-          <th scope="col">Schema</th>
+          <th scope="col">Uploaded at</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
 
       <tbody>
-
-        <tr>
-          <th scope="row" class="align-middle px-3">1</th>
-          <td class="align-middle">Fourth Schema</td>
-          <td class="align-middle">Birth Date, First Name, Last Name, Driver License Number</td>
+        <tr *ngFor="let schema of schemas; let i = index;">
+          <th scope="row" class="align-middle px-3">{{i + 1}}</th>
+          <td class="align-middle">{{schema.file.name}}</td>
+          <td class="align-middle">{{schema.file.getFormattedDate()}}</td>
           <td>
             <div>
-              <a class="btn btn-danger">
-                <i class="bi bi-trash3"></i>
-              </a>
+              <a class="btn btn-primary mr-2"><i class="bi bi-eye"></i></a>
+              <a class="btn btn-primary mx-2"><i class="bi bi-filetype-json"></i></a>
+              <a class="btn btn-danger mx-2"><i class="bi bi-trash3"></i></a>
             </div>
           </td>
         </tr>
-
       </tbody>
     </table>
 
