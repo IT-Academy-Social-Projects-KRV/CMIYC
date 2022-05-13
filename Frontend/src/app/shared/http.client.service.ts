@@ -10,37 +10,51 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
-import {environment} from './../../environments/environment';
+import {EnvService} from "./env.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly AUTH_SERVER: string = environment.authServer;
-  private readonly SEARCH_API:  string = environment.searchAPI;
-  private readonly DATA_API:    string = environment.dataAPI;
+  private readonly AUTH_SERVER: string | undefined;
+  private readonly SEARCH_API:  string | undefined;
+  private readonly DATA_API:    string | undefined;
 
   // Auth
-  private readonly URL_LOGIN:           string = this.AUTH_SERVER + '/oauth/token';
-  private readonly URL_USERS:           string = this.AUTH_SERVER + '/users';
-  private readonly URL_SET_USER_ACTIVE: string = this.AUTH_SERVER + '/users/{userId}/active/';
-  private readonly URL_ACTIVATION:      string = this.AUTH_SERVER + "/users/activation";
-  private readonly URL_REGISTRATION:    string = this.AUTH_SERVER + "/users/registration";
+  private readonly URL_LOGIN:           string;
+  private readonly URL_USERS:           string;
+  private readonly URL_SET_USER_ACTIVE: string;
+  private readonly URL_ACTIVATION:      string;
+  private readonly URL_REGISTRATION:    string;
 
   // Search API
-  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/search';
-  private readonly URL_SEARCH:  string = this.SEARCH_API + '/search';
+  private readonly URL_SCHEMAS: string;
+  private readonly URL_SEARCH:  string;
 
   // Data API
-  private readonly URL_DATA: string = this.DATA_API + '/schemas';
+  private readonly URL_DATA: string;
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
     'Content-Type': 'application/x-www-form-urlencoded'
   });
 
-  constructor(private router: Router, private http: HttpClient, private injector: Injector) {
+  constructor(private router: Router, private http: HttpClient, private injector: Injector, private env: EnvService) {
+    this.AUTH_SERVER = env.config?.authServer
+    this.SEARCH_API = env.config?.searchAPI
+    this.DATA_API = env.config?.dataAPI
+
+    this.URL_LOGIN = this.AUTH_SERVER + '/oauth/token';
+    this.URL_USERS = this.AUTH_SERVER + '/users';
+    this.URL_SET_USER_ACTIVE = this.AUTH_SERVER + '/users/{userId}/active/';
+    this.URL_ACTIVATION = this.AUTH_SERVER + "/users/activation";
+    this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
+
+    this.URL_SCHEMAS = this.SEARCH_API + '/search';
+    this.URL_SEARCH = this.SEARCH_API + '/search';
+
+    this.URL_DATA = this.DATA_API + '/schemas';
   }
 
   private getHeadersWithToken(contentType: string | null): HttpHeaders {
