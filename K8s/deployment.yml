@@ -100,12 +100,12 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: AUTH_URL
+            - name: AUTH_SERVER
               value: http://34.116.181.83:8090
-            - name: DATA_URL
-              value: http://dataapi:8081
-            - name: SEARCH_URL
-              value: http://searchapi:8080
+            - name: SEARCH_API
+              value: http://searchapi:8081
+            - name: DATA_API
+              value: http://datapi:8080
 ---
 apiVersion: apps/v1
 kind: Deployment
