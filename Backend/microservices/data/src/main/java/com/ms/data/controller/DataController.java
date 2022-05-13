@@ -50,6 +50,16 @@ public class DataController {
         }
     }
 
+    @GetMapping("/selected")
+    public InterfaceSchema getSelectedSchema() {
+        return cloudStorageService.getSelectedSchema();
+    }
+
+    @PostMapping("/{name}/select")
+    public void selectSchemaByName(@PathVariable("name") String name) {
+        cloudStorageService.selectSchema(name);
+    }
+
     @PostMapping
     public void uploadSchema(@RequestParam("file") MultipartFile file) {
         cloudStorageService.uploadSchema(file);
