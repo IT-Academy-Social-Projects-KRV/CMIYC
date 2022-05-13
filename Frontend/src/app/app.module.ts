@@ -1,7 +1,6 @@
 import {ReactiveFormsModule} from '@angular/forms';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -29,6 +28,13 @@ import {
   AdminUserIsActiveToggleComponent
 } from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
+import {EnvService} from "./shared/env.service";
+
+const appInitializerFn = (appConfig: EnvService) => {
+  return () => {
+    return appConfig.loadAppConfig();
+  }
+};
 
 @NgModule({
   declarations: [
@@ -57,7 +63,18 @@ import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-co
     HttpClientModule,
     BrowserModule
   ],
-  providers: [AuthService, UserAuthGuard, UserAdminAuthGuard],
+  providers: [
+    AuthService,
+    UserAuthGuard,
+    UserAdminAuthGuard,
+    EnvService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [EnvService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

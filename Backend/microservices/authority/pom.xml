@@ -106,6 +106,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>2.6.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.teststarter</groupId>
+            <artifactId>custom-app</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.thymeleaf</groupId>
