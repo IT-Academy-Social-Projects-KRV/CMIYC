@@ -33,4 +33,21 @@ export class AdminManageSchemaListComponent {
         });
     }
   }
+
+  makeSchemaSelected(schema: Schema) {
+    const previousSelected: string | undefined = this.schemas.filter(value => value.file.selected)[0]?.file.name;
+    this.schemas.forEach(value => value.file.selected = value.file.name == schema.file.name);
+
+    this.httpClientService
+      .selectSchema(schema.file.name)
+      .subscribe({
+        next: res => {
+          this.schemas.forEach(value => value.file.selected = value.file.name == schema.file.name);
+        },
+        error: err => {
+          this.schemas.forEach(value => value.file.selected = value.file.name == previousSelected);
+          alert(err.description || err.message || err);
+        }
+      });
+  }
 }

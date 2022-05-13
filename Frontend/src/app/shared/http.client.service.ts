@@ -34,10 +34,11 @@ export class HttpClientService {
   private readonly URL_SEARCH:  string = this.SEARCH_API + '/search';
 
   // Data API
-  private readonly URL_SCHEMAS:        string = this.DATA_API + '/schemas';
-  private readonly URL_SCHEMA_CONTENT: string = this.DATA_API + '/schemas/{name}/content';
-  private readonly URL_SCHEMA_JSON:    string = this.DATA_API + '/schemas/{name}/json';
-  private readonly URL_SCHEMA_DELETE:  string = this.DATA_API + '/schemas/{name}';
+  private readonly URL_SCHEMAS:         string = this.DATA_API + '/schemas';
+  private readonly URL_SCHEMA_CONTENT:  string = this.DATA_API + '/schemas/{name}/content';
+  private readonly URL_SCHEMA_JSON:     string = this.DATA_API + '/schemas/{name}/json';
+  private readonly URL_SCHEMA_DELETE:   string = this.DATA_API + '/schemas/{name}';
+  private readonly URL_SCHEMA_SELECT:   string = this.DATA_API + '/schemas/{name}/select';
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
@@ -160,6 +161,10 @@ export class HttpClientService {
 
   public getSchemaJSON(name: string): Observable<any> {
     return this.getRequestJSON<any>(this.URL_SCHEMA_JSON.replace("{name}", name));
+  }
+
+  public selectSchema(name: string): Observable<any> {
+    return this.postRequest(this.URL_SCHEMA_SELECT.replace("{name}", name), {});
   }
 
   public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {
