@@ -76,7 +76,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.teststarter</groupId>
+            <artifactId>custom-app</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
+
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -96,3 +104,4 @@
         </plugins>
     </build>
 </project>
+
