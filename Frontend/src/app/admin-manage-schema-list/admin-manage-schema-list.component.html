@@ -24,7 +24,7 @@
           <td class="align-middle">{{schema.file.getFormattedDate()}}</td>
           <td>
             <div class="form-check form-switch">
-              <input [disabled]="schema.file.selected" [checked]="schema.file.selected"
+              <input [disabled]="changingSelectedSchema || schema.file.selected" [checked]="schema.file.selected"
                      (change)="makeSchemaSelected(schema)" class="form-check-input" type="checkbox">
             </div>
           </td>

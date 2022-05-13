@@ -11,6 +11,7 @@ export class AdminManageSchemaListComponent {
 
   schemas: Schema[] = [];
   selectedSchema: number = 0;
+  changingSelectedSchema: boolean = false;
 
   constructor(private httpClientService: HttpClientService) {
     this.httpClientService
@@ -35,6 +36,11 @@ export class AdminManageSchemaListComponent {
   }
 
   makeSchemaSelected(schema: Schema) {
+    if(this.changingSelectedSchema)
+      return;
+
+    this.changingSelectedSchema = true;
+
     const previousSelected: string | undefined = this.schemas.filter(value => value.file.selected)[0]?.file.name;
     this.schemas.forEach(value => value.file.selected = value.file.name == schema.file.name);
 
@@ -43,9 +49,11 @@ export class AdminManageSchemaListComponent {
       .subscribe({
         next: res => {
           this.schemas.forEach(value => value.file.selected = value.file.name == schema.file.name);
+          this.changingSelectedSchema = false;
         },
         error: err => {
           this.schemas.forEach(value => value.file.selected = value.file.name == previousSelected);
+          this.changingSelectedSchema = false;
           alert(err.description || err.message || err);
         }
       });
