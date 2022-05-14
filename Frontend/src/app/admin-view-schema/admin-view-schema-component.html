@@ -1,0 +1,12 @@
+<div class="modal-header" *ngIf="schema">
+  <h5 class="modal-title">View schema: {{schema.file.name}}</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <div class="bg-light my-2 p-2 rounded btn-group w-100">
+      <button (click)="selectXml(true)" class="btn" [ngClass]="xmlSelected ? 'btn-primary' : 'btn-outline-primary'">XML <i class="bi bi-filetype-xml"></i></button>
+      <button (click)="selectXml(false)" class="btn"
+              [ngClass]="getJsonButtonClass()">JSON <i class="bi bi-filetype-json"></i></button>
+  </div>
+  <textarea class="form-control" rows="25" [value]="currentValue"></textarea>
+</div>

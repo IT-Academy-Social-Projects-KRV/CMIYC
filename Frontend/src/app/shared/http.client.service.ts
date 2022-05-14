@@ -10,37 +10,59 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
-import {environment} from './../../environments/environment';
+
+import {SchemaFile} from "./data/schema";
+import {EnvService} from "./env.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private readonly AUTH_SERVER: string = environment.authServer;
-  private readonly SEARCH_API:  string = environment.searchAPI;
-  private readonly DATA_API:    string = environment.dataAPI;
+  private readonly AUTH_SERVER: string | undefined;
+  private readonly SEARCH_API:  string | undefined;
+  private readonly DATA_API:    string | undefined;
 
   // Auth
-  private readonly URL_LOGIN:           string = this.AUTH_SERVER + '/oauth/token';
-  private readonly URL_USERS:           string = this.AUTH_SERVER + '/users';
-  private readonly URL_SET_USER_ACTIVE: string = this.AUTH_SERVER + '/users/{userId}/active/';
-  private readonly URL_ACTIVATION:      string = this.AUTH_SERVER + "/users/activation";
-  private readonly URL_REGISTRATION:    string = this.AUTH_SERVER + "/users/registration";
+  private readonly URL_LOGIN:           string;
+  private readonly URL_USERS:           string;
+  private readonly URL_SET_USER_ACTIVE: string;
+  private readonly URL_ACTIVATION:      string;
+  private readonly URL_REGISTRATION:    string;
 
   // Search API
-  private readonly URL_SCHEMAS: string = this.SEARCH_API + '/search';
-  private readonly URL_SEARCH:  string = this.SEARCH_API + '/search';
+  private readonly URL_SCHEMA: string;
+  private readonly URL_SEARCH: string;
 
   // Data API
-  private readonly URL_DATA: string = this.DATA_API + '/schemas';
+  private readonly URL_SCHEMAS:        string;
+  private readonly URL_SCHEMA_CONTENT: string;
+  private readonly URL_SCHEMA_JSON:    string;
+  private readonly URL_SCHEMA_DELETE:  string;
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
     'Content-Type': 'application/x-www-form-urlencoded'
   });
 
-  constructor(private router: Router, private http: HttpClient, private injector: Injector) {
+  constructor(private router: Router, private http: HttpClient, private injector: Injector, private env: EnvService) {
+    this.AUTH_SERVER = env.config?.authServer
+    this.SEARCH_API = env.config?.searchAPI
+    this.DATA_API = env.config?.dataAPI
+
+    this.URL_LOGIN = this.AUTH_SERVER + '/oauth/token';
+    this.URL_USERS = this.AUTH_SERVER + '/users';
+    this.URL_SET_USER_ACTIVE = this.AUTH_SERVER + '/users/{userId}/active/';
+    this.URL_ACTIVATION = this.AUTH_SERVER + "/users/activation";
+    this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
+
+    this.URL_SCHEMA = this.SEARCH_API + '/search';
+    this.URL_SEARCH = this.SEARCH_API + '/search';
+
+    this.URL_SCHEMAS = this.DATA_API + '/schemas';
+    this.URL_SCHEMA_CONTENT = this.DATA_API + '/schemas/{name}/content';
+    this.URL_SCHEMA_JSON = this.DATA_API + '/schemas/{name}/json';
+    this.URL_SCHEMA_DELETE = this.DATA_API + '/schemas/{name}';
   }
 
   private getHeadersWithToken(contentType: string | null): HttpHeaders {
@@ -78,8 +100,19 @@ export class HttpClientService {
     }
   }
 
-  private getRequest<T>(url: string): Observable<T> {
+  private getPlainTextRequestOptions(): Object {
+    return {
+      "responseType": "text",
+      "headers": this.getHeadersWithToken('application/json')
+    }
+  }
+
+  private getRequestJSON<T>(url: string): Observable<T> {
     return this.http.get<T>(url, this.getJSONRequestOptions());
+  }
+
+  private getRequestText<T>(url: string): Observable<T> {
+    return this.http.get<T>(url, this.getPlainTextRequestOptions());
   }
 
   private postRequest<T>(url: string, params: any): Observable<T> {
@@ -90,13 +123,16 @@ export class HttpClientService {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
 
+  private deleteRequest<T>(url: string): Observable<T> {
+    return this.http.delete<T>(url, this.getJSONRequestOptions());
+  }
+
   public login(email: string, password: string, callback: Function): void {
     const params = new LoginRequest(email, password);
     this.handleLoginRequest(callback,params,this.HEADERS)
   }
 
   public secondFactor(code: string, callback: Function): void {
-
     let token = localStorage.getItem("access_token")
 
     if(token!=null) {
@@ -105,8 +141,8 @@ export class HttpClientService {
     }
   }
 
-  public getSchemas<T>(): Observable<T> {
-    return this.getRequest(this.URL_SCHEMAS);
+  public getSelectedSchema<T>(): Observable<T> {
+    return this.getRequestJSON(this.URL_SCHEMA);
   }
 
   public search<T>(body: FormGroup): Observable<T> {
@@ -114,7 +150,7 @@ export class HttpClientService {
   }
 
   public getUsers(): Observable<User[]> {
-    return this.getRequest<User[]>(this.URL_USERS);
+    return this.getRequestJSON<User[]>(this.URL_USERS);
   }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
@@ -124,8 +160,24 @@ export class HttpClientService {
     );
   }
 
-  public sendSchema<T>(formData: FormData): Observable<T> {
-    return this.postFile(this.URL_DATA, formData);
+  public getSchemas(): Observable<SchemaFile[]> {
+    return this.getRequestJSON<SchemaFile[]>(this.URL_SCHEMAS);
+  }
+
+  public uploadSchema<T>(formData: FormData): Observable<T> {
+    return this.postFile(this.URL_SCHEMAS, formData);
+  }
+
+  public deleteSchema(name: string) {
+    return this.deleteRequest(this.URL_SCHEMA_DELETE.replace("{name}", name));
+  }
+
+  public getSchemaContent(name: string): Observable<string> {
+    return this.getRequestText<string>(this.URL_SCHEMA_CONTENT.replace("{name}", name));
+  }
+
+  public getSchemaJSON(name: string): Observable<any> {
+    return this.getRequestJSON<any>(this.URL_SCHEMA_JSON.replace("{name}", name));
   }
 
   public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {

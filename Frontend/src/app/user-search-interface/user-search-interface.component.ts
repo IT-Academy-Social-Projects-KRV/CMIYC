@@ -24,7 +24,7 @@ export class UserSearchInterfaceComponent implements OnInit {
   submitted = false;
   constructor(private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
   ngOnInit(): void {
-    this.httpClientService.getSchemas().subscribe(response => console.log(response));
+    this.httpClientService.getSelectedSchema().subscribe(response => console.log(response));
     this.form = this.formBuilder.group(
       {
         firstName: ['', Validation.nameValidator()],
