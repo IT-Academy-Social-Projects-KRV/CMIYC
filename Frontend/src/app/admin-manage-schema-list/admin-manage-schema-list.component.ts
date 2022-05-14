@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClientService} from "../shared/http.client.service";
 import {Schema, SchemaFile} from "../shared/data/schema";
 

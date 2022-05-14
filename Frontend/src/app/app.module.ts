@@ -29,6 +29,7 @@ import {
 } from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -61,7 +62,8 @@ const appInitializerFn = (appConfig: EnvService) => {
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    NgxPaginationModule
   ],
   providers: [
     AuthService,
