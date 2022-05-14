@@ -44,7 +44,7 @@ public class SearchControllerUnitTests {
 
     @Test
     public void getSchemasSearchAPI_checkIfDataFromDataIsNotNull_BooleanReturned() {
-        assertThat(controller.getSchemas(authorizationHeader)).isNotNull();
+        assertThat(controller.getSchema(authorizationHeader)).isNotNull();
     }
 
     @Test

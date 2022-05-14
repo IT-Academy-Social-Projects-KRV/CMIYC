@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/search")
 public class SearchController {
 
     private final DataConnect dataConnect;
@@ -20,15 +19,17 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getSchemas(@RequestHeader(value = "Authorization") String authorizationHeader) {
+    @RequestMapping("/schema")
+    public ResponseEntity<?> getSchema(@RequestHeader(value = "Authorization") String authorizationHeader) {
         try {
-            return new ResponseEntity<> (dataConnect.xmlSchema(authorizationHeader), HttpStatus.OK);
+            return new ResponseEntity<> (dataConnect.getCurrentSchema(authorizationHeader), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
+    @RequestMapping("/search")
     public ResponseEntity<?> search(@RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery) {
         try {
             return new ResponseEntity<>(connectorConnect.searcher(authorizationHeader, searchQuery), HttpStatus.OK);

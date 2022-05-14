@@ -16,6 +16,17 @@ export default class Validation {
       }
     };
   }
+  static alphanumericValidator: ValidatorFn = control => {
+    return /^[A-Za-z0-9]+$/.test(control.value) ? null : {alphabetic: "This field can only contain letters and digits"};
+  }
+
+  static alphabeticValidator: ValidatorFn = control => {
+    return /^[A-Za-z]+$/.test(control.value) ? null : {alphabetic: "This field can only contain letters"};
+  };
+
+  static numericValidator: ValidatorFn = control => {
+    return /^[0-9]+$/.test(control.value) ? null : {numeric: "This field can only contain numbers"};
+  }
 
   static passwordValidator(): ValidatorFn[] {
     return [

@@ -29,6 +29,7 @@ import {
 } from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
+import {JsonForm} from "./json-form/json-form-component";
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -55,7 +56,8 @@ const appInitializerFn = (appConfig: EnvService) => {
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,
     SearchResponseComponent,
-    AdminUserIsActiveToggleComponent
+    AdminUserIsActiveToggleComponent,
+    JsonForm
   ],
   imports: [
     AppRoutingModule,

@@ -12,6 +12,7 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
+import {InterfaceSchema} from "./data/interface-schema";
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +57,7 @@ export class HttpClientService {
     this.URL_ACTIVATION = this.AUTH_SERVER + "/users/activation";
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
 
-    this.URL_SCHEMA = this.SEARCH_API + '/search';
+    this.URL_SCHEMA = this.SEARCH_API + '/schema';
     this.URL_SEARCH = this.SEARCH_API + '/search';
 
     this.URL_SCHEMAS = this.DATA_API + '/schemas';
@@ -142,7 +143,7 @@ export class HttpClientService {
     }
   }
 
-  public getSelectedSchema<T>(): Observable<T> {
+  public getSelectedSchema(): Observable<InterfaceSchema> {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 

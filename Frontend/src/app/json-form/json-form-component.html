@@ -1,0 +1,79 @@
+<form method="post" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+  <div class="row mb-4" *ngFor="let field of fields; let i = index;">
+    <div class="col-lg-2 col-3 offset-lg-2">
+      <label for="input-{{i}}" class="lead">{{normalizeCamelCase(field.name)}}: </label>
+    </div>
+    <div class="col">
+      <input [hidden]="field.components" type="text" formControlName="{{field.name}}" class="form-control"
+             id="input-{{i}}" placeholder="{{field.description}}" [ngClass]="{ 'is-invalid': submitted }"/>
+      <div *ngIf="field.components" class="row">
+        <div class="col-auto" *ngFor="let component of field.components">
+          <label class="text-small lead" for="input-component-{{component.name}}">{{normalizeCamelCase(component.name)}}:</label>
+          <input class="form-control" id="input-component-{{component.name}}" type="}}" />
+        </div>
+      </div>
+      <div *ngIf="submitted" class="invalid-feedback col-sm-8 col-lg-9">
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-2"></div>
+  </div>
+
+  <!--
+  <div class="row mb-4 col-lg-6 offset-lg-3">
+    <label for="inputLastName" class="col-form-label col-sm-3 col-lg-3">Last Name:</label>
+    <div class="col-sm-9">
+      <input type="text" formControlName="lastName" class="form-control col-sm-8 col-lg-9" id="inputLastName"
+             placeholder="Last Name" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" (ngModelChange)="onTextChange()"/>
+      <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback col-sm-8 col-lg-9">
+        <div *ngIf="f['lastName'].errors['minlength']">
+          Last Name must be at least 2 characters
+        </div>
+        <div *ngIf="f['lastName'].errors['maxlength']">
+          Last Name must not exceed 20 characters
+        </div>
+        <div *ngIf="f['lastName'].errors['pattern']">
+          Last Name must start with a capital letter, may contain lowercase, uppercase letters and "-"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 col-lg-6 me-auto ms-auto">
+    <label for="inputBirthDate" class="col-form-label col-sm-3 col-md-3 col-lg-3">Birth Date:</label>
+    <div class="col-sm-9">
+      <input type="date" formControlName="birthDayDate" class="form-control col-sm-8 col-lg-9"
+             id="inputBirthDate" lang="en" (ngModelChange)="onTextChange()">
+    </div>
+  </div>
+  <div class="row mb-4 col-lg-6 me-auto ms-auto">
+    <label for="inputBirthDate" class="col-form-label col-sm-3 col-lg-3">Sex:</label>
+    <div class="col-sm-9">
+      <select class="form-select" formControlName="sex" aria-label="Default select example" (ngModelChange)="onTextChange()">
+        <option selected value="" selected>Choose gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+  </div>
+  <div class="row mb-4 ps-5">
+    <div class="col-lg-4 mw-45 me-auto ms-auto ps-3" [formGroup]="apis">
+      <div class="form-check form-check-inline me-0">
+        <input type="checkbox" formControlName="api1" class="form-check-input" name="API1" id="checkApi1" hidden>
+        <label class="form-check-label">API 1</label>
+      </div>
+      <div class="form-check form-check-inline me-0">
+        <input type="checkbox" formControlName="api2" class="form-check-input" name="API2" id="checkApi2" hidden>
+        <label class="form-check-label">API 2</label>
+      </div>
+      <div class="form-check form-check-inline me-0">
+        <input type="checkbox" formControlName="api3" class="form-check-input" name="API3" id="checkApi3" hidden>
+        <label class="form-check-label">API 3</label>
+      </div>
+    </div>
+  </div>-->
+  <div class="row">
+    <div class="col"></div>
+    <button type="submit" class="btn btn-primary col-2">Submit</button>
+    <div class="col"></div>
+  </div>
+</form>
