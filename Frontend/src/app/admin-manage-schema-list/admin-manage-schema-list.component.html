@@ -12,18 +12,25 @@
           </th>
           <th scope="col">Name</th>
           <th scope="col">Uploaded at</th>
+          <th scope="col">Selected</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let schema of schemas; let i = index;">
+        <tr *ngFor="let schema of schemas; let i = index;" [ngClass]="schema.file.selected ? 'table-primary' : ''">
           <th scope="row" class="align-middle px-3">{{i + 1}}</th>
           <td class="align-middle">{{schema.file.name}}</td>
           <td class="align-middle">{{schema.file.getFormattedDate()}}</td>
           <td>
+            <div class="form-check form-switch">
+              <input [disabled]="changingSelectedSchema || schema.file.selected" [checked]="schema.file.selected"
+                     (change)="makeSchemaSelected(schema)" class="form-check-input" type="checkbox">
+            </div>
+          </td>
+          <td>
             <div>
-              <button (click)="selectedSchema = i" class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#viewSchemaModal">
+              <button (click)="selectedSchema = i" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#viewSchemaModal">
                 View
                 <i class="bi bi-eye"></i>
               </button>

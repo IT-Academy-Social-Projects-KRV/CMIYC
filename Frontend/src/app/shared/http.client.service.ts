@@ -10,7 +10,6 @@ import {AuthService, SessionExpiredException, UnauthorizedException} from "./aut
 import {User} from './data/user';
 import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
-
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
 
@@ -39,6 +38,7 @@ export class HttpClientService {
   private readonly URL_SCHEMA_CONTENT: string;
   private readonly URL_SCHEMA_JSON:    string;
   private readonly URL_SCHEMA_DELETE:  string;
+  private readonly URL_SCHEMA_SELECT:  string;
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
@@ -63,6 +63,7 @@ export class HttpClientService {
     this.URL_SCHEMA_CONTENT = this.DATA_API + '/schemas/{name}/content';
     this.URL_SCHEMA_JSON = this.DATA_API + '/schemas/{name}/json';
     this.URL_SCHEMA_DELETE = this.DATA_API + '/schemas/{name}';
+    this.URL_SCHEMA_SELECT = this.DATA_API + '/schemas/{name}/select'
   }
 
   private getHeadersWithToken(contentType: string | null): HttpHeaders {
@@ -178,6 +179,10 @@ export class HttpClientService {
 
   public getSchemaJSON(name: string): Observable<any> {
     return this.getRequestJSON<any>(this.URL_SCHEMA_JSON.replace("{name}", name));
+  }
+
+  public selectSchema(name: string): Observable<any> {
+    return this.postRequest(this.URL_SCHEMA_SELECT.replace("{name}", name), {});
   }
 
   public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {

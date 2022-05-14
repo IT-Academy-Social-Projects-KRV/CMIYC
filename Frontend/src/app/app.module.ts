@@ -37,7 +37,6 @@ const appInitializerFn = (appConfig: EnvService) => {
   }
 };
 
-
 @NgModule({
   declarations: [
     AppComponent,

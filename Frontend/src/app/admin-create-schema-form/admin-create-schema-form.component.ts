@@ -76,7 +76,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
 
     upload$.subscribe({
       next: value => {
-        alert("success")
+        document.location.reload();
       },
       error: err => {
         const errorMessage: string = err.message || "Something went wrong";

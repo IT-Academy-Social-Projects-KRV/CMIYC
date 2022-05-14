@@ -17,8 +17,8 @@ export class SchemaFile {
   }
 
   readonly name: string;
-  readonly selected: boolean;
   readonly uploadedAt: Date;
+  selected: boolean;
 
   getFormattedDate(): string {
     return this.formatNumber(this.uploadedAt.getDate()) + "." +
