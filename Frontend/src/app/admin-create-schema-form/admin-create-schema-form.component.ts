@@ -72,11 +72,11 @@ export class AdminCreateSchemaFormComponent implements OnInit {
     // @ts-ignore
     formData.append('file', this.form.get('fileSource').value);
 
-    const upload$ = this.httpclient.sendSchema(formData);
+    const upload$ = this.httpclient.uploadSchema(formData);
 
     upload$.subscribe({
       next: value => {
-        alert("success")
+        document.location.reload();
       },
       error: err => {
         const errorMessage: string = err.message || "Something went wrong";
