@@ -72,7 +72,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
     // @ts-ignore
     formData.append('file', this.form.get('fileSource').value);
 
-    const upload$ = this.httpclient.sendSchema(formData);
+    const upload$ = this.httpclient.uploadSchema(formData);
 
     upload$.subscribe({
       next: value => {
