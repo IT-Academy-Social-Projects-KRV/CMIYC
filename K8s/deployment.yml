@@ -36,6 +36,36 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: AUTH_SERVER
+              value: http://34.116.181.83:8090
+            - name: SEARCH_API
+              value: http://searchapi:8081
+            - name: DATA_API
+              value: http://datapi:8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: authority
   labels:
     app: authority
@@ -80,32 +110,96 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: search
   labels:
-    app: frontend
+    app: search
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: search
   template:
     metadata:
       labels:
-        app: frontend
+        app: search
     spec:
       containers:
-        - name: frontend
-          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+        - name: search
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/search:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8082
           env:
-            - name: AUTH_SERVER
+            - name: PORTS_MICROSERVICES_SEARCH
+              value: "8082"
+            - name: ROUTES_MICROSERVICES_CONNECTOR
+              value: http://connector:8080
+            - name: ROUTES_MICROSERVICES_DATA
+              value: http://localhost:8081      # add
+            - name: ROUTES_MICROSERVICES_AUTHORITY
               value: http://34.116.181.83:8090
-            - name: SEARCH_API
-              value: http://searchapi:8081
-            - name: DATA_API
-              value: http://datapi:8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data
+  labels:
+    app: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data
+  template:
+    metadata:
+      labels:
+        app: data
+    spec:
+      containers:
+        - name: data
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/data:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: PORTS_MICROSERVICES_DATA
+              value: "8081"
+            - name: ROUTES_MICROSERVICES_AUTHORITY
+              value: http://34.116.181.83:8090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connector
+  labels:
+    app: connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connector
+  template:
+    metadata:
+      labels:
+        app: connector
+    spec:
+      containers:
+        - name: connector
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/connector:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORTS_MICROSERVICES_CONNECTOR
+              value: "8080"
+            - name: ROUTES_MICROSERVICES_AUTHORITY
+              value: http://34.116.181.83:8090
+            - name: ROUTES_EXTERNAL_REST
+              value: http://rest-server:9001
+            - name: ROUTES_EXTERNAL_SOAP
+              value: http://soap-server:9003
+            - name: ROUTES_EXTERNAL_WEBSOCKET
+              value: http://websocket-server:9002
 ---
 apiVersion: apps/v1
 kind: Deployment
