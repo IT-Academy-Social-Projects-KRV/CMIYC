@@ -1,18 +1,26 @@
 <form method="post" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
-  <div class="row mb-4" *ngFor="let field of fields; let i = index;">
+  <div class="row mb-4" *ngFor="let field of fieldData let i = index;">
     <div class="col-lg-2 col-3 offset-lg-2">
-      <label for="input-{{i}}" class="lead">{{normalizeCamelCase(field.name)}}: </label>
+      <label for="input-{{i}}" class="lead">{{field.normalizedName}}: </label>
     </div>
     <div class="col">
-      <input [hidden]="field.components" type="text" formControlName="{{field.name}}" class="form-control"
-             id="input-{{i}}" placeholder="{{field.description}}" [ngClass]="{ 'is-invalid': submitted }"/>
-      <div *ngIf="field.components" class="row">
-        <div class="col-auto" *ngFor="let component of field.components">
-          <label class="text-small lead" for="input-component-{{component.name}}">{{normalizeCamelCase(component.name)}}:</label>
-          <input class="form-control" id="input-component-{{component.name}}" type="}}" />
-        </div>
+      <input *ngIf="!field.components.length && !field.dataset" formControlName="{{field.field.name}}" class="form-control"
+             id="input-{{i}}" placeholder="{{field.field.description}}" [ngClass]="{'is-invalid': getErrors(field.field).length}"
+             [maxLength]="field.field.maxLength" type="{{field.inputType}}"
+      />
+
+      <select *ngIf="field.dataset" class="form-select" formControlName="{{field.field.name}}" id="input-{{i}}">
+        <option *ngFor="let key of field.dataset.keys(); let i = index;" [value]="key">{{field.dataset.values[key]}} {{key ? '(' + key + ')' : ''}}</option>
+      </select>
+
+      <div class="input-group" *ngIf="field.components">
+        <input *ngFor="let component of field.components" placeholder="{{component.normalizedName}}"
+               class="form-control" id="input-component-{{component.component.name}}" [maxLength]="field.field.maxLength"
+               type="{{component.inputType}}"
+        />
       </div>
-      <div *ngIf="submitted" class="invalid-feedback col-sm-8 col-lg-9">
+      <div *ngIf="getErrors(field.field).length" class="invalid-feedback">
+        <div *ngFor="let error of getErrors(field.field)">{{error}}</div>
       </div>
     </div>
     <div class="d-none d-lg-block col-2"></div>

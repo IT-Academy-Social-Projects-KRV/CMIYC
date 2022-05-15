@@ -26,7 +26,7 @@ export class FieldComponent {
 }
 
 export enum FieldType {
-  Alphanumeric, Alphabetic, Numeric, Name, Date
+  Alphanumeric = "Alphanumeric", Alphabetic = "Alphabetic", Numeric = "Numeric", Name = "Name", Date = "Date"
 }
 
 export class FieldCombination {
