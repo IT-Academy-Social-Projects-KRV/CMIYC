@@ -7,6 +7,7 @@ import com.google.api.services.storage.model.StorageObject;
 import com.ms.data.config.InputStreamContent;
 import com.ms.data.dto.SchemaFile;
 import com.ms.data.dto.xml.InterfaceSchema;
+import com.ms.data.exception.CurrentSelectedSchemaException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import javax.annotation.PostConstruct;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -139,6 +141,14 @@ public class CloudStorageService {
         }
 
         return getInterfaceSchema(selectedSchemaName);
+    }
+
+    public void deleteSchema(String name) throws IOException {
+        if (selectedSchemaName.equals(name)) {
+            throw new CurrentSelectedSchemaException("you cant delete current schema");
+        }
+        storage.objects().delete(bucketName, name).execute();
+
     }
 
     @SneakyThrows
