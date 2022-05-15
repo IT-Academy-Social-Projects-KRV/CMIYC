@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {Field, FieldComponent, FieldType} from "../shared/data/interface-schema";
+import {Field, FieldCombination, FieldComponent, FieldType} from "../shared/data/interface-schema";
 import Validation from "../utils/validation";
 import {SelectDataset} from "../shared/data/select-data";
 
@@ -13,6 +13,10 @@ export class JsonForm implements OnChanges {
 
   @Input()
   fields: Field[] = [];
+
+  @Input()
+  combinations: FieldCombination[] = [];
+
   fieldData: InputData[] = [];
 
   form: FormGroup = new FormGroup({});
@@ -28,22 +32,34 @@ export class JsonForm implements OnChanges {
       this.fieldData.push(InputData.fromField(field));
 
       if(field.name) {
-        const control = new FormControl();
-        control.addValidators(this.getValidators(field))
-        control.setValue("");
+        if(field.components) {
+          field.components.forEach(component => {
+            const control = new FormControl();
 
-        controls[field.name] = control;
+            control.addValidators(this.getValidators(component.type))
+            control.setValue("");
+
+            controls[field.name + "." + component.name] = control;
+          });
+        } else {
+          const control = new FormControl();
+
+          control.addValidators(this.getValidators(field.type))
+          control.setValue("");
+
+          controls[field.name] = control;
+        }
       }
     });
 
-    console.log(this.fieldData)
+    console.log(this.fieldData);
     this.form = new FormGroup(controls);
   }
 
-  getValidators(field: Field): ValidatorFn[] {
+  getValidators(type: FieldType | undefined): ValidatorFn[] {
     const result: ValidatorFn[] = [];
 
-    switch (field.type) {
+    switch (type) {
       case FieldType.Alphanumeric:
         result.push(Validation.alphanumericValidator);
         break;
@@ -61,19 +77,67 @@ export class JsonForm implements OnChanges {
   onSubmit(): void {
     this.submitted = true;
 
-    console.log(this.form.valid)
-    for (let controlsKey in this.form.controls) {
-      const control = this.form.controls[controlsKey]
-      console.log(controlsKey, control.value)
-    }
+    if(!this.form.valid)
+      return;
+
+    const data: any = {};
+    this.fields.forEach(field => {
+      const key = field.name;
+      const control = this.form.controls[key];
+      if(control) {
+        if(control.value) {
+          data[key] = control.value;
+        }
+      } else {
+        const complexInputData: any = {};
+        let anyComponentHasValue = false;
+        field.components.forEach(comp => {
+          const componentInput = this.form.controls[key + "." + comp.name];
+          if(componentInput) {
+            complexInputData[comp.name] = componentInput.value;
+            if(componentInput.value) {
+              anyComponentHasValue = true;
+            }
+          }
+        });
+
+        if(anyComponentHasValue)
+          data[key] = complexInputData;
+      }
+    });
+
+    console.log(data);
+
   }
 
-  getErrors(field: Field): string[] {
-    const fieldErrors = this.form.controls[field.name].errors;
-    const errors = []
+  getAllErrors(field: Field): string[] {
+    const errors: string[] = [];
+    const name = field.name;
 
-    for (let errorsKey in fieldErrors) {
-      errors.push(this.form.controls[field.name].getError(errorsKey))
+    for (let controlName in this.form.controls) {
+      if(controlName == name || controlName.startsWith(name + ".")) {
+        const control = this.form.controls[controlName];
+        const fieldErrors = control.errors;
+        for (let errorsKey in fieldErrors) {
+          errors.push(control.getError(errorsKey));
+        }
+      }
+    }
+
+    return errors.filter((v, i, a) => a.indexOf(v) === i);
+  }
+
+  getErrors(name: string): string[] {
+    const errors: string[] = [];
+
+    for (let controlName in this.form.controls) {
+      if(controlName == name || controlName.endsWith("." + name)) {
+        const control = this.form.controls[controlName];
+        const fieldErrors = control.errors;
+        for (let errorsKey in fieldErrors) {
+          errors.push(control.getError(errorsKey));
+        }
+      }
     }
 
     return errors;

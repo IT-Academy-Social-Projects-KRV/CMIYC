@@ -1,11 +1,11 @@
 <form method="post" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
-  <div class="row mb-4" *ngFor="let field of fieldData let i = index;">
+  <div class="row mb-4" *ngFor="let field of fieldData; let i = index;">
     <div class="col-lg-2 col-3 offset-lg-2">
       <label for="input-{{i}}" class="lead">{{field.normalizedName}}: </label>
     </div>
     <div class="col">
       <input *ngIf="!field.components.length && !field.dataset" formControlName="{{field.field.name}}" class="form-control"
-             id="input-{{i}}" placeholder="{{field.field.description}}" [ngClass]="{'is-invalid': getErrors(field.field).length}"
+             id="input-{{i}}" placeholder="{{field.field.description}}" [ngClass]="{'is-invalid': getErrors(field.field.name).length}"
              [maxLength]="field.field.maxLength" type="{{field.inputType}}"
       />
 
@@ -16,11 +16,12 @@
       <div class="input-group" *ngIf="field.components">
         <input *ngFor="let component of field.components" placeholder="{{component.normalizedName}}"
                class="form-control" id="input-component-{{component.component.name}}" [maxLength]="field.field.maxLength"
-               type="{{component.inputType}}"
+               type="{{component.inputType}}" formControlName="{{field.field.name + '.' + component.component.name}}"
+               [ngClass]="{'is-invalid': getErrors(field.field.name + '.' + component.component.name).length}"
         />
       </div>
-      <div *ngIf="getErrors(field.field).length" class="invalid-feedback">
-        <div *ngFor="let error of getErrors(field.field)">{{error}}</div>
+      <div *ngIf="!form.valid" class="text-danger">
+        <div *ngFor="let error of getAllErrors(field.field)">{{error}}</div>
       </div>
     </div>
     <div class="d-none d-lg-block col-2"></div>

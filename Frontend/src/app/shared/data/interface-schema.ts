@@ -14,10 +14,10 @@ export class Transaction {
 
 export class Field {
   name: string = '';
-  maxLength: number | undefined;
+  maxLength: number = 0;
   type: FieldType | undefined;
   description: string | undefined;
-  components: FieldComponent[] | undefined;
+  components: FieldComponent[] = [];
 }
 
 export class FieldComponent {
