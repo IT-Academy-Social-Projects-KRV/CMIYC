@@ -13,7 +13,7 @@ steps:
   - name: gcr.io/cloud_builders/docker
     args: ['build', '-t', '$_SEARCH_IMAGE', '-f', 'K8s/search.Dockerfile', '.']
   - name: gcr.io/cloud-builders/docker
-    args: ['push', '$_SEARCH_IMAGE_IMAGE']
+    args: ['push', '$_SEARCH_IMAGE']
 # Build, push Data API
   - name: gcr.io/cloud_builders/docker
     args: ['build', '-t', '$_DATA_IMAGE', '-f', 'K8s/data.Dockerfile', '.']
