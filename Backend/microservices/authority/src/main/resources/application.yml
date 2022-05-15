@@ -20,7 +20,6 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: cmiycpolice@gmail.com
-    password: eowdaehcnnyycoit
 
     properties:
       mail:
