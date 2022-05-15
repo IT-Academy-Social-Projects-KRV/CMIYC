@@ -2,7 +2,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {RegisterComponent} from './register/register.component';
@@ -27,8 +26,10 @@ import {AuthService} from './shared/auth.service';
 import {HttpClientModule} from '@angular/common/http';
 import {
   AdminUserIsActiveToggleComponent
-} from "./admin-user-is-active-toggle-component/admin-user-is-active-toggle-component";
+} from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
+import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -50,6 +51,7 @@ const appInitializerFn = (appConfig: EnvService) => {
     AdminCreateSchemaFormComponent,
     AdminManageUserListComponent,
     AdminUserIsActiveToggleComponent,
+    AdminViewSchemaComponent,
     LoginFormComponent,
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,
@@ -60,7 +62,8 @@ const appInitializerFn = (appConfig: EnvService) => {
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    NgxPaginationModule
   ],
   providers: [
     AuthService,

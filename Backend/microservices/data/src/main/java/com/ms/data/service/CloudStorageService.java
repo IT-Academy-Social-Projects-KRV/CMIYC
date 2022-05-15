@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +31,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CloudStorageService {
 
+    private static final String CHECKED_SCHEMA_METADATA_MAP_KEY = "checked";
+
     private final Storage storage;
     private final XmlReaderService xmlReaderService;
 
     @Value("${cloud-storage.path}")
     private String bucketName;
+
+    private String selectedSchemaName;
+
+    @PostConstruct
+    public void initSelectedSchema() {
+        for (SchemaFile schemaFile : getAll()) {
+            if(schemaFile.isSelected()) {
+                selectedSchemaName = schemaFile.getName();
+                break;
+            }
+        }
+    }
 
     @SneakyThrows
     public void uploadSchema(MultipartFile file) {
@@ -66,7 +83,7 @@ public class CloudStorageService {
     @SneakyThrows
     public Optional<SchemaFile> getOne(String name) {
         try {
-            StorageObject object = storage.objects().get(bucketName, name).execute();
+            StorageObject object = getStorageObjectByName(name);
             return Optional.of(this.createSchemaFile(object));
         } catch (Exception e) {
             return Optional.empty();
@@ -75,7 +92,7 @@ public class CloudStorageService {
 
     public Optional<String> getFileContent(String name) {
         try {
-            StorageObject storageObject = storage.objects().get(bucketName, name).execute();
+            StorageObject storageObject = getStorageObjectByName(name);
             return Optional.ofNullable(getFileContent(storageObject));
         } catch (Exception e) {
             return Optional.empty();
@@ -85,6 +102,48 @@ public class CloudStorageService {
     public InterfaceSchema getInterfaceSchema(String name) {
         Optional<String> fileContent = getFileContent(name);
         return fileContent.map(xmlReaderService::read).orElseThrow();
+    }
+
+    @SneakyThrows
+    public void selectSchema(String name) {
+        if(name.equals(selectedSchemaName))
+            return;
+
+        getInterfaceSchema(name);
+
+        StorageObject schemaToSelect = getStorageObjectByName(name);
+        if(!isSchemaSelected(schemaToSelect)) {
+            schemaToSelect.setMetadata(Collections.singletonMap(CHECKED_SCHEMA_METADATA_MAP_KEY, ""));
+            storage.objects()
+                    .update(bucketName, schemaToSelect.getName(), schemaToSelect)
+                    .execute();
+        }
+
+        String previousSchemaName = selectedSchemaName;
+        selectedSchemaName = name;
+        if(previousSchemaName == null || selectedSchemaName.equals(previousSchemaName))
+            return;
+
+        StorageObject previousSelectedSchema = getStorageObjectByName(previousSchemaName);
+        if (isSchemaSelected(previousSelectedSchema)) {
+            previousSelectedSchema.setMetadata(Collections.emptyMap());
+            storage.objects()
+                    .update(bucketName, previousSchemaName, previousSelectedSchema)
+                    .execute();
+        }
+    }
+
+    public InterfaceSchema getSelectedSchema() {
+        if (selectedSchemaName == null) {
+            return null;
+        }
+
+        return getInterfaceSchema(selectedSchemaName);
+    }
+
+    @SneakyThrows
+    private StorageObject getStorageObjectByName(String name) {
+        return storage.objects().get(bucketName, name).execute();
     }
 
     @SneakyThrows
@@ -100,7 +159,7 @@ public class CloudStorageService {
 
     private SchemaFile createSchemaFile(StorageObject object) {
         LocalDateTime updatedAt = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(object.getUpdated().getValue()),
+                Instant.ofEpochMilli(object.getTimeCreated().getValue()),
                 TimeZone.getDefault().toZoneId()
         );
 
@@ -111,18 +170,18 @@ public class CloudStorageService {
         );
     }
 
-    // Will implement logic later
     private boolean isSchemaSelected(StorageObject object) {
-        return false;
+        return object.getMetadata() != null &&
+                object.getMetadata().containsKey(CHECKED_SCHEMA_METADATA_MAP_KEY);
     }
 
     private String createUniqueNameForNewSchema(String originalFilename) {
-        String name = originalFilename;
-        String extension = "";
-        if(originalFilename.contains(".")) {
-            name = originalFilename.substring(0, originalFilename.lastIndexOf("."));
-            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        if(!originalFilename.contains(".")) {
+            originalFilename += ".xml";
         }
+
+        String name = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
         int number = 0;
         String newName = originalFilename;
