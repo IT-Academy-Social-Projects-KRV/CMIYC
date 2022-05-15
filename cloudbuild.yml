@@ -1,3 +1,4 @@
+timeout: 990s
 steps:
 # Build, push Frontend
   - name: gcr.io/cloud_builders/docker

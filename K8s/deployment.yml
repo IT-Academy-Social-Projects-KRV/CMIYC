@@ -59,9 +59,9 @@ spec:
             - name: AUTH_SERVER
               value: http://34.116.181.83:8090
             - name: SEARCH_API
-              value: http://searchapi:8081
+              value: http://34.118.5.208:8082
             - name: DATA_API
-              value: http://datapi:8080
+              value: http://34.116.185.54:8081
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -135,7 +135,7 @@ spec:
             - name: ROUTES_MICROSERVICES_CONNECTOR
               value: http://connector:8080
             - name: ROUTES_MICROSERVICES_DATA
-              value: http://localhost:8081      # add
+              value: http://data:8081
             - name: ROUTES_MICROSERVICES_AUTHORITY
               value: http://34.116.181.83:8090
 ---
