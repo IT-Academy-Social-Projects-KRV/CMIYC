@@ -30,6 +30,7 @@ import {
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
 import {JsonForm} from "./json-form/json-form-component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -63,7 +64,8 @@ const appInitializerFn = (appConfig: EnvService) => {
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    NgxPaginationModule
   ],
   providers: [
     AuthService,
