@@ -1,4 +1,4 @@
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -30,6 +30,7 @@ import {
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
 import {NgxPaginationModule} from "ngx-pagination";
+import { AdminUserUpdateFormComponent } from './admin-user-update-form/admin-user-update-form.component';
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -57,16 +58,18 @@ const appInitializerFn = (appConfig: EnvService) => {
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,
     SearchResponseComponent,
-    AdminUserIsActiveToggleComponent
+    AdminUserIsActiveToggleComponent,
+    AdminUserUpdateFormComponent
   ],
 
-  imports: [
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserModule,
-    NgxPaginationModule
-  ],
+    imports: [
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserModule,
+        NgxPaginationModule,
+        FormsModule
+    ],
   providers: [
     AuthService,
     UserAuthGuard,

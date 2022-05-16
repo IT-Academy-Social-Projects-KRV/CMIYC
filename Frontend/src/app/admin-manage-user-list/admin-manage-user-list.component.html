@@ -55,7 +55,8 @@
             </div>
           </td>
           <td>
-            <a class="btn btn-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalWindow">
+            <a  class="btn btn-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateWindow"
+                (click)="onEdit(user.firstName, user.lastName,user.email,user.isUserAdmin,user.isSchemaAdmin,user.isUser)">
               <i class="bi bi-vector-pen "></i>
             </a>
             <a  class="btn btn-danger" type="button" (click)="onDelete(user.id)" >
@@ -83,7 +84,7 @@
         </div>
       </div>-->
     </div>
-    <!-- Modal -->
+    <!-- Modal for new user-->
     <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -94,6 +95,25 @@
           </div>
           <div class="modal-body">
             <app-admin-user-form></app-admin-user-form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for update-->
+    <div class="modal fade" id="modalUpdateWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabelUpdate">Update user</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <app-admin-user-update-form [firstNameToForm]="firstNameToUpdate" [lastNameToForm]="lastNameToUpdate"
+            [emailToForm]="emailToUpdate" [isUserAdminToForm]="isUserAdminToUpdate"
+                                        [isSchemaAdminToForm]="isSchemaAdminToUpdate"
+            [isUserToForm]="isUserToUpdate"></app-admin-user-update-form>
           </div>
         </div>
       </div>

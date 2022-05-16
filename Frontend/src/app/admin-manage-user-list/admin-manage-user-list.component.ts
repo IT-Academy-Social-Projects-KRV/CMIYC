@@ -8,7 +8,12 @@ import {User} from "../shared/data/user";
   styleUrls: ['./admin-manage-user-list.component.css']
 })
 export class AdminManageUserListComponent implements OnInit {
-
+  firstNameToUpdate:string|undefined;
+  lastNameToUpdate:string|undefined;
+  emailToUpdate:string|undefined;
+  isUserAdminToUpdate:boolean|undefined;
+  isSchemaAdminToUpdate:boolean|undefined;
+  isUserToUpdate:boolean|undefined;
   RESPONSE:any;
   page = 1;
   count:number|undefined;
@@ -63,6 +68,14 @@ export class AdminManageUserListComponent implements OnInit {
       this.loadUsers(this.users);
     })
     window.location.reload();
+  }
+  onEdit(firstName:string, lastName:string, email:string, isUserAdmin:boolean, isSchemaAdmin:boolean, isUser:boolean){
+    this.firstNameToUpdate=firstName;
+    this.lastNameToUpdate=lastName;
+    this.emailToUpdate=email;
+    this.isUserAdminToUpdate=isUserAdmin;
+    this.isSchemaAdminToUpdate=isSchemaAdmin;
+    this.isUserToUpdate=isUser;
   }
 
 /*  method for items per page selection
