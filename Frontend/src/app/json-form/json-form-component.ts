@@ -1,77 +1,53 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {Field, FieldCombination, FieldComponent, FieldType} from "../shared/data/interface-schema";
+import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
+import {FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
 import Validation from "../utils/validation";
-import {SelectDataset} from "../shared/data/select-data";
 
 @Component({
-  selector: 'json-form',
+  selector: 'json-form-component',
   templateUrl: './json-form-component.html',
   styleUrls: ['./json-form-component.css']
 })
-export class JsonForm implements OnChanges {
+export class JsonFormComponent implements OnChanges {
 
   @Input()
-  fields: Field[] = [];
-
-  @Input()
-  combinations: FieldCombination[] = [];
-
-  fieldData: InputData[] = [];
+  jsonForm: JsonForm = new JsonForm();
 
   form: FormGroup = new FormGroup({});
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const controls: any = {};
-    this.fieldData = [];
-    this.fields.forEach(field => {
-      this.fieldData.push(InputData.fromField(field));
 
-      if(field.name) {
-        if(field.components) {
-          field.components.forEach(component => {
-            const control = new FormControl();
-
-            control.addValidators(this.getValidators(component.type))
-            control.setValue("");
-
-            controls[field.name + "." + component.name] = control;
-          });
-        } else {
-          const control = new FormControl();
-
-          control.addValidators(this.getValidators(field.type))
-          control.setValue("");
-
-          controls[field.name] = control;
-        }
+    this.jsonForm.inputs.forEach(input => {
+      if(input.type == FieldType.object) {
+        let first = true;
+        input.components.forEach(component => {
+          const control = this.createControl(component);
+          controls[input.name + "." + component.name] = control;
+          if(first) {
+            control.addValidators(Validation.complexFieldLength(input.name, input.maxLength, () => this.form));
+            first = false;
+          }
+        });
+      } else {
+        controls[input.name] = this.createControl(input);
       }
     });
 
-    console.log(this.fieldData);
     this.form = new FormGroup(controls);
   }
 
-  getValidators(type: FieldType | undefined): ValidatorFn[] {
-    const result: ValidatorFn[] = [];
+  createControl(field: JsonFormInput): FormControl {
+    const control = new FormControl();
 
-    switch (type) {
-      case FieldType.Alphanumeric:
-        result.push(Validation.alphanumericValidator);
-        break;
-      case FieldType.Alphabetic:
-        result.push(Validation.alphabeticValidator);
-        break;
-      case FieldType.Numeric:
-        result.push(Validation.numericValidator);
-        break;
-    }
+    control.addValidators(this.getValidators(field))
+    control.setValue("");
 
-    return result;
+    return control;
   }
 
   onSubmit(): void {
@@ -81,7 +57,7 @@ export class JsonForm implements OnChanges {
       return;
 
     const data: any = {};
-    this.fields.forEach(field => {
+    this.jsonForm.inputs.forEach(field => {
       const key = field.name;
       const control = this.form.controls[key];
       if(control) {
@@ -107,12 +83,10 @@ export class JsonForm implements OnChanges {
     });
 
     console.log(data);
-
   }
 
-  getAllErrors(field: Field): string[] {
+  getAllErrors(name: string): string[] {
     const errors: string[] = [];
-    const name = field.name;
 
     for (let controlName in this.form.controls) {
       if(controlName == name || controlName.startsWith(name + ".")) {
@@ -142,66 +116,21 @@ export class JsonForm implements OnChanges {
 
     return errors;
   }
-}
 
-class InputData {
-  readonly normalizedName: string;
-  readonly inputType: string;
-  readonly dataset: SelectDataset | undefined;
-  readonly field: Field;
-  readonly component: FieldComponent;
-  readonly components: InputData[] = [];
-
-  private constructor(
-      name: string, inputType: string, dataset: SelectDataset | undefined,
-      field: Field, component: FieldComponent, components: InputData[]
-  ) {
-    this.normalizedName = name;
-    this.inputType = inputType;
-    this.dataset = dataset;
-    this.field = field;
-    this.component = component;
-    this.components = components;
-  }
-
-  static fromComponent(component: FieldComponent): InputData {
-    return new InputData(
-      InputData.normalizeCamelCase(component.name),
-      InputData.getInputTypeFromFieldType(component.type),
-      undefined,
-      new Field(),
-      component,
-      []
-    );
-  }
-
-  static fromField(field: Field): InputData {
-    const components: InputData[] = field.components ?
-      field.components.map(comp => InputData.fromComponent(comp)) : [];
-
-    const dataset: SelectDataset | undefined = SelectDataset.getDatasetByName(field.name);
-
-    return new InputData(
-      InputData.normalizeCamelCase(field.name),
-      InputData.getInputTypeFromFieldType(field.type),
-      dataset,
-      field,
-      new FieldComponent(),
-      components
-    );
-  }
-
-  static normalizeCamelCase(str: string): string {
+  normalizeCamelCase(str: string): string {
     return str.replace(/([A-Z])/g, ' $1');
   }
 
-  static getInputTypeFromFieldType(type: FieldType | undefined): string {
-    switch (type) {
-      case FieldType.Numeric:
-      case FieldType.Date:
-        return "number";
-      default:
-        return "text";
+  private getValidators(input: JsonFormInput): ValidatorFn[] {
+    const result: ValidatorFn[] = [];
+    if(input.regex) {
+      result.push(Validation.regexValidator(input.regex));
     }
+
+    if(input.type == FieldType.number) {
+      result.push(Validation.numberRangeValidator(input.min, input.max))
+    }
+
+    return result;
   }
 }

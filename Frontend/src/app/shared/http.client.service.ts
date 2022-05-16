@@ -12,7 +12,7 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
-import {InterfaceSchema} from "./data/interface-schema";
+import {JsonForm} from "./data/json-form";
 
 @Injectable({
   providedIn: 'root'
@@ -143,7 +143,7 @@ export class HttpClientService {
     }
   }
 
-  public getSelectedSchema(): Observable<InterfaceSchema> {
+  public getSelectedSchema(): Observable<JsonForm> {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 

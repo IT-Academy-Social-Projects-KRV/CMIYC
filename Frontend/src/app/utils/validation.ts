@@ -1,4 +1,6 @@
-import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {JsonFormInput} from "../shared/data/json-form";
+import {max} from "rxjs";
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {
@@ -16,6 +18,7 @@ export default class Validation {
       }
     };
   }
+
   static alphanumericValidator: ValidatorFn = control => {
     return /^[A-Za-z0-9]*$/.test(control.value) ? null : {alphabetic: "This field can only contain letters and digits"};
   }
@@ -26,6 +29,51 @@ export default class Validation {
 
   static numericValidator: ValidatorFn = control => {
     return /^[0-9]*$/.test(control.value) ? null : {numeric: "This field can only contain numbers"};
+  }
+
+  static regexValidator(regex: string) {
+    const res: ValidatorFn = control => {
+      const regExp = new RegExp(regex);
+      return regExp.test(control.value) ? null : {"regexError": "This field contains bad characters"};
+    };
+
+    return res;
+  }
+
+  static numberRangeValidator(min: number | undefined, max: number | undefined) {
+    const res: ValidatorFn = control => {
+      if(min == undefined && max == undefined)
+        return null;
+
+      const number = Number.parseFloat(control.value);
+      if(min && min > number)
+        return {"min": "Min value is: " + min};
+
+      if(max && max < number)
+        return {"max": "Max value is: " + max};
+
+      return null;
+    };
+
+    return res;
+  }
+
+  static complexFieldLength(inputName: string, maxLength: number, formGetter: () => FormGroup) {
+    const res: ValidatorFn = control => {
+      let length: number = 0;
+      const form = formGetter();
+      for (let controlsKey in form.controls) {
+        if(controlsKey.startsWith(inputName + ".")) {
+          const control = form.controls[controlsKey];
+          length += control.value.length;
+          if(length > maxLength) break;
+        }
+      }
+
+      return length > maxLength ? {"maxLength": "Max length for this field is " + maxLength + " characters"} : null;
+    }
+
+    return res;
   }
 
   static passwordValidator(): ValidatorFn[] {
