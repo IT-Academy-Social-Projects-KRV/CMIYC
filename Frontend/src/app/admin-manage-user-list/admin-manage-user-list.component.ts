@@ -58,6 +58,12 @@ export class AdminManageUserListComponent implements OnInit {
     })
 
   }
+  onDelete(userId:number){
+    this.httpClientService.deleteUser(userId).subscribe(list=>{
+      this.loadUsers(this.users);
+    })
+    window.location.reload();
+  }
 
 /*  method for items per page selection
   onTableSizeChange(event:any): void {

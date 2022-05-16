@@ -167,6 +167,9 @@ export class HttpClientService {
     let pageOnBack = page-1;
     return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(pageOnBack)).replace("{itemsAmount}",String(itemsAmount)));
   }
+  public deleteUser(userId:number):Observable<number>{
+    return this.deleteRequest<number>(this.URL_USERS+"/"+userId);
+  }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
     return this.postRequest(
