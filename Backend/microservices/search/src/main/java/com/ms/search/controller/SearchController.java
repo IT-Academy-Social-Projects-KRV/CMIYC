@@ -12,15 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.ToDoubleBiFunction;
 
 @RestController
 @RequestMapping("/search")
 @AllArgsConstructor
 public class SearchController {
 
-    private final DataConnect dataConnect;
-    private final ConnectorConnect connectorConnect;
+    private final DataConnect dataConnect; //todo change connect into dataApiClient
+    private final ConnectorConnect connectorConnect; //todo connectorAPI
     private final CacheManager cacheManager;
+
+    //todo controller advice (google it) - add global exception handler
 
     @GetMapping
     public ResponseEntity<?> getSchemas(@RequestHeader(value = "Authorization") String authorizationHeader) {
@@ -37,6 +41,7 @@ public class SearchController {
         CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache(CaffeineConfig.CACHE_SEARCH);
         com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache =
                 Objects.requireNonNull(caffeineCache).getNativeCache();
+        System.out.println(nativeCache.asMap().keySet());
         return nativeCache.asMap().values();
     }
 
@@ -45,6 +50,7 @@ public class SearchController {
     public ResponseEntity<?> search(@RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery) {
         try {
             return new ResponseEntity<>(connectorConnect.searcher(authorizationHeader, searchQuery), HttpStatus.OK);
+            //!todo rename searcher --> search
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().build();
         }

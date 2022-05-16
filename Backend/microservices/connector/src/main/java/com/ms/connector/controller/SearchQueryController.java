@@ -21,7 +21,7 @@ public class SearchQueryController {
     public Map<String, SearchResponse> searcher(@RequestBody SearchQuery searchQuery) {
         return apiService.handleSearchRequest(searchQuery);
     }
-
+    //todo change Map into wrapper class!
     //for test only.  Get test search query JSON response
     @GetMapping
     public Map<String, Map<String, String>> testQuery() {
