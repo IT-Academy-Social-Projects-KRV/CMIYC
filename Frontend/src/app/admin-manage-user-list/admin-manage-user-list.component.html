@@ -1,6 +1,5 @@
 <div>
   <app-sidebar></app-sidebar>
-
   <div class="d-flex flex-column flex-shrink-0 border-start border-1">
     <table class="table table-striped">
       <thead class="table-dark">
@@ -20,8 +19,13 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let user of users">
-          <th scope="row" class="align-middle px-3">{{user.id}}</th>
+        <tr *ngFor="let user of users | paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              };
+        let i = index" [class.active]="i == i">
+          <th scope="row" class="align-middle px-3">{{i+1}}</th>
           <td class="align-middle">{{user.firstName}}</td>
           <td class="align-middle">{{user.lastName}}</td>
           <td class="align-middle">{{user.email}}</td>
@@ -62,7 +66,23 @@
 
       </tbody>
     </table>
-
+    <div class="d-flex justify-content-center">
+      <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+      <!--selection amount of items per page-->
+      <!--<div class="d-flex flex-row-reverse bd-highlight mb-2">
+        <div class="p-2 bd-highlight">
+          <select (change)="onTableSizeChange($event)" class="custom-select">
+            <option *ngFor="let size of tableSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>-->
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">

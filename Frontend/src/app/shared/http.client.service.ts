@@ -23,11 +23,14 @@ export class HttpClientService {
   private readonly DATA_API:    string | undefined;
 
   // Auth
+
   private readonly URL_LOGIN:           string;
   private readonly URL_USERS:           string;
   private readonly URL_SET_USER_ACTIVE: string;
   private readonly URL_ACTIVATION:      string;
   private readonly URL_REGISTRATION:    string;
+  private readonly URL_PAGINATION:      string;
+
 
   // Search API
   private readonly URL_SCHEMA: string;
@@ -55,6 +58,7 @@ export class HttpClientService {
     this.URL_SET_USER_ACTIVE = this.AUTH_SERVER + '/users/{userId}/active/';
     this.URL_ACTIVATION = this.AUTH_SERVER + "/users/activation";
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
+    this.URL_PAGINATION = this.URL_USERS +"/?page={page}&size={itemsAmount}";
 
     this.URL_SCHEMA = this.SEARCH_API + '/search';
     this.URL_SEARCH = this.SEARCH_API + '/search';
@@ -116,6 +120,7 @@ export class HttpClientService {
     return this.http.get<T>(url, this.getPlainTextRequestOptions());
   }
 
+
   private postRequest<T>(url: string, params: any): Observable<T> {
     return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
@@ -152,6 +157,15 @@ export class HttpClientService {
 
   public getUsers(): Observable<User[]> {
     return this.getRequestJSON<User[]>(this.URL_USERS);
+  }
+
+  public getInitialPage(itemsAmount:number): Observable<Object> {
+    let page = 0;
+    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(page)).replace("{itemsAmount}",String(itemsAmount)));
+  }
+  public getUsersOnPage(page:number,itemsAmount:number): Observable<Object> {
+    let pageOnBack = page-1;
+    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(pageOnBack)).replace("{itemsAmount}",String(itemsAmount)));
   }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
