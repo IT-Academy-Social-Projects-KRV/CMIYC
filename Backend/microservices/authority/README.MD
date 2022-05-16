@@ -8,9 +8,9 @@
  
 >### Change email api key in Run/Debug Configurations:
 > 1.Choose AuthorityApplication in left bar <br>
-> 2.In line **"Environment variables"** add **"mail.password=somepasswordhere"**<br>
+> 2.In line **"Environment variables"** add **"spring.mail.password=somepasswordhere"**<br>
 > 3.You must now the password ! 
->![img.png](img.png)
+>![img_1.png](img_1.png)
 
 > ### WARNING
 > DO NOT CHANGE FILES UNDER **/resources/db/migration** DIRECTORY AS IT WILL CHANGE MIGRATIONS CHECKSUM
