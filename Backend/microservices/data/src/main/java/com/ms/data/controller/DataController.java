@@ -1,6 +1,7 @@
 package com.ms.data.controller;
 
 import com.ms.data.dto.SchemaFile;
+import com.ms.data.dto.form.HtmlForm;
 import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.service.CloudStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,9 @@ public class DataController {
     @GetMapping("/{name}/json")
     public ResponseEntity<?> readSchemaToObject(@PathVariable("name") String name) {
         try {
-            InterfaceSchema interfaceSchema = cloudStorageService.getInterfaceSchema(name);
-            return ResponseEntity.of(Optional.of(interfaceSchema));
+            HtmlForm htmlForm = cloudStorageService.getHtmlForm(name);
+            System.out.println(htmlForm);
+            return ResponseEntity.of(Optional.of(htmlForm));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
@@ -51,7 +53,7 @@ public class DataController {
     }
 
     @GetMapping("/selected")
-    public InterfaceSchema getSelectedSchema() {
+    public HtmlForm getSelectedSchema() {
         return cloudStorageService.getSelectedSchema();
     }
 

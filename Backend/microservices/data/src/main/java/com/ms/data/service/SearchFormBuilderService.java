@@ -1,35 +1,68 @@
 package com.ms.data.service;
 
-import com.ms.data.dto.form.JsonForm;
+import com.ms.data.dto.form.ApiCombination;
+import com.ms.data.dto.form.CombinationFieldReference;
+import com.ms.data.dto.form.HtmlForm;
+import com.ms.data.dto.form.input.HtmlInput;
+import com.ms.data.dto.xml.Combination;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.InterfaceSchema;
-import com.ms.data.service.builders.JsonInputBuilder;
+import com.ms.data.service.builders.HtmlInputBuilder;
+import com.ms.data.service.builders.HtmlInputBuilderByNameAndType;
+import com.ms.data.service.builders.HtmlInputBuilderByType;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class JsonFormBuilderService {
+public class SearchFormBuilderService {
 
-    private final Map<String, JsonInputBuilder> builders = new HashMap<>();
+    private final List<HtmlInputBuilder> builders = new ArrayList<>();
 
-    public void registerInputBuilder(String fieldType, JsonInputBuilder builder) {
-        this.builders.put(fieldType, builder);
+    @Autowired
+    public SearchFormBuilderService(
+            List<HtmlInputBuilderByNameAndType> buildersByNameAndType,
+            List<HtmlInputBuilderByType> buildersByType
+    ) {
+        builders.addAll(buildersByNameAndType);
+        builders.addAll(buildersByType);
     }
 
-    public JsonForm build(InterfaceSchema schema) {
-        JsonForm jsonForm = new JsonForm();
-        jsonForm.setName(schema.getTransaction().getName());
+    public HtmlInput buildInput(Field field) {
+        HtmlInputBuilder builder = builders.stream().filter(b -> b.canBuild(field)).findAny().orElseThrow();
+        return builder.build(field, this);
+    }
+
+    public HtmlForm buildForm(InterfaceSchema schema) {
+        HtmlForm htmlForm = new HtmlForm();
+        htmlForm.setName(schema.getTransaction().getName());
 
         for (Field field : schema.getTransaction().getFields()) {
-            String name = field.getName();
-            String description = field.getDescription();
-
-            JsonInputBuilder jsonInputBuilder = builders.get(field.getType());
-
+            HtmlInput htmlInput = buildInput(field);
+            htmlForm.getInputs().add(htmlInput);
         }
 
-        return null;
+        for (Combination combination : schema.getTransaction().getCombinations()) {
+            ApiCombination apiCombination = new ApiCombination(combination.getPrimaryFieldReference());
+            for (Field mandatoryField : combination.getRequirements().getFields().getMandatoryFields()) {
+                apiCombination.getFields().add(
+                        new CombinationFieldReference(mandatoryField.getReference(), true)
+                );
+            }
+
+            for (Field optionalField : combination.getRequirements().getFields().getOptionalFields()) {
+                apiCombination.getFields().add(
+                        new CombinationFieldReference(optionalField.getReference(), false)
+                );
+            }
+
+            htmlForm.getCombinations().add(apiCombination);
+        }
+
+        return htmlForm;
     }
 }

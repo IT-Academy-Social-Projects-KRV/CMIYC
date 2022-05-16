@@ -10,7 +10,7 @@ import com.ms.data.service.builders.HtmlInputBuilderByType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DateHtmlInputBuilder extends HtmlInputBuilderByType {
+public class DateObjectInputBuilder extends HtmlInputBuilderByType {
 
     @Override
     public boolean canBuild(String type) {

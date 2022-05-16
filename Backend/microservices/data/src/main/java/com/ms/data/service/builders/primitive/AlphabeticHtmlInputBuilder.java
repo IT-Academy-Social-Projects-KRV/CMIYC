@@ -1,9 +1,10 @@
-package com.ms.data.service.builders;
+package com.ms.data.service.builders.primitive;
 
 import com.ms.data.dto.form.input.HtmlInput;
 import com.ms.data.dto.form.input.TextInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.service.SearchFormBuilderService;
+import com.ms.data.service.builders.HtmlInputBuilderByType;
 import org.springframework.stereotype.Component;
 
 @Component

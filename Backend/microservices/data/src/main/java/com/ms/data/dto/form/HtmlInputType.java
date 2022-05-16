@@ -1,6 +1,6 @@
 package com.ms.data.dto.form;
 
-public enum InputType {
+public enum HtmlInputType {
 
     text, number, select, object
 }

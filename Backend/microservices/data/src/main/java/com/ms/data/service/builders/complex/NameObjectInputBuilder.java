@@ -2,7 +2,6 @@ package com.ms.data.service.builders.complex;
 
 import com.ms.data.dto.form.input.ComplexInput;
 import com.ms.data.dto.form.input.HtmlInput;
-import com.ms.data.dto.form.input.NumberInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.FieldComponent;
 import com.ms.data.service.SearchFormBuilderService;
@@ -10,7 +9,7 @@ import com.ms.data.service.builders.HtmlInputBuilderByType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NameHtmlInputBuilder extends HtmlInputBuilderByType {
+public class NameObjectInputBuilder extends HtmlInputBuilderByType {
 
     @Override
     public boolean canBuild(String type) {

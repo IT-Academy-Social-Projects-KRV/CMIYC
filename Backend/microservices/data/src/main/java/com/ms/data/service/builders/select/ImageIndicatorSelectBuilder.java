@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ImageIndicatorHtmlInputBuilder extends HtmlInputBuilderByNameAndType {
+public class ImageIndicatorSelectBuilder extends HtmlInputBuilderByNameAndType {
 
     private static final List<SelectOption> OPTIONS = List.of(
-            new SelectOption("No", ""),
-            new SelectOption("Yes", "Y")
+            new SelectOption("N", "No"),
+            new SelectOption("Y", "Yes")
     );
 
     @Override

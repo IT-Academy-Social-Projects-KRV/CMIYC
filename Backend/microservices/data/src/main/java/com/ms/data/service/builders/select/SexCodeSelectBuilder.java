@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class SexCodeHtmlInputBuilder extends HtmlInputBuilderByNameAndType {
+public class SexCodeSelectBuilder extends HtmlInputBuilderByNameAndType {
 
     private static final List<SelectOption> OPTIONS = List.of(
-            new SelectOption("Unknown", ""),
-            new SelectOption("Male", "M"),
-            new SelectOption("Female", "F")
+            new SelectOption("", "Unknown"),
+            new SelectOption("M", "Male"),
+            new SelectOption("F", "Female")
     );
 
     @Override

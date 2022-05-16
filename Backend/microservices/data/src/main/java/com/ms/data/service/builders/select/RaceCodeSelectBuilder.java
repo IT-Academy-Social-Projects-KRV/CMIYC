@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RaceCodeHtmlInputBuilder extends HtmlInputBuilderByNameAndType {
+public class RaceCodeSelectBuilder extends HtmlInputBuilderByNameAndType {
 
     private static final List<SelectOption> OPTIONS = List.of(
             new SelectOption("", "Unknown"),

@@ -6,6 +6,7 @@ import com.google.api.services.storage.model.Objects;
 import com.google.api.services.storage.model.StorageObject;
 import com.ms.data.config.InputStreamContent;
 import com.ms.data.dto.SchemaFile;
+import com.ms.data.dto.form.HtmlForm;
 import com.ms.data.dto.xml.InterfaceSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -35,6 +36,7 @@ public class CloudStorageService {
 
     private final Storage storage;
     private final XmlReaderService xmlReaderService;
+    private final SearchFormBuilderService searchFormBuilderService;
 
     @Value("${cloud-storage.path}")
     private String bucketName;
@@ -49,6 +51,9 @@ public class CloudStorageService {
                 break;
             }
         }
+
+        HtmlForm htmlForm = getHtmlForm(selectedSchemaName);
+        System.out.println(htmlForm);
     }
 
     @SneakyThrows
@@ -104,6 +109,11 @@ public class CloudStorageService {
         return fileContent.map(xmlReaderService::read).orElseThrow();
     }
 
+    public HtmlForm getHtmlForm(String name) {
+        InterfaceSchema interfaceSchema = getInterfaceSchema(name);
+        return searchFormBuilderService.buildForm(interfaceSchema);
+    }
+
     @SneakyThrows
     public void selectSchema(String name) {
         if(name.equals(selectedSchemaName))
@@ -133,12 +143,12 @@ public class CloudStorageService {
         }
     }
 
-    public InterfaceSchema getSelectedSchema() {
+    public HtmlForm getSelectedSchema() {
         if (selectedSchemaName == null) {
             return null;
         }
 
-        return getInterfaceSchema(selectedSchemaName);
+        return getHtmlForm(selectedSchemaName);
     }
 
     @SneakyThrows
