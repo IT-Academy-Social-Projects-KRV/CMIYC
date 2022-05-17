@@ -10,13 +10,11 @@ import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.service.builders.HtmlInputBuilder;
 import com.ms.data.service.builders.HtmlInputBuilderByNameAndType;
 import com.ms.data.service.builders.HtmlInputBuilderByType;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SearchFormBuilderService {
@@ -33,7 +31,7 @@ public class SearchFormBuilderService {
     }
 
     public HtmlInput buildInput(Field field) {
-        HtmlInputBuilder builder = builders.stream().filter(b -> b.canBuild(field)).findAny().orElseThrow();
+        HtmlInputBuilder builder = builders.stream().filter(b -> b.canBuild(field)).findFirst().orElseThrow();
         return builder.build(field, this);
     }
 
