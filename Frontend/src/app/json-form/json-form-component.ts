@@ -45,7 +45,8 @@ export class JsonFormComponent implements OnChanges {
     });
 
     this.form = new FormGroup(controls);
-    this.form.valueChanges.subscribe(selectedValue  => {
+
+    const onUpdateCallback = () => {
       const data = this.collectData();
 
       this.selectedApis = [];
@@ -55,7 +56,10 @@ export class JsonFormComponent implements OnChanges {
       });
 
       this.notEnoughFields = this.selectedApis.length == 0;
-    });
+    }
+
+    this.form.valueChanges.subscribe(onUpdateCallback);
+    onUpdateCallback();
   }
 
   createControl(field: JsonFormInput, value: string = ''): FormControl {

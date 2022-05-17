@@ -28,20 +28,6 @@
     <div class="d-none d-lg-block col-2"></div>
   </div>
 
-  <div class="row mb-4 ps-5">
-    <div class="col-lg-4 mw-45 me-auto ms-auto ps-3">
-      <div class="form-check form-check-inline me-0" *ngFor="let combination of jsonForm.combinations">
-        <span style="font-size: 18px" class="text-success" *ngIf="true || selectedApis.includes(combination.apiName)">
-          <i class="bi bi-check text-success" ></i>
-          {{combination.apiName}}
-        </span>
-        <span *ngIf="selectedApis.includes(combination.apiName)">
-          {{combination.apiName}}
-        </span>
-      </div>
-    </div>
-  </div>
-
   <div class="row">
     <div class="col"></div>
       <button [disabled]="!form.valid || notEnoughFields" type="submit" class="btn btn-primary col-2">Submit</button>
