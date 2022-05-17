@@ -14,6 +14,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         //return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("{error: \"" + ex.getMessage() + "\"}");
+                .body(  ex.getMessage());
     }
 }
