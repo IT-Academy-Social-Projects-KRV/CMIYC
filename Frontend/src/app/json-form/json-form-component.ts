@@ -1,7 +1,9 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
-import {FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
+import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
 import Validation from "../utils/validation";
+import {SearchRequest} from "../shared/data/search-request";
+import {HttpClientService} from "../shared/http.client.service";
 
 @Component({
   selector: 'json-form-component',
@@ -16,7 +18,7 @@ export class JsonFormComponent implements OnChanges {
   form: FormGroup = new FormGroup({});
   submitted = false;
 
-  constructor() {
+  constructor(private httpClientService: HttpClientService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,18 +36,20 @@ export class JsonFormComponent implements OnChanges {
           }
         });
       } else {
-        controls[input.name] = this.createControl(input);
+        const value = input.type == FieldType.select ? input.options[0].value : '';
+
+        controls[input.name] = this.createControl(input, value);
       }
     });
 
     this.form = new FormGroup(controls);
   }
 
-  createControl(field: JsonFormInput): FormControl {
+  createControl(field: JsonFormInput, value: string = ''): FormControl {
     const control = new FormControl();
 
     control.addValidators(this.getValidators(field))
-    control.setValue("");
+    control.setValue(value);
 
     return control;
   }
@@ -56,33 +60,32 @@ export class JsonFormComponent implements OnChanges {
     if(!this.form.valid)
       return;
 
-    const data: any = {};
-    this.jsonForm.inputs.forEach(field => {
-      const key = field.name;
-      const control = this.form.controls[key];
-      if(control) {
-        if(control.value) {
-          data[key] = control.value;
-        }
-      } else {
-        const complexInputData: any = {};
-        let anyComponentHasValue = false;
-        field.components.forEach(comp => {
-          const componentInput = this.form.controls[key + "." + comp.name];
-          if(componentInput) {
-            complexInputData[comp.name] = componentInput.value;
-            if(componentInput.value) {
-              anyComponentHasValue = true;
-            }
-          }
-        });
+    const data: any = this.collectData()
 
-        if(anyComponentHasValue)
-          data[key] = complexInputData;
+    const request: SearchRequest = {};
+    this.jsonForm.combinations.forEach(combination => {
+      if (ApiCombination.isValid(combination, data)) {
+        const requestData = ApiCombination.buildSearchRequestData(combination, data);
+        request[combination.apiName] = requestData;
       }
     });
 
-    console.log(data);
+    if(!Object.keys(request).length) {
+      return alert("Not enough fields filled")
+    }
+
+    console.log("Data to send", request);
+
+    this.httpClientService
+      .search(request)
+      .subscribe({
+        next: value => {
+          console.log(value);
+        },
+        error: err => {
+          alert(err.error || err.message || err.description || JSON.stringify(err));
+        }
+      });
   }
 
   getAllErrors(name: string): string[] {
@@ -132,5 +135,46 @@ export class JsonFormComponent implements OnChanges {
     }
 
     return result;
+  }
+
+  notEnoughFields() {
+    const data = this.collectData();
+    for (let i = 0; i < this.jsonForm.combinations.length; i++) {
+      const combination = this.jsonForm.combinations[i];
+      if(ApiCombination.isValid(combination, data))
+        return false;
+    }
+
+    return true;
+  }
+
+  private collectData(): any {
+    const data: any = {};
+    this.jsonForm.inputs.forEach(field => {
+      const key = field.name;
+      const control = this.form.controls[key];
+      if(control) {
+        if(control.value) {
+          data[key] = control.value;
+        }
+      } else {
+        const complexInputData: any = {};
+        let anyComponentHasValue = false;
+        field.components.forEach(comp => {
+          const componentInput = this.form.controls[key + "." + comp.name];
+          if(componentInput) {
+            complexInputData[comp.name] = componentInput.value;
+            if(componentInput.value) {
+              anyComponentHasValue = true;
+            }
+          }
+        });
+
+        if(anyComponentHasValue)
+          data[key] = complexInputData;
+      }
+    });
+
+    return data;
   }
 }
