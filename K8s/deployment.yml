@@ -166,6 +166,20 @@ spec:
               value: "8081"
             - name: ROUTES_MICROSERVICES_AUTHORITY
               value: http://34.116.181.83:8090
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/var/run/secret/cloud.google.com/cmiyc-bucket-key.json"
+          volumeMounts:
+            - name: "service-account"
+              mountPath: "/var/run/secret/cloud.google.com"
+            - name: "certs"
+              mountPath: "/etc/ssl/certs"
+      volumes:
+        - name: "service-account"
+          secret:
+            secretName: "bucket-secret"
+        - name: "certs"
+          hostPath:
+            path: "/etc/ssl/certs"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -195,11 +209,11 @@ spec:
             - name: ROUTES_MICROSERVICES_AUTHORITY
               value: http://34.116.181.83:8090
             - name: ROUTES_EXTERNAL_REST
-              value: http://rest-server:9001
+              value: http://rest-server:9001/rest-server
             - name: ROUTES_EXTERNAL_SOAP
               value: http://soap-server:9003
             - name: ROUTES_EXTERNAL_WEBSOCKET
-              value: http://websocket-server:9002
+              value: ws://websocket-server:9002/websocket-server
 ---
 apiVersion: apps/v1
 kind: Deployment
