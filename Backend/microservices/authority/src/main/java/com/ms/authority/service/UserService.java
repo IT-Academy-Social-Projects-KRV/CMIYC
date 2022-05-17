@@ -16,6 +16,7 @@ import com.ms.authority.repository.RoleRepository;
 import com.ms.authority.repository.UserRepository;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,50 +83,26 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public RegistrationResultData signUpUser(User user, Token token) {
-        boolean userExist = userRepository.findByEmail(user.getEmail())
-                .isPresent();
-        if (userExist) {
-            // TODO check of attributes are the same and
-            // TODO if email not confirmed send confirmation email
-            return new RegistrationResultData(true, "email already taken");
-        }
+    public boolean isUserExist(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    @SneakyThrows
+    public void register(RegistrationRequestData request) {
+        Token token = new Token();
+        String link = activationPage + token.getToken();
+        String secret = tfaService.generateSecretKey();
+        String qrCode = tfaService.getQRCode(request.getEmail(), secret);
+        if(isUserExist(request.getEmail()))
+            throw new UserAlreadyRegistredException();
+        emailService.sendActivationLink(request.getEmail(), request.getFirstName(), link, qrCode);
+        Set<Role> roleSet = extractRolesFromStrings(request.getRoles());
+        User user = new User(request.getFirstName(), request.getLastName(), request.getEmail(), secret, roleSet);
         String encodePassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
         user.setPassword(encodePassword);
-
         userRepository.save(user);
         token.setUser(user);
         tokenService.saveVerificationToken(token);
-
-        return new RegistrationResultData(false, "All it is okay");
-    }
-
-    public RegistrationResultData register(RegistrationRequestData request) {
-        Token token = new Token();
-
-        String link = activationPage + token.getToken();
-        String secret = tfaService.generateSecretKey();
-        String qrCode = null;
-        try {
-            qrCode = tfaService.getQRCode(request.getEmail(), secret);
-        } catch (QrGenerationException e) {
-            e.printStackTrace();
-        }
-        try {
-            emailService.sendActivationLink(request.getEmail(), request.getFirstName(), link, qrCode);
-        } catch (MessagingException e) {
-            return new RegistrationResultData(true, "Email is invalid");
-        }
-        // TODO registration result (boolean)
-        Set<Role> roleSet = extractRolesFromStrings(request.getRoles());
-        return signUpUser(
-                new User(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getEmail(),
-                        secret,
-                        roleSet),
-                token);
     }
 
     public void confirmRegister(ConfirmRegisterData confirmRegisterData)
