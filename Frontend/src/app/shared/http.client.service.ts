@@ -12,6 +12,7 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
+import {SearchResponse} from "./data/search.response";
 
 @Injectable({
   providedIn: 'root'
@@ -151,7 +152,7 @@ export class HttpClientService {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(body: FormGroup): Observable<T> {
+  public search(body: FormGroup): Observable<SearchResponse> {
     return this.postRequest(this.URL_SEARCH, body.value);
   }
 

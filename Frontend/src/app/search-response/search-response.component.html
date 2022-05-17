@@ -18,25 +18,23 @@
   <div class="mt-4 table-wrapper-scroll-y my-custom-scrollbar">
     <!-- Test accordion-->
     <div class="accordion accordion-flush" id="accordion">
-      <div class="accordion-item" *ngFor="let response of responses | paginate : {
+      <div *ngFor="let responses of searchResponses | keyvalue let i = index">
+        <div class="accordion-item" *ngFor="let response of responses.value['data'] | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
                 totalItems: count
               };
-        let i = index" [class.active]="i == i">
-        <h2 class="accordion-header" [attr.id]="'flush-heading'+i">
-          <button class="accordion-button collapsed" type="button" [attr.data-bs-toggle]="'collapse'" [attr.data-bs-target]="'#flush-collapse'+i" [attr.aria-expanded]="'false'" [attr.aria-controls]="'flush-collapse'+i">
-            {{response.api}} : {{response.request}}
-          </button>
-        </h2>
-        <div [attr.id]="'flush-collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+i" [attr.data-bs-parent]="'#accordion'">
-          <div class="accordion-body">
-            <strong>{{response.firstName}}</strong><br>
-            <strong>{{response.lastName}}</strong><br>
-            <strong>{{response.email}}</strong><br>
-            <strong>{{response.licenceNumber}}</strong><br>
-            <strong>{{response.registrationNumber}}</strong><br>
-            <strong>{{response.birthDate}}</strong></div>
+        let j = index" [class.active]="j == j">
+          <h2 class="accordion-header" [attr.id]="'flush-heading'+j">
+            <button class="accordion-button collapsed" type="button" [attr.data-bs-toggle]="'collapse'" [attr.data-bs-target]="'#flush-collapse'+j" [attr.aria-expanded]="'false'" [attr.aria-controls]="'flush-collapse'+j">
+              {{responses.key}}
+            </button>
+          </h2>
+          <div [attr.id]="'flush-collapse'+j" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+j" [attr.data-bs-parent]="'#accordion'">
+            <div class="accordion-body" *ngFor="let data of response.data | keyvalue let i = index">
+              <strong>{{data.key}} -> {{data.value}}</strong><br>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Validation from '../utils/validation';
 import {HttpClientService} from "../shared/http.client.service";
+import {SearchResponse} from "../shared/data/search.response";
+import {ResponseService} from "../shared/response.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-search-interface',
@@ -22,7 +25,7 @@ export class UserSearchInterfaceComponent implements OnInit {
     api3: new FormControl('')
   });
   submitted = false;
-  constructor(private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
+  constructor(private formBuilder: FormBuilder, private httpClientService: HttpClientService, private responseService: ResponseService, private router: Router) { }
   ngOnInit(): void {
     this.httpClientService.getSelectedSchema().subscribe(response => console.log(response));
     this.form = this.formBuilder.group(
@@ -53,7 +56,8 @@ export class UserSearchInterfaceComponent implements OnInit {
     this.form.value['foreignDataSource'] = this.getAPIs();
     this.httpClientService.search(this.form).subscribe({
       next: response => {
-        console.log(response);
+        this.responseService.updateResponse(response as SearchResponse);
+        this.router.navigate(['/search/response']);
       },
       error: error => {
         console.error('There was an error!', error);

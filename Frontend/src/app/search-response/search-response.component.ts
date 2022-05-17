@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {RESPONSES} from "../shared/Mock/Repo";
+import {ResponseService} from "../shared/response.service";
+import {SearchResponse} from "../shared/data/search.response";
 
 @Component({
   selector: 'app-search-response',
@@ -10,14 +12,18 @@ export class SearchResponseComponent implements OnInit {
 
   POSTS: any;
   page = 1;
-  count:number|undefined;
+  count: number | undefined;
   tableSize = 5;
-  responses = RESPONSES;
+  searchResponses: SearchResponse;
 
-  constructor() { }
+  constructor(private responseService: ResponseService) {
+    this.searchResponses = this.responseService.response as SearchResponse;
+  }
 
   ngOnInit(): void {
-    this.count=this.responses.length;
+    if (this.responseService.response !== undefined) {
+      console.log(this.searchResponses);
+    }
   }
 
   onTableDataChange(event:any){
