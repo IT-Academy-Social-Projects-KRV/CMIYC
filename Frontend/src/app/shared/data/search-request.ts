@@ -1,7 +1,10 @@
-export declare type SearchRequestData = {
-  [name: string]: any
-}
+export class SearchRequest {
 
-export declare type SearchRequest = {
-  [api: string]: SearchRequestData
+  apis: string[] = [];
+  data: any = {};
+
+  constructor(apis: string[], data: any) {
+    this.apis = apis;
+    this.data = data;
+  }
 }

@@ -78,16 +78,16 @@ export class JsonFormComponent implements OnChanges {
       return;
 
     const data: any = this.collectData()
+    const apis: string[] = [];
 
-    const request: SearchRequest = {};
+    const request: SearchRequest = new SearchRequest(apis, data);
     this.jsonForm.combinations.forEach(combination => {
       if (ApiCombination.isValid(combination, data)) {
-        const requestData = ApiCombination.buildSearchRequestData(combination, data);
-        request[combination.apiName] = requestData;
+        apis.push(combination.apiName);
       }
     });
 
-    if(!Object.keys(request).length) {
+    if(!request.apis.length) {
       return alert("Not enough fields filled")
     }
 

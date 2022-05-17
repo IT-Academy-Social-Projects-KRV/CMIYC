@@ -1,6 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {FormGroup} from '@angular/forms';
 import {Observable} from "rxjs";
 import {Router} from '@angular/router';
 import {LoginRequest} from "./data/login-request";
