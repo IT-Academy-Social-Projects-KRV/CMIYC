@@ -1,13 +1,12 @@
 package com.external.dto.request;
 
+import com.external.dto.response.RequestResponse;
 import com.external.entity.Person;
-
-import java.util.Map;
 
 public interface RequestPayload {
 
     boolean isEqualToPerson(Person person);
 
-    Map<String, Object> toMap();
+    RequestResponse createResponse(Person person);
 
 }

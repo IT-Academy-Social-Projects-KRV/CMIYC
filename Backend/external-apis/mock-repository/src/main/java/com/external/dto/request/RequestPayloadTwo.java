@@ -1,29 +1,32 @@
 package com.external.dto.request;
 
+import com.external.dto.response.RequestResponseOne;
+import com.external.dto.response.RequestResponseTwo;
 import com.external.entity.Person;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
 @Setter
-public class RequestPayloadTwo extends RequestPayloadOne {
+public class RequestPayloadTwo implements RequestPayload {
 
-    private String lastName;
+    private String operatorLicenseNumber;
+    private String state;
+    private String imageIndicator;
+
 
     @Override
     public boolean isEqualToPerson(Person person) {
-        return super.isEqualToPerson(person) && person.getLastName()
-                .equals(lastName);
+        return person.getOperatorLicenseNumber().equals(operatorLicenseNumber) && person.getState().equals(state);
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = super.toMap();
-        map.put("lastName", lastName);
-
-        return map;
+    public RequestResponseTwo createResponse(Person person) {
+        return new RequestResponseTwo(person,"Y".equals(imageIndicator));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.external.repository;
 
+import com.external.dto.Name;
 import com.external.dto.request.RequestPayload;
 import com.external.entity.Person;
 import com.external.server.MockRepositoryApplication;
@@ -10,6 +11,7 @@ import lombok.SneakyThrows;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -22,12 +24,15 @@ public class PersonRepository {
 
     private final Set<Person> persons = new HashSet<>();
 
+
+
     public PersonRepository() {
         onInit();
     }
 
     @SneakyThrows
     private void onInit() {
+
         ObjectMapper mapper = MapperUtils.objectMapper;
 
         StringBuilder fileContent = new StringBuilder();
@@ -45,11 +50,7 @@ public class PersonRepository {
         String mockDataFile = fileContent.toString();
         Person[] people = mapper.readValue(mockDataFile, Person[].class);
 
-        int id = 1000;
-        for (Person person : people) {
-            person.setId(++id);
-            persons.add(person);
-        }
+        Collections.addAll(persons, people);
     }
 
     public List<Person> findAllByRequest(RequestPayload request) {

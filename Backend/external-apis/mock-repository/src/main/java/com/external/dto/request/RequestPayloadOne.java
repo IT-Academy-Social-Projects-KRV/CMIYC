@@ -1,6 +1,12 @@
 package com.external.dto.request;
 
+import com.external.dto.Date;
+import com.external.dto.Gender;
+import com.external.dto.Name;
+import com.external.dto.response.RequestResponse;
+import com.external.dto.response.RequestResponseOne;
 import com.external.entity.Person;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,20 +17,20 @@ import java.util.Map;
 @Setter
 public class RequestPayloadOne implements RequestPayload {
 
-    private String firstName;
+    private Date birthDate;
+    private Name name;
+    private String sexCode;
+
 
     @Override
+
     public boolean isEqualToPerson(Person person) {
-        return person.getFirstName()
-                .equals(firstName);
+        return person.getName().equals(name) && person.getBirthDate().equals(birthDate) && person.getGender().isSexCodeCorrect(sexCode);
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("firstName", firstName);
-
-        return map;
+    public RequestResponseOne createResponse(Person person) {
+   return new RequestResponseOne(person);
     }
 
 }
