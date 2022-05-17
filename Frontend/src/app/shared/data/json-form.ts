@@ -1,3 +1,5 @@
+import {key} from "ngx-bootstrap-icons";
+
 export class JsonForm {
   name: string = '';
   inputs: JsonFormInput[] = [];
@@ -35,13 +37,21 @@ export class ApiCombination {
   static isValid(combination: ApiCombination, data: any) {
     const keys = Object.keys(data);
     const fields = combination.fields;
+    let anyOfOptionalFieldsPresent: boolean = false;
     for (let i = 0; i < fields.length; i++) {
       const ref = fields[i];
-      if (ref.required && !keys.includes(ref.field))
-        return false;
+      const fieldPresentInRequest = keys.includes(ref.field);
+
+      if (ref.required) {
+        if(!fieldPresentInRequest)
+          return false;
+      } else {
+        if(fieldPresentInRequest)
+          anyOfOptionalFieldsPresent = true;
+      }
     }
 
-    return true;
+    return anyOfOptionalFieldsPresent;
   }
 }
 
