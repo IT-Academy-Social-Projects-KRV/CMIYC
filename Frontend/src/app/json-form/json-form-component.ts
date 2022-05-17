@@ -15,6 +15,8 @@ export class JsonFormComponent implements OnChanges {
   @Input()
   jsonForm: JsonForm = new JsonForm();
 
+  selectedApis: string[] = [];
+  notEnoughFields: boolean = false;
   form: FormGroup = new FormGroup({});
   submitted = false;
 
@@ -43,6 +45,17 @@ export class JsonFormComponent implements OnChanges {
     });
 
     this.form = new FormGroup(controls);
+    this.form.valueChanges.subscribe(selectedValue  => {
+      const data = this.collectData();
+
+      this.selectedApis = [];
+      this.jsonForm.combinations.forEach(combination => {
+        if(ApiCombination.isValid(combination, data))
+          this.selectedApis.push(combination.apiName);
+      });
+
+      this.notEnoughFields = this.selectedApis.length == 0;
+    });
   }
 
   createControl(field: JsonFormInput, value: string = ''): FormControl {
@@ -137,17 +150,6 @@ export class JsonFormComponent implements OnChanges {
     return result;
   }
 
-  notEnoughFields() {
-    const data = this.collectData();
-    for (let i = 0; i < this.jsonForm.combinations.length; i++) {
-      const combination = this.jsonForm.combinations[i];
-      if(ApiCombination.isValid(combination, data))
-        return false;
-    }
-
-    return true;
-  }
-
   private collectData(): any {
     const data: any = {};
     this.jsonForm.inputs.forEach(field => {
@@ -176,5 +178,11 @@ export class JsonFormComponent implements OnChanges {
     });
 
     return data;
+  }
+
+  checkAPI(combination: ApiCombination) {
+    const result = ApiCombination.isValid(combination, this.collectData());
+    console.log(combination, result)
+    return result;
   }
 }
