@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.JAXBException;
+
 @RestController
-@RequestMapping("/search")
 public class SearchController {
 
     private final DataConnect dataConnect;
@@ -20,15 +21,13 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getSchemas(@RequestHeader(value = "Authorization") String authorizationHeader) {
-        try {
-            return new ResponseEntity<> (dataConnect.xmlSchema(authorizationHeader), HttpStatus.OK);
-        } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @RequestMapping("/schema")
+    public ResponseEntity<?> getSchema(@RequestHeader(value = "Authorization") String authorizationHeader) throws JAXBException {
+        return new ResponseEntity<> (dataConnect.getCurrentSchema(authorizationHeader), HttpStatus.OK);
     }
 
     @PostMapping
+    @RequestMapping("/search")
     public ResponseEntity<?> search(@RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery) {
         try {
             return new ResponseEntity<>(connectorConnect.searcher(authorizationHeader, searchQuery), HttpStatus.OK);

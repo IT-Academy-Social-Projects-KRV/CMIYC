@@ -12,6 +12,7 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
+import {JsonForm} from "./data/json-form";
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,7 @@ export class HttpClientService {
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
     this.URL_PAGINATION = this.URL_USERS +"/?page={page}&size={itemsAmount}";
 
-    this.URL_SCHEMA = this.SEARCH_API + '/search';
+    this.URL_SCHEMA = this.SEARCH_API + '/schema';
     this.URL_SEARCH = this.SEARCH_API + '/search';
 
     this.URL_SCHEMAS = this.DATA_API + '/schemas';
@@ -147,7 +148,7 @@ export class HttpClientService {
     }
   }
 
-  public getSelectedSchema<T>(): Observable<T> {
+  public getSelectedSchema(): Observable<JsonForm> {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
