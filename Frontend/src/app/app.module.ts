@@ -37,6 +37,7 @@ const appInitializerFn = (appConfig: EnvService) => {
   }
 };
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,6 +59,7 @@ const appInitializerFn = (appConfig: EnvService) => {
     SearchResponseComponent,
     AdminUserIsActiveToggleComponent
   ],
+
   imports: [
     AppRoutingModule,
     ReactiveFormsModule,
