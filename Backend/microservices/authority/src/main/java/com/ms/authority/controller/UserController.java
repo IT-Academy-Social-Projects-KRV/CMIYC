@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
