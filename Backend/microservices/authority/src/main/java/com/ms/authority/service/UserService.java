@@ -75,11 +75,10 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public List<UserData> findUserByParams(String email, String firstName, String lastName, Boolean isActive) {
-        return userRepository.findUserByParams(email, firstName, lastName, isActive)
-                .stream()
-                .map(UserData::convertToUserData)
-                .collect(Collectors.toList());
+    public Page<UserData> findUserByParams(String email, String firstName, String lastName, Boolean isActive,
+                                           int page, int size) {
+        return userRepository.findUserByParams(email, firstName, lastName, isActive, PageRequest.of(page, size, Sort.by("firstName")))
+                .map(UserData::convertToUserData);
     }
 
     public RegistrationResultData signUpUser(User user, Token token) {
