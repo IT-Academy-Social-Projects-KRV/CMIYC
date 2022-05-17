@@ -1,6 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {FormGroup} from '@angular/forms';
 import {Observable} from "rxjs";
 import {Router} from '@angular/router';
 import {LoginRequest} from "./data/login-request";
@@ -13,6 +12,7 @@ import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
 import {JsonForm} from "./data/json-form";
+import {SearchRequest} from "./data/search-request";
 
 @Injectable({
   providedIn: 'root'
@@ -152,8 +152,8 @@ export class HttpClientService {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(body: FormGroup): Observable<T> {
-    return this.postRequest(this.URL_SEARCH, body.value);
+  public search<T>(requestData: SearchRequest): Observable<T> {
+    return this.postRequest(this.URL_SEARCH, requestData);
   }
 
   public getUsers(): Observable<User[]> {
