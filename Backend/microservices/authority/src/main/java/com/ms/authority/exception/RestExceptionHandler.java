@@ -11,9 +11,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleException(RuntimeException ex){
-        //return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(  ex.getMessage());
+                .body(ex.getMessage());
     }
 }
