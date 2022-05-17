@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findById(Integer id);
 
+    boolean existsByEmail(String email);
+
     @Query("FROM User u WHERE (:email IS NOT NULL AND u.email LIKE %:email%) " +
             "AND (:firstName IS NOT NULL AND u.firstName LIKE %:firstName%) " +
             "AND (:lastName IS NOT NULL AND u.lastName LIKE %:lastName%) " +

@@ -2,7 +2,6 @@ package com.ms.authority.controller;
 
 import com.ms.authority.dto.ConfirmRegisterData;
 import com.ms.authority.dto.RegistrationRequestData;
-import com.ms.authority.dto.RegistrationResultData;
 import com.ms.authority.dto.UserData;
 import com.ms.authority.entity.User;
 import com.ms.authority.service.UserService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -32,8 +30,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "registration")
-    public RegistrationResultData register(@RequestBody RegistrationRequestData request) {
-        return userService.register(request);
+    public void register(@RequestBody RegistrationRequestData request) {
+         userService.register(request);
     }
 
     @PostMapping("/activation")
