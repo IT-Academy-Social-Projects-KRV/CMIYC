@@ -8,6 +8,7 @@ import {User} from "../shared/data/user";
   styleUrls: ['./admin-manage-user-list.component.css']
 })
 export class AdminManageUserListComponent implements OnInit {
+  idToUpdate:number|undefined;
   firstNameToUpdate:string|undefined;
   lastNameToUpdate:string|undefined;
   emailToUpdate:string|undefined;
@@ -69,7 +70,8 @@ export class AdminManageUserListComponent implements OnInit {
     })
     window.location.reload();
   }
-  onEdit(firstName:string, lastName:string, email:string, isUserAdmin:boolean, isSchemaAdmin:boolean, isUser:boolean){
+  onEdit(id:number, firstName:string, lastName:string, email:string, isUserAdmin:boolean, isSchemaAdmin:boolean, isUser:boolean){
+    this.idToUpdate=id;
     this.firstNameToUpdate=firstName;
     this.lastNameToUpdate=lastName;
     this.emailToUpdate=email;

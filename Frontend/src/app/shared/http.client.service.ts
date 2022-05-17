@@ -125,6 +125,10 @@ export class HttpClientService {
     return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
 
+  private putRequest<T>(url: string, params: any): Observable<T> {
+    return this.http.put<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
+  }
+
   private postFile<T>(url: string, formData: FormData): Observable<T> {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
@@ -234,6 +238,24 @@ export class HttpClientService {
     }
 
     this.postRequest<any>(this.URL_REGISTRATION, data)
+      .subscribe({
+        next: (res) => {
+          const error = res['error'];
+          const message = res['message'];
+          callback(error ? RequestResult.error(message) : RequestResult.success(message))
+        },
+        error: (err) => {
+          callback(RequestResult.error(
+            err.error.error_description ||
+            err.error.error ||
+            "Unexpected error occurred. Please, try again later"))
+        }
+      });
+  }
+
+  public updateUser(id: number, data:any, callback: (result: RequestResult) => void) {
+
+    this.putRequest<any>(this.URL_USERS+"/"+id, data)
       .subscribe({
         next: (res) => {
           const error = res['error'];

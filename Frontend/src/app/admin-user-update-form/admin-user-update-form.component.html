@@ -1,5 +1,4 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <!--<span>{{messageToForm}}</span>-->
   <div class="row mb-3">
     <label class="col-sm-4 col-form-label ln">First name:</label>
     <div class="col-sm-8">
@@ -25,16 +24,19 @@
     <label class="col-sm-4 col-form-label ln">Role:</label>
     <div class="col-sm-7">
       <div class="form-check form-switch">
-        <input class="form-check-input" formControlName="userManager" type="checkbox" role="switch" id="forUserManager">
+        <input class="form-check-input" formControlName="userManager" type="checkbox"
+               role="switch" id="forUserManager" [checked]="isUserAdminToForm ? true : null">
         <label class="form-check-label" for="forUserManager">User Manager</label>
       </div>
 
       <div class=" form-check form-switch">
-        <input class="form-check-input" formControlName="schemaManager" type="checkbox" role="switch" id="forSchemaManager">
+        <input class="form-check-input" formControlName="schemaManager" type="checkbox"
+               role="switch" id="forSchemaManager" [checked]="isSchemaAdminToForm ? true: null">
         <label class="form-check-label" for="forSchemaManager">Schema Manager</label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input"  formControlName="user" type="checkbox" role="switch" id="forUser">
+        <input class="form-check-input"  formControlName="user" type="checkbox"  role="switch" id="forUser"
+               [checked]="isUserToForm ? true: null">
         <label class="form-check-label" for="forUser">User</label>
       </div>
     </div>
@@ -43,7 +45,7 @@
   </div>
 
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center" (change)="onSubmit()">
     <button  class="btn btn-outline-success" >
       Update
     </button>

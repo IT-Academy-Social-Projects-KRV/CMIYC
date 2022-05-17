@@ -56,7 +56,7 @@
           </td>
           <td>
             <a  class="btn btn-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateWindow"
-                (click)="onEdit(user.firstName, user.lastName,user.email,user.isUserAdmin,user.isSchemaAdmin,user.isUser)">
+                (click)="onEdit(user.id,user.firstName, user.lastName,user.email,user.isUserAdmin,user.isSchemaAdmin,user.isUser)">
               <i class="bi bi-vector-pen "></i>
             </a>
             <a  class="btn btn-danger" type="button" (click)="onDelete(user.id)" >
@@ -112,7 +112,7 @@
           <div class="modal-body">
             <app-admin-user-update-form [firstNameToForm]="firstNameToUpdate" [lastNameToForm]="lastNameToUpdate"
             [emailToForm]="emailToUpdate" [isUserAdminToForm]="isUserAdminToUpdate"
-                                        [isSchemaAdminToForm]="isSchemaAdminToUpdate"
+                [idToForm]="idToUpdate" [isSchemaAdminToForm]="isSchemaAdminToUpdate"
             [isUserToForm]="isUserToUpdate"></app-admin-user-update-form>
           </div>
         </div>
