@@ -12,7 +12,7 @@ export class AdminManageUserListComponent implements OnInit {
   RESPONSE:any;
   page = 1;
   count:number|undefined;
-  tableSize=2;
+  tableSize=10;
   //tableSizes = [1, 3, 6, 9]; variable used for items per page selection
   users: User[] = [];
 
