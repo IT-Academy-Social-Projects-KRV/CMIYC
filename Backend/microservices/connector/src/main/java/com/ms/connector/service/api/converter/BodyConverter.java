@@ -1,11 +1,11 @@
 package com.ms.connector.service.api.converter;
 
-import com.ms.connector.dto.SearchQuery;
-import com.ms.connector.dto.SearchResponse;
+import com.customstarter.model.request.SearchRequestPayload;
+import com.ms.connector.dto.apiresponse.ApiResponse;
 
 public interface BodyConverter {
 
-    String queryToRequestBody(SearchQuery query);
+    String payloadToBody(SearchRequestPayload payload);
 
-    SearchResponse responseBodyToObject(String response);
+    ApiResponse responseBodyToObject(String response);
 }

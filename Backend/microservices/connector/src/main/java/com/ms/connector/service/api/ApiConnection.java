@@ -1,18 +1,15 @@
 package com.ms.connector.service.api;
 
-import com.ms.connector.dto.SearchQuery;
-import com.ms.connector.dto.SearchResponse;
+import com.customstarter.model.request.SearchRequestPayload;
+import com.ms.connector.dto.apiresponse.ApiResponse;
 
 public interface ApiConnection {
 
-    String getName();
-
     Type getType();
 
-    SearchResponse getData(SearchQuery query) throws Exception;
+    ApiResponse getData(SearchRequestPayload payload) throws Exception;
 
     enum Type {
-
         REST, SOAP, WEBSOCKET
     }
 }

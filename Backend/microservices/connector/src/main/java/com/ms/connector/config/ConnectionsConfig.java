@@ -1,6 +1,5 @@
 package com.ms.connector.config;
 
-import com.ms.connector.exception.UnknownApiConnectionTypeException;
 import com.ms.connector.service.api.ApiConnection;
 import com.ms.connector.service.api.RestApiConnection;
 import com.ms.connector.service.api.SoapApiConnection;
@@ -13,40 +12,48 @@ import org.jsoup.Connection;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
+@Setter
 @Configuration
 @ConfigurationProperties(prefix = "api")
 public class ConnectionsConfig {
 
-    private final Map<String, ApiConnectionData> connections = new HashMap<>();
+    private RestApiConnectionBuilder rest;
+    private SoapApiConnectionBuilder soap;
+    private WebsocketApiConnectionBuilder websocket;
 
     @Getter
     @Setter
     @ToString
     @NoArgsConstructor
-    public static class ApiConnectionData {
-        private String path;
-        private String name;
-        private String type;
-        private String method = "POST";
-        private int timeout = 10000;
+    public static abstract class ApiConnectionBuilder {
+        protected String path;
+        protected String method = "POST";
+        protected int timeout = 10000;
 
-        public ApiConnection buildApiConnection() {
-            ApiConnection.Type connectionType = ApiConnection.Type.valueOf(type.toUpperCase());
+        public abstract ApiConnection build();
+    }
 
-            switch (connectionType) {
-                case WEBSOCKET:
-                    return new WebsocketApiConnection(name, path, timeout);
-                case REST:
-                    return new RestApiConnection(name, path, Connection.Method.valueOf(method.toUpperCase()));
-                case SOAP:
-                    return new SoapApiConnection(name, path, Connection.Method.valueOf(method.toUpperCase()));
-                default:
-                    throw new UnknownApiConnectionTypeException(type);
-            }
+    public static class RestApiConnectionBuilder extends ApiConnectionBuilder {
+        @Override
+        public RestApiConnection build() {
+            return new RestApiConnection(path, Connection.Method.valueOf(method.toUpperCase()));
+        }
+    }
+
+    public static class SoapApiConnectionBuilder extends ApiConnectionBuilder {
+        @Override
+        public SoapApiConnection build() {
+            return new SoapApiConnection(path, Connection.Method.valueOf(method.toUpperCase()));
+        }
+    }
+
+    public static class WebsocketApiConnectionBuilder extends ApiConnectionBuilder {
+        @Override
+        public WebsocketApiConnection build() {
+            return new WebsocketApiConnection(path, timeout);
         }
     }
 }
+
+

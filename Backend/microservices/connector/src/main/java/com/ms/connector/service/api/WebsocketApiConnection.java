@@ -1,26 +1,18 @@
 package com.ms.connector.service.api;
 
-import com.ms.connector.dto.SearchQuery;
-import com.ms.connector.dto.SearchResponse;
-import com.ms.connector.service.api.converter.BodyConverter;
+import com.customstarter.model.request.SearchRequestPayload;
+import com.ms.connector.dto.apiresponse.WebsocketApiResponse;
 import com.ms.connector.service.api.converter.JsonBodyConverter;
 import com.ms.connector.service.client.WebsocketClient;
 
 public class WebsocketApiConnection implements ApiConnection {
 
-    private static final BodyConverter converter = new JsonBodyConverter();
+    private static final JsonBodyConverter<WebsocketApiResponse> converter = new JsonBodyConverter<>();
 
-    private final String name;
     private final WebsocketClient client;
 
-    public WebsocketApiConnection(String name, String path, int timeout) {
-        this.name = name;
+    public WebsocketApiConnection(String path, int timeout) {
         this.client = new WebsocketClient(path, timeout);
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -29,8 +21,8 @@ public class WebsocketApiConnection implements ApiConnection {
     }
 
     @Override
-    public SearchResponse getData(SearchQuery query) {
-        String body = converter.queryToRequestBody(query);
+    public WebsocketApiResponse getData(SearchRequestPayload payload) {
+        String body = converter.payloadToBody(payload);
         String response = client.sendAndReceive(body);
 
         return converter.responseBodyToObject(response);

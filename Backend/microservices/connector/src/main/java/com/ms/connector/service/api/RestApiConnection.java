@@ -1,20 +1,36 @@
 package com.ms.connector.service.api;
 
+import com.customstarter.model.request.SearchRequestPayload;
+import com.ms.connector.dto.apiresponse.ApiResponse;
+import com.ms.connector.dto.apiresponse.ApiResponseData;
+import com.ms.connector.dto.apiresponse.RestApiResponse;
 import com.ms.connector.service.api.converter.BodyConverter;
 import com.ms.connector.service.api.converter.JsonBodyConverter;
 import com.ms.connector.service.client.RestClient;
 import org.jsoup.Connection;
 
-public class RestApiConnection extends HttpApiConnection {
+public class RestApiConnection implements ApiConnection {
 
-    private static final BodyConverter converter = new JsonBodyConverter();
+    private static final JsonBodyConverter<RestApiResponse> converter = new JsonBodyConverter<>();
 
-    public RestApiConnection(String name, String path, Connection.Method method) {
-        super(method, name, new RestClient(path), converter);
+    private final Connection.Method method;
+    private final RestClient client;
+
+    public RestApiConnection(String path, Connection.Method method) {
+        this.method = method;
+        this.client = new RestClient(path);
     }
 
     @Override
     public ApiConnection.Type getType() {
         return ApiConnection.Type.REST;
+    }
+
+    @Override
+    public RestApiResponse getData(SearchRequestPayload payload) {
+        String requestBody = converter.payloadToBody(payload);
+        String response = client.request(method, "", requestBody);
+
+        return converter.responseBodyToObject(response);
     }
 }
