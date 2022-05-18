@@ -1,4 +1,4 @@
-package com.ms.data.dto.form.input;
+package com.customstarter.model.form.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

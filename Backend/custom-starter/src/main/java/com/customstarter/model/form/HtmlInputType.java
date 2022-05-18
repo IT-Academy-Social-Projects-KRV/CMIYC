@@ -1,4 +1,4 @@
-package com.ms.data.dto.form;
+package com.customstarter.model.form;
 
 public enum HtmlInputType {
 

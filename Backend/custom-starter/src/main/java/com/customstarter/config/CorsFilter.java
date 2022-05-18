@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
-
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 

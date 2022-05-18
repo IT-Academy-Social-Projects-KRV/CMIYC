@@ -1,6 +1,6 @@
-package com.ms.data.dto.form;
+package com.customstarter.model.form;
 
-import com.ms.data.dto.form.input.HtmlInput;
+import com.customstarter.model.form.input.HtmlInput;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class HtmlForm {
+public class Schema {
 
     private String name;
     private final List<HtmlInput> inputs = new ArrayList<>();

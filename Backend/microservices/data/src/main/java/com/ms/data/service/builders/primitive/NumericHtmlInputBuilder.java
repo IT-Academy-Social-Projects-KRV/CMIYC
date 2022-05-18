@@ -1,7 +1,7 @@
 package com.ms.data.service.builders.primitive;
 
-import com.ms.data.dto.form.input.HtmlInput;
-import com.ms.data.dto.form.input.NumberInput;
+import com.customstarter.model.form.input.HtmlInput;
+import com.customstarter.model.form.input.NumberInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.service.SearchFormBuilderService;
 import com.ms.data.service.builders.HtmlInputBuilderByType;

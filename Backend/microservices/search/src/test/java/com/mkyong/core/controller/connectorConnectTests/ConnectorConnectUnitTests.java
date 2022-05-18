@@ -1,7 +1,7 @@
 package com.mkyong.core.controller.connectorConnectTests;
 
 import com.ms.search.connectInterface.ConnectorConnect;
-import com.ms.search.model.SearchQuery;
+import com.ms.search.model.SearchRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +20,13 @@ public class ConnectorConnectUnitTests {
     @MockBean
     private ConnectorConnect connectorConnect;
 
-    SearchQuery searchQuery;
+    SearchRequest searchRequest;
     String authorizationHeader;
     final Map<String, Object> response = new HashMap<>();
 
     @BeforeEach
     void setUp() {
-        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("api1"));
+        searchRequest = new SearchRequest();
 
         authorizationHeader = "hi1";
 
@@ -38,8 +38,8 @@ public class ConnectorConnectUnitTests {
 
     @Test
     public void searcher_getDataFromConnector_MapReturned() {
-        when(connectorConnect.searcher(authorizationHeader, searchQuery)).thenReturn(response);
-        assertThat(connectorConnect.searcher(authorizationHeader, searchQuery)).isEqualTo(response);
+        when(connectorConnect.searcher(authorizationHeader, searchRequest)).thenReturn(response);
+        assertThat(connectorConnect.searcher(authorizationHeader, searchRequest)).isEqualTo(response);
     }
 
 }

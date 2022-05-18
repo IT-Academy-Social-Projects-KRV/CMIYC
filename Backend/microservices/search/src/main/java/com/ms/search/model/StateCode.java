@@ -1,20 +1,9 @@
-package com.ms.data.service.builders.select;
+package com.ms.search.model;
 
-import com.customstarter.model.form.input.HtmlInput;
-import com.customstarter.model.form.input.Select;
-import com.customstarter.model.form.input.SelectOption;
-import com.ms.data.dto.xml.Field;
-import com.ms.data.service.SearchFormBuilderService;
-import com.ms.data.service.builders.HtmlInputBuilderByNameAndType;
-import org.springframework.stereotype.Component;
+public enum StateCode {
 
-import java.util.List;
-
-@Component
-public class StateSelectBuilder extends HtmlInputBuilderByNameAndType {
-
-    private static final List<SelectOption> OPTIONS = List.of(
-            new SelectOption("", "Unknown"),
+    /*
+                new SelectOption("", "Unknown"),
             new SelectOption("AL", "Alabama"),
             new SelectOption("AK", "Alaska"),
             new SelectOption("AZ", "Arizona"),
@@ -66,18 +55,6 @@ public class StateSelectBuilder extends HtmlInputBuilderByNameAndType {
             new SelectOption("WV", "West Virginia"),
             new SelectOption("WI", "Wisconsin"),
             new SelectOption("WY", "Wyoming")
-    );
 
-    @Override
-    protected boolean canBuild(String name, String type) {
-        return "State".equals(name);
-    }
-
-    @Override
-    public HtmlInput build(Field field, SearchFormBuilderService searchFormBuilderService) {
-        Select select = new Select(field.getName(), field.getDescription());
-        select.getOptions().addAll(OPTIONS);
-
-        return select;
-    }
+     */
 }

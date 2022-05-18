@@ -3,7 +3,7 @@ package com.mkyong.core.controller.searchControllerTests;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.controller.SearchController;
-import com.ms.search.model.SearchQuery;
+import com.ms.search.model.SearchRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +34,13 @@ public class SearchControllerUnitTests {
     @Autowired
     private SearchController controller;
 
-    SearchQuery searchQuery;
+    SearchRequest searchRequest;
     String authorizationHeader;
 
     @BeforeEach
     void setUp() {
         authorizationHeader = "hi1";
-        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("Api1"));
+        searchRequest = new SearchRequest();
     }
 
 
@@ -51,7 +51,7 @@ public class SearchControllerUnitTests {
 
     @Test
     public void searchSearchAPI_checkIfDataFromConnectorIsNotNull_BooleanReturned() {
-        assertThat(controller.search(authorizationHeader, searchQuery)).isNotNull();
+        assertThat(controller.search(authorizationHeader, searchRequest)).isNotNull();
     }
 
 

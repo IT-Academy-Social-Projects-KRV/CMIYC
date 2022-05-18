@@ -8,12 +8,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.controller.SearchController;
-import com.ms.search.model.SearchQuery;
+import com.ms.search.model.SearchRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -58,7 +57,7 @@ public class SearchControllerIntegrationTests {
         apis.add("api2");
         apis.add("api3");
 
-        SearchQuery request = new SearchQuery("name", "lastName", "birthDate", "sex", apis);
+        SearchRequest request = new SearchRequest();
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);

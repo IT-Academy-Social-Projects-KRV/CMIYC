@@ -1,6 +1,6 @@
-package com.ms.data.dto.form.input;
+package com.customstarter.model.form.input;
 
-import com.ms.data.dto.form.HtmlInputType;
+import com.customstarter.model.form.HtmlInputType;
 import lombok.Getter;
 import lombok.Setter;
 
