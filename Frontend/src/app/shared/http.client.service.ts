@@ -234,15 +234,11 @@ export class HttpClientService {
     this.postRequest<any>(this.URL_REGISTRATION, data)
       .subscribe({
         next: (res) => {
-          const error = res['error'];
-          const message = res['message'];
-          callback(error ? RequestResult.error(message) : RequestResult.success(message))
+          callback( RequestResult.success(" "))
         },
         error: (err) => {
           callback(RequestResult.error(
-            err.error.error_description ||
-            err.error.error ||
-            "Unexpected error occurred. Please, try again later"))
+            err.error))
         }
       });
   }
