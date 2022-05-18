@@ -89,7 +89,7 @@ spec:
             - name: PORTS_MICROSERVICES_AUTHORITY
               value: "8090"
             - name: ROUTES_UI
-              value: http://frontend:80
+              value: http://34.107.146.133
             - name: MYSQL_HOST
               value: mysql
             - name: MYSQL_PORT
