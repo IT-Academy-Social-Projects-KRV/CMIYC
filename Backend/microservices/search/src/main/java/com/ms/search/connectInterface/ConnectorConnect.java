@@ -1,7 +1,7 @@
 package com.ms.search.connectInterface;
 
 import com.ms.search.config.CaffeineConfig;
-import com.ms.search.model.SearchRequest;
+import com.customstarter.model.request.SearchRequest;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;

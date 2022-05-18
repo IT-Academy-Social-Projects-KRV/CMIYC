@@ -1,4 +1,4 @@
-package com.ms.search.model;
+package com.customstarter.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

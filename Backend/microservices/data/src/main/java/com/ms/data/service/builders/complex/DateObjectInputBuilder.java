@@ -1,8 +1,8 @@
 package com.ms.data.service.builders.complex;
 
-import com.customstarter.model.form.input.ComplexInput;
-import com.customstarter.model.form.input.HtmlInput;
-import com.customstarter.model.form.input.NumberInput;
+import com.customstarter.model.schema.input.ComplexInput;
+import com.customstarter.model.schema.input.HtmlInput;
+import com.customstarter.model.schema.input.NumberInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.FieldComponent;
 import com.ms.data.service.SearchFormBuilderService;

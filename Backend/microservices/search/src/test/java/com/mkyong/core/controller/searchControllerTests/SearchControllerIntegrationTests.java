@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.controller.SearchController;
-import com.ms.search.model.SearchRequest;
+import com.customstarter.model.request.SearchRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

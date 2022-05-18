@@ -1,7 +1,7 @@
 package com.ms.data.controller;
 
 import com.ms.data.dto.SchemaFile;
-import com.customstarter.model.form.Schema;
+import com.customstarter.model.schema.Schema;
 import com.ms.data.service.CloudStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

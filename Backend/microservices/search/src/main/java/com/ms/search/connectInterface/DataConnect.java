@@ -1,6 +1,6 @@
 package com.ms.search.connectInterface;
 
-import com.customstarter.model.form.Schema;
+import com.customstarter.model.schema.Schema;
 import com.ms.search.config.CaffeineConfig;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;

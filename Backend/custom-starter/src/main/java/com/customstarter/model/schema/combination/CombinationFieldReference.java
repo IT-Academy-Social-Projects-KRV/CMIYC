@@ -1,4 +1,4 @@
-package com.customstarter.model.form;
+package com.customstarter.model.schema.combination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

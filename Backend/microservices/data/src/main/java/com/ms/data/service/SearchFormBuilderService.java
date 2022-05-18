@@ -1,9 +1,9 @@
 package com.ms.data.service;
 
-import com.customstarter.model.form.ApiCombination;
-import com.customstarter.model.form.CombinationFieldReference;
-import com.customstarter.model.form.Schema;
-import com.customstarter.model.form.input.HtmlInput;
+import com.customstarter.model.schema.combination.ApiCombination;
+import com.customstarter.model.schema.combination.CombinationFieldReference;
+import com.customstarter.model.schema.Schema;
+import com.customstarter.model.schema.input.HtmlInput;
 import com.ms.data.dto.xml.Combination;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.InterfaceSchema;

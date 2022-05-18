@@ -1,13 +1,12 @@
 package com.mkyong.core.controller.connectorConnectTests;
 
 import com.ms.search.connectInterface.ConnectorConnect;
-import com.ms.search.model.SearchRequest;
+import com.customstarter.model.request.SearchRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

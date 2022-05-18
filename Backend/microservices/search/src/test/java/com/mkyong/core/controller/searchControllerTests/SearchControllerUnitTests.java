@@ -3,7 +3,7 @@ package com.mkyong.core.controller.searchControllerTests;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.controller.SearchController;
-import com.ms.search.model.SearchRequest;
+import com.customstarter.model.request.SearchRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.xml.bind.JAXBException;
-
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

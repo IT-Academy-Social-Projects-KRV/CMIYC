@@ -1,6 +1,5 @@
-package com.customstarter.model.form.input;
+package com.customstarter.model.schema.input;
 
-import com.customstarter.model.form.HtmlInputType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,7 @@
-package com.customstarter.model.form;
+package com.customstarter.model.schema;
 
-import com.customstarter.model.form.input.HtmlInput;
+import com.customstarter.model.schema.combination.ApiCombination;
+import com.customstarter.model.schema.input.HtmlInput;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

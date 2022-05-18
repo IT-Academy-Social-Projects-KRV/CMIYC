@@ -1,10 +1,10 @@
 package com.ms.search.controller;
 
-import com.customstarter.model.form.Schema;
+import com.customstarter.model.schema.Schema;
 import com.customstarter.utils.ApiError;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
-import com.ms.search.model.SearchRequest;
+import com.customstarter.model.request.SearchRequest;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,10 @@ public class SearchController {
 
     @PostMapping
     @RequestMapping("/search")
-    public ResponseEntity<?> search(@RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
+    public ResponseEntity<?> search(
+            @RequestHeader(value = "Authorization") String authorizationHeader,
+            @RequestBody SearchRequest searchRequest
+    ) {
         System.out.println(searchRequest.toString());
 
         try {

@@ -1,4 +1,4 @@
-package com.customstarter.model.form;
+package com.customstarter.model.schema.input;
 
 public enum HtmlInputType {
 

@@ -6,7 +6,7 @@ import com.google.api.services.storage.model.Objects;
 import com.google.api.services.storage.model.StorageObject;
 import com.ms.data.config.InputStreamContent;
 import com.ms.data.dto.SchemaFile;
-import com.customstarter.model.form.Schema;
+import com.customstarter.model.schema.Schema;
 import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.exception.CurrentSelectedSchemaException;
 import lombok.RequiredArgsConstructor;

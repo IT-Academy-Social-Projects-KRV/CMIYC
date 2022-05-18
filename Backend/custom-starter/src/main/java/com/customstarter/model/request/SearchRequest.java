@@ -1,4 +1,4 @@
-package com.ms.search.model;
+package com.customstarter.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

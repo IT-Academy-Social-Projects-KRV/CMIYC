@@ -1,4 +1,4 @@
-package com.ms.search.utils;
+package com.customstarter.utils;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;

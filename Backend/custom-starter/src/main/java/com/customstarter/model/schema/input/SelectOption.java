@@ -1,4 +1,4 @@
-package com.customstarter.model.form.input;
+package com.customstarter.model.schema.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SelectOption {
+
+    public static final SelectOption UNKNOWN = new SelectOption("", "Unknown");
 
     private String value;
     private String text;
