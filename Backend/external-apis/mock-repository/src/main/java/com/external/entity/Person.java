@@ -3,6 +3,7 @@ package com.external.entity;
 import com.external.dto.Date;
 import com.external.dto.Gender;
 import com.external.dto.Name;
+import com.external.dto.RaceCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,15 @@ public class Person {
     private Date birthDate;
     private Name name;
     private Gender gender;
+    private RaceCode raceCode;
+    private boolean isMarried;
+    private byte numberOfChildren;
+    private String operatorLicenseExpirationDate;
+    private short carModelYear;
+    private String carVin;
+    private String carNumber;
+    private String companyName;
+
     private String state;
     private String operatorLicenseNumber;
 

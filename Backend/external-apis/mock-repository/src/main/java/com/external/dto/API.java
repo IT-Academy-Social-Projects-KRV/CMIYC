@@ -1,24 +1,21 @@
 package com.external.dto;
 
-import com.external.dto.request.RequestPayload;
-import com.external.dto.request.RequestPayloadOne;
-import com.external.dto.request.RequestPayloadThree;
-import com.external.dto.request.RequestPayloadTwo;
-import com.external.dto.response.RequestResponse;
+import com.external.dto.request.Payload;
+import com.external.dto.request.PayloadOne;
+import com.external.dto.request.PayloadThree;
+import com.external.dto.request.PayloadTwo;
+import com.external.dto.response.Response;
 import com.external.entity.Person;
 import lombok.Getter;
-
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Getter
 public enum API {
 
-    API1("api1", RequestPayloadOne.class),
+    API1("api1", PayloadOne.class),
 
-    API2("api2", RequestPayloadTwo.class),
+    API2("api2", PayloadTwo.class),
 
-    API3("api3", RequestPayloadThree.class);
+    API3("api3", PayloadThree.class);
 
     private final String name;
     private final Class<?> requestClass;
@@ -28,8 +25,8 @@ public enum API {
         this.requestClass = requestClass;
     }
 
-    public RequestResponse createPersonData(Person person, RequestPayload payload) {
-        RequestResponse response = payload.createResponse(person);
+    public Response createPersonData(Person person, Payload payload) {
+        Response response = payload.createResponse(person);
         response.setApiName(this.name);
         return response;
     }

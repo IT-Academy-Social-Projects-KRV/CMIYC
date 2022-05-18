@@ -1,7 +1,6 @@
 package com.external.repository;
 
-import com.external.dto.Name;
-import com.external.dto.request.RequestPayload;
+import com.external.dto.request.Payload;
 import com.external.entity.Person;
 import com.external.server.MockRepositoryApplication;
 import com.external.utils.MapperUtils;
@@ -53,7 +52,7 @@ public class PersonRepository {
         Collections.addAll(persons, people);
     }
 
-    public List<Person> findAllByRequest(RequestPayload request) {
+    public List<Person> findAllByRequest(Payload request) {
         return persons.stream()
                 .filter(request::isEqualToPerson)
                 .collect(Collectors.toList());

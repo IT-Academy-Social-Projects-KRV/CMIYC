@@ -97,16 +97,16 @@ _new -> WebSocket Request -> ws://localhost:9002/ws -> Connect -> paste and send
 Every external service represents one API:
 
 **rest-server** - **api1**
-> **required field:** firstName<br>
-> **returns:** country, city, and address
+> **required field:** birthDate(day,month,year), name(first,middle,last,suffix) sexCode, raceCode <br>
+> **returns:** city , address, name, isMarried, numberOfChildren, raceCode
 
 **soap-server** - **api2**
-> **required fields:** firstName and lastName<br>
-> **returns:** email, job, and phone number
+> **required fields:** operatorLicenseNumber, state, imageIndicator<br>
+> **returns:** carModel,operatorLicenseExpirationDate, carModelYear, carVin,carNumber, image, phone, name
 
 **websocket-server** - **api3**
-> **required fields:** firstName, lastName, gender and birthDayDate (format: yyyy-MM-dd)<br>
-> **returns:** carModel and carVin
+> **required fields:** birthDate(day,month,year), name(first,middle,last,suffix), state, imageIndicator<br>
+> **returns:** сity, address, job,companyName, phone, email, image, name
 
 All person data can be found in mock-repository/src/main/resources/mock_data.json
 

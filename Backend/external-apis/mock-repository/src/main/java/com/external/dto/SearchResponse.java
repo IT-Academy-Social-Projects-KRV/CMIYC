@@ -1,6 +1,6 @@
 package com.external.dto;
 
-import com.external.dto.response.RequestResponse;
+import com.external.dto.response.Response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,9 +15,9 @@ public class SearchResponse {
 
     private final boolean isError;
     private final String errorMessage;
-    private final List<RequestResponse> data;
+    private final List<Response> data;
 
-    public static SearchResponse success(List<RequestResponse> data) {
+    public static SearchResponse success(List<Response> data) {
         return new SearchResponse(false, null, data);
     }
 

@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class RequestResponse {
+public abstract class Response {
     private  String apiName;
 
-    protected RequestResponse() {
+    protected Response() {
 
     }
 }
