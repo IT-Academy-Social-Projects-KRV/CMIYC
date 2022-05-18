@@ -3,7 +3,7 @@ package com.mkyong.core.controller.searchControllerTests;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.ms.search.controller.SearchController;
-import com.ms.search.model.SearchQuery;
+import com.customstarter.model.request.SearchRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collections;
+import javax.xml.bind.JAXBException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,24 +32,24 @@ public class SearchControllerUnitTests {
     @Autowired
     private SearchController controller;
 
-    SearchQuery searchQuery;
+    SearchRequest searchRequest;
     String authorizationHeader;
 
     @BeforeEach
     void setUp() {
         authorizationHeader = "hi1";
-        searchQuery = new SearchQuery("name", "lastName", "birthDate", "sex", Collections.singleton("Api1"));
+        searchRequest = new SearchRequest();
     }
 
 
     @Test
-    public void getSchemasSearchAPI_checkIfDataFromDataIsNotNull_BooleanReturned() {
-        assertThat(controller.getSchemas(authorizationHeader)).isNotNull();
+    public void getSchemasSearchAPI_checkIfDataFromDataIsNotNull_BooleanReturned() throws JAXBException {
+        assertThat(controller.getSchema(authorizationHeader)).isNotNull();
     }
 
     @Test
     public void searchSearchAPI_checkIfDataFromConnectorIsNotNull_BooleanReturned() {
-        assertThat(controller.search(authorizationHeader, searchQuery)).isNotNull();
+        assertThat(controller.search(authorizationHeader, searchRequest)).isNotNull();
     }
 
 

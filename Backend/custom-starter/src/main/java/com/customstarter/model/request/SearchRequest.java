@@ -1,10 +1,11 @@
-package com.ms.search.model;
+package com.customstarter.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -13,11 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SearchQuery {
+@ToString
+public class SearchRequest {
 
-    private String firstName;
-    private String lastName;
-    private String birthDayDate;
-    private String sex;
-    private Set<String> foreignDataSource;
+    private Set<String> apis;
+    private SearchRequestPayload data;
 }

@@ -23,3 +23,6 @@ spring:
   cache:
     caffeine:
       spec: maximumSize=500,expireAfterWrite=8h
+  jackson:
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_PROPERTIES: true

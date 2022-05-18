@@ -6,6 +6,7 @@ import com.google.api.services.storage.model.Objects;
 import com.google.api.services.storage.model.StorageObject;
 import com.ms.data.config.InputStreamContent;
 import com.ms.data.dto.SchemaFile;
+import com.customstarter.model.schema.Schema;
 import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.exception.CurrentSelectedSchemaException;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class CloudStorageService {
 
     private final Storage storage;
     private final XmlReaderService xmlReaderService;
+    private final SearchFormBuilderService searchFormBuilderService;
 
     @Value("${cloud-storage.path}")
     private String bucketName;
@@ -106,6 +108,11 @@ public class CloudStorageService {
         return fileContent.map(xmlReaderService::read).orElseThrow();
     }
 
+    public Schema readSchema(String name) {
+        InterfaceSchema interfaceSchema = getInterfaceSchema(name);
+        return searchFormBuilderService.buildSchemaForm(interfaceSchema);
+    }
+
     @SneakyThrows
     public void selectSchema(String name) {
         if(name.equals(selectedSchemaName))
@@ -135,12 +142,12 @@ public class CloudStorageService {
         }
     }
 
-    public InterfaceSchema getSelectedSchema() {
+    public Schema getSelectedSchema() {
         if (selectedSchemaName == null) {
             return null;
         }
 
-        return getInterfaceSchema(selectedSchemaName);
+        return readSchema(selectedSchemaName);
     }
 
     public void deleteSchema(String name) throws IOException {
