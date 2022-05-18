@@ -3,19 +3,16 @@ package com.ms.connector.service;
 import com.customstarter.model.request.SearchRequest;
 import com.ms.connector.config.ConnectionsConfig;
 import com.ms.connector.dto.SearchResponse;
-import com.ms.connector.dto.apiresponse.ApiResponse;
-import com.ms.connector.dto.apiresponse.RestApiResponse;
-import com.ms.connector.dto.apiresponse.SoapApiResponse;
-import com.ms.connector.dto.apiresponse.WebsocketApiResponse;
+import com.ms.connector.dto.response.ApiResponse;
+import com.ms.connector.dto.response.RestApiResponse;
+import com.ms.connector.dto.response.SoapApiResponse;
+import com.ms.connector.dto.response.WebsocketApiResponse;
 import com.ms.connector.exception.ApiErrorException;
 import com.ms.connector.service.api.RestApiConnection;
 import com.ms.connector.service.api.SoapApiConnection;
 import com.ms.connector.service.api.WebsocketApiConnection;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @Service
 public class ApiService {

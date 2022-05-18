@@ -1,7 +1,7 @@
 package com.ms.connector.service.api.converter;
 
 import com.customstarter.model.request.SearchRequestPayload;
-import com.ms.connector.dto.apiresponse.ApiResponse;
+import com.ms.connector.dto.response.ApiResponse;
 
 public interface BodyConverter {
 

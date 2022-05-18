@@ -1,10 +1,7 @@
 package com.ms.connector.service.api;
 
 import com.customstarter.model.request.SearchRequestPayload;
-import com.ms.connector.dto.apiresponse.ApiResponse;
-import com.ms.connector.dto.apiresponse.ApiResponseData;
-import com.ms.connector.dto.apiresponse.RestApiResponse;
-import com.ms.connector.service.api.converter.BodyConverter;
+import com.ms.connector.dto.response.RestApiResponse;
 import com.ms.connector.service.api.converter.JsonBodyConverter;
 import com.ms.connector.service.client.RestClient;
 import org.jsoup.Connection;

@@ -1,5 +1,6 @@
-package com.ms.connector.dto.apiresponse;
+package com.ms.connector.dto.response;
 
+import com.ms.connector.dto.response.data.ApiResponseData;
 import lombok.Getter;
 import lombok.Setter;
 

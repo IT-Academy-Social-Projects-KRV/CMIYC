@@ -3,10 +3,8 @@ package com.ms.connector.service.api.converter;
 import com.customstarter.model.request.SearchRequestPayload;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.connector.dto.apiresponse.ApiResponse;
+import com.ms.connector.dto.response.ApiResponse;
 import lombok.SneakyThrows;
-
-import java.lang.reflect.Type;
 
 public class JsonBodyConverter<Type extends ApiResponse> implements BodyConverter {
 

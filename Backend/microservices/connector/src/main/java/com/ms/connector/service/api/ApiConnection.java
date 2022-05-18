@@ -1,7 +1,7 @@
 package com.ms.connector.service.api;
 
 import com.customstarter.model.request.SearchRequestPayload;
-import com.ms.connector.dto.apiresponse.ApiResponse;
+import com.ms.connector.dto.response.ApiResponse;
 
 public interface ApiConnection {
 

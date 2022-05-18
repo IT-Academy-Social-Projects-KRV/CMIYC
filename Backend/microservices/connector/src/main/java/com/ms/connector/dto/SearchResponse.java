@@ -1,8 +1,8 @@
 package com.ms.connector.dto;
 
-import com.ms.connector.dto.apiresponse.RestApiResponseData;
-import com.ms.connector.dto.apiresponse.WebsocketResponseData;
-import com.ms.connector.dto.apiresponse.SoapApiResponseData;
+import com.ms.connector.dto.response.data.RestApiResponseData;
+import com.ms.connector.dto.response.data.WebsocketResponseData;
+import com.ms.connector.dto.response.data.SoapApiResponseData;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

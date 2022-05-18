@@ -2,7 +2,7 @@ package com.ms.connector.service.api.converter;
 
 import com.customstarter.model.request.SearchRequestPayload;
 import com.ms.connector.dto.SearchResponse;
-import com.ms.connector.dto.apiresponse.SoapApiResponse;
+import com.ms.connector.dto.response.SoapApiResponse;
 import com.ms.connector.utils.MapAdapter;
 import com.ms.connector.utils.SoapHelper;
 import com.ms.connector.utils.XMLReaderWithoutNamespace;
