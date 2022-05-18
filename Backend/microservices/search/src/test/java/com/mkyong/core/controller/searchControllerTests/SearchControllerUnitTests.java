@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.xml.bind.JAXBException;
+
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,8 +45,8 @@ public class SearchControllerUnitTests {
 
 
     @Test
-    public void getSchemasSearchAPI_checkIfDataFromDataIsNotNull_BooleanReturned() {
-        assertThat(controller.getSchemas(authorizationHeader)).isNotNull();
+    public void getSchemasSearchAPI_checkIfDataFromDataIsNotNull_BooleanReturned() throws JAXBException {
+        assertThat(controller.getSchema(authorizationHeader)).isNotNull();
     }
 
     @Test

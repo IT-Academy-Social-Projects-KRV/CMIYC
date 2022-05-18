@@ -1,6 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {FormGroup} from '@angular/forms';
 import {Observable} from "rxjs";
 import {Router} from '@angular/router';
 import {LoginRequest} from "./data/login-request";
@@ -12,6 +11,8 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
+import {JsonForm} from "./data/json-form";
+import {SearchRequest} from "./data/search-request";
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,7 @@ export class HttpClientService {
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
     this.URL_PAGINATION = this.URL_USERS +"/?page={page}&size={itemsAmount}";
 
-    this.URL_SCHEMA = this.SEARCH_API + '/search';
+    this.URL_SCHEMA = this.SEARCH_API + '/schema';
     this.URL_SEARCH = this.SEARCH_API + '/search';
 
     this.URL_SCHEMAS = this.DATA_API + '/schemas';
@@ -151,12 +152,12 @@ export class HttpClientService {
     }
   }
 
-  public getSelectedSchema<T>(): Observable<T> {
+  public getSelectedSchema(): Observable<JsonForm> {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(body: FormGroup): Observable<T> {
-    return this.postRequest(this.URL_SEARCH, body.value);
+  public search<T>(requestData: SearchRequest): Observable<T> {
+    return this.postRequest(this.URL_SEARCH, requestData);
   }
 
   public getUsers(): Observable<User[]> {
@@ -240,15 +241,11 @@ export class HttpClientService {
     this.postRequest<any>(this.URL_REGISTRATION, data)
       .subscribe({
         next: (res) => {
-          const error = res['error'];
-          const message = res['message'];
-          callback(error ? RequestResult.error(message) : RequestResult.success(message))
+          callback( RequestResult.success(" "))
         },
         error: (err) => {
           callback(RequestResult.error(
-            err.error.error_description ||
-            err.error.error ||
-            "Unexpected error occurred. Please, try again later"))
+            err.error))
         }
       });
   }
