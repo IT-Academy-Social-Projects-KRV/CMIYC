@@ -38,8 +38,8 @@ public class ConnectorConnectUnitTests {
 
     @Test
     public void searcher_getDataFromConnector_MapReturned() {
-        when(connectorConnect.searcher(authorizationHeader, searchQuery)).thenReturn(response);
-        assertThat(connectorConnect.searcher(authorizationHeader, searchQuery)).isEqualTo(response);
+        when(connectorConnect.search(authorizationHeader, searchQuery)).thenReturn(response);
+        assertThat(connectorConnect.search(authorizationHeader, searchQuery)).isEqualTo(response);
     }
 
 }

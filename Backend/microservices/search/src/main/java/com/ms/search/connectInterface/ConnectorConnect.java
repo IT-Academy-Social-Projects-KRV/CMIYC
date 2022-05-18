@@ -17,7 +17,7 @@ public interface ConnectorConnect {
 
     @PostMapping("/searcher")
     @Cacheable
-    Map<String, Object> searcher( //todo try to change Object
+    Map<String, Object> search( //todo try to change Object
             @RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchQuery searchQuery
     );
 
