@@ -33,7 +33,7 @@ public class Field {
 
     @XmlElementWrapper(name = "Components")
     @XmlElement(name = "Component")
-    private List<Component> components;
+    private List<FieldComponent> components;
 }
 
 
