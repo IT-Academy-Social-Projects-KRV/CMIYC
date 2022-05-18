@@ -1,0 +1,73 @@
+timeout: 1300s
+steps:
+# Build, push Frontend
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_FRONTEND_IMAGE', '-f', 'K8s/frontend.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_FRONTEND_IMAGE']
+# Build, push Authority server
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_AUTHORITY_IMAGE', '-f', 'K8s/authority.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_AUTHORITY_IMAGE']
+# Build, push Search API
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_SEARCH_IMAGE', '-f', 'K8s/search.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_SEARCH_IMAGE']
+# Build, push Data API
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_DATA_IMAGE', '-f', 'K8s/data.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_DATA_IMAGE']
+# Build, push Connector server
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_CONNECTOR_IMAGE', '-f', 'K8s/connector.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_CONNECTOR_IMAGE']
+# Build, push Mock-repository
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_MOCK_REPOSITORY_IMAGE', '-f', 'K8s/mock-repository.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_MOCK_REPOSITORY_IMAGE']
+# Build, push Soap-server
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_SOAP_SERVER_IMAGE', '-f', 'K8s/soap-server.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_SOAP_SERVER_IMAGE']
+# Build, push Rest-server
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_REST_SERVER_IMAGE', '-f', 'K8s/rest-server.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_REST_SERVER_IMAGE']
+# Build, push Websocket-server
+  - name: gcr.io/cloud_builders/docker
+    args: ['build', '-t', '$_WEBSOCKET_SERVER_IMAGE', '-f', 'K8s/websocket-server.Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '$_WEBSOCKET_SERVER_IMAGE']
+
+# delete all old deployments
+  - name: gcr.io/cloud-builders/kubectl
+    args: [ 'delete', 'deployments', '--all' ]
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=europe-central2-c
+      - CLOUDSDK_CONTAINER_CLUSTER=cmiyc-cluster
+      - CLOUDSDK_CORE_PROJECT=cmiyc-346518
+# create new deployments
+  - name: gcr.io/cloud-builders/kubectl
+    args: [ 'apply', '-f', 'K8s/deployment.yml' ]
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=europe-central2-c
+      - CLOUDSDK_CONTAINER_CLUSTER=cmiyc-cluster
+      - CLOUDSDK_CORE_PROJECT=cmiyc-346518
+
+substitutions:
+  _FRONTEND_IMAGE         : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+  _AUTHORITY_IMAGE        : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/authority:latest
+  _SEARCH_IMAGE           : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/search:latest
+  _DATA_IMAGE             : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/data:latest
+  _CONNECTOR_IMAGE        : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/connector:latest
+  _MOCK_REPOSITORY_IMAGE  : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/mock-repository:latest
+  _SOAP_SERVER_IMAGE      : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/soap-server:latest
+  _REST_SERVER_IMAGE      : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/rest-server:latest
+  _WEBSOCKET_SERVER_IMAGE : europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/websocket-server:latest
