@@ -64,11 +64,18 @@ export class AdminManageUserListComponent implements OnInit {
     })
 
   }
-  onDelete(userId:number){
-    this.httpClientService.deleteUser(userId).subscribe(list=>{
-      this.loadUsers(this.users);
-    })
-    window.location.reload();
+  onDelete(userId:number, userName:string, userLastName:string){
+    let message ="Are you sure you want to delete \""+userName+" "+userLastName+"\" profile?\n" +
+      "\n" +
+      "All information associated to this user profile will be permanently deleted. " +
+      "This operation can not be undone.";
+    if(confirm(message)) {
+      this.httpClientService.deleteUser(userId).subscribe(list=>{
+        this.loadUsers(this.users);
+      })
+      window.location.reload();
+    }
+
   }
   onEdit(id:number, firstName:string, lastName:string, email:string, isUserAdmin:boolean, isSchemaAdmin:boolean, isUser:boolean){
     this.idToUpdate=id;
