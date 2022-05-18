@@ -11,6 +11,6 @@ public class ImageIndicatorDeserializer extends JsonDeserializer<Boolean> {
 
     @Override
     public Boolean deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
-        return "Y".equals(jsonParser.getText());
+        return "Y".equals(jsonParser.getText()) || "true".equals(jsonParser.getText());
     }
 }
