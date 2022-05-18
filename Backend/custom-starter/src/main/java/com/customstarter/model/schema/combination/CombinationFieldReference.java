@@ -1,4 +1,4 @@
-package com.ms.data.dto.form;
+package com.customstarter.model.schema.combination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CombinationFieldReference {
 
-    private final String field;
-    private final boolean required;
+    private String field;
+    private boolean required;
 }

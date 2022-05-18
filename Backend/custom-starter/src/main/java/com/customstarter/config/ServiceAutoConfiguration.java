@@ -1,6 +1,5 @@
-package com.customstarter.service;
+package com.customstarter.config;
 
-import com.customstarter.config.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

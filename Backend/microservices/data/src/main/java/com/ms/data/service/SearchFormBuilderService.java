@@ -1,9 +1,9 @@
 package com.ms.data.service;
 
-import com.ms.data.dto.form.ApiCombination;
-import com.ms.data.dto.form.CombinationFieldReference;
-import com.ms.data.dto.form.HtmlForm;
-import com.ms.data.dto.form.input.HtmlInput;
+import com.customstarter.model.schema.combination.ApiCombination;
+import com.customstarter.model.schema.combination.CombinationFieldReference;
+import com.customstarter.model.schema.Schema;
+import com.customstarter.model.schema.input.HtmlInput;
 import com.ms.data.dto.xml.Combination;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.InterfaceSchema;
@@ -35,13 +35,13 @@ public class SearchFormBuilderService {
         return builder.build(field, this);
     }
 
-    public HtmlForm buildForm(InterfaceSchema schema) {
-        HtmlForm htmlForm = new HtmlForm();
-        htmlForm.setName(schema.getTransaction().getName());
+    public Schema buildSchemaForm(InterfaceSchema schema) {
+        Schema schemaForm = new Schema();
+        schemaForm.setName(schema.getTransaction().getName());
 
         for (Field field : schema.getTransaction().getFields()) {
             HtmlInput htmlInput = buildInput(field);
-            htmlForm.getInputs().add(htmlInput);
+            schemaForm.getInputs().add(htmlInput);
         }
 
         for (Combination combination : schema.getTransaction().getCombinations()) {
@@ -58,9 +58,9 @@ public class SearchFormBuilderService {
                 );
             }
 
-            htmlForm.getCombinations().add(apiCombination);
+            schemaForm.getCombinations().add(apiCombination);
         }
 
-        return htmlForm;
+        return schemaForm;
     }
 }

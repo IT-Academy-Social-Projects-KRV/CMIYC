@@ -1,6 +1,6 @@
 package com.ms.data.service.builders;
 
-import com.ms.data.dto.form.input.HtmlInput;
+import com.customstarter.model.schema.input.HtmlInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.service.SearchFormBuilderService;
 
