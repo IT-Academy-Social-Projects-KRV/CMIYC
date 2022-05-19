@@ -56,9 +56,8 @@ export class UserSearchInterfaceComponent implements OnInit {
     this.form.value['foreignDataSource'] = this.getAPIs();
     this.httpClientService.search(this.form).subscribe({
       next: response => {
-        console.log(response);
-        //this.responseService.updateResponse(response as SearchResponse);
-        //this.router.navigate(['/search/response']);
+        this.responseService.updateResponse(response as SearchResponse);
+        this.router.navigate(['/search/response']);
       },
       error: error => {
         console.error('There was an error!', error);
