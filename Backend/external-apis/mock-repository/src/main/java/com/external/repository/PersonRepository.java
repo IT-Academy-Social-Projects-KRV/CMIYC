@@ -2,7 +2,7 @@ package com.external.repository;
 
 import com.external.dto.request.Payload;
 import com.external.entity.Person;
-import com.external.server.MockRepositoryApplication;
+import com.external.MockRepositoryApplication;
 import com.external.utils.MapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
