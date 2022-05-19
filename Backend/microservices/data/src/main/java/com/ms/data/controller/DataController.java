@@ -1,11 +1,12 @@
 package com.ms.data.controller;
 
 import com.ms.data.dto.SchemaFile;
-import com.ms.data.dto.xml.InterfaceSchema;
+import com.customstarter.model.schema.Schema;
 import com.ms.data.service.CloudStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,11 @@ public class DataController {
         return cloudStorageService.getAll();
     }
 
+    @DeleteMapping("/{name}")
+    public void deleteSchema(@PathVariable("name") String name) throws IOException {
+        cloudStorageService.deleteSchema(name);
+    }
+
     @GetMapping("/{name}")
     public ResponseEntity<SchemaFile> getSchema(@PathVariable("name") String name) {
         return ResponseEntity.of(cloudStorageService.getOne(name));
@@ -42,8 +49,8 @@ public class DataController {
     @GetMapping("/{name}/json")
     public ResponseEntity<?> readSchemaToObject(@PathVariable("name") String name) {
         try {
-            InterfaceSchema interfaceSchema = cloudStorageService.getInterfaceSchema(name);
-            return ResponseEntity.of(Optional.of(interfaceSchema));
+            Schema schema = cloudStorageService.readSchema(name);
+            return ResponseEntity.of(Optional.of(schema));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
@@ -51,7 +58,7 @@ public class DataController {
     }
 
     @GetMapping("/selected")
-    public InterfaceSchema getSelectedSchema() {
+    public Schema getSelectedSchema() {
         return cloudStorageService.getSelectedSchema();
     }
 

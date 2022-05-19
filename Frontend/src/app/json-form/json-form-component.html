@@ -1,0 +1,36 @@
+<form method="post" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="jsonForm && jsonForm.inputs">
+  <div class="row mb-4" *ngFor="let field of jsonForm.inputs; let i = index;">
+    <div class="col-lg-2 col-3 offset-lg-2">
+      <label for="input-{{i}}" class="lead">{{normalizeCamelCase(field.name)}}: </label>
+    </div>
+    <div class="col">
+      <input *ngIf="field.type == 'number' || field.type == 'text'" formControlName="{{field.name}}" class="form-control"
+             id="input-{{i}}" placeholder="{{field.description}}" [ngClass]="{'is-invalid': getErrors(field.name).length}"
+             [type]="field.type" [maxlength]="field.maxLength"
+      />
+
+      <select *ngIf="field.type == 'select'" class="form-select" formControlName="{{field.name}}" id="input-{{i}}">
+        <option *ngFor="let option of field.options" [value]="option.value">{{option.text}} {{option.value ? '(' + option.value + ')' : ''}}</option>
+      </select>
+
+      <div class="input-group" *ngIf="field.components">
+        <input *ngFor="let component of field.components" placeholder="{{component.name}}"
+               class="form-control" id="input-component-{{component.name}}"
+               type="{{component.type}}" formControlName="{{field.name + '.' + component.name}}"
+               [ngClass]="{'is-invalid': getErrors(field.name + '.' + component.name).length}"
+        />
+      </div>
+
+      <div *ngIf="!form.valid && getAllErrors(field.name).length" class="text-danger">
+        <div *ngFor="let error of getAllErrors(field.name)">{{error}}</div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+      <button [disabled]="!form.valid || notEnoughFields" type="submit" class="btn btn-primary col-2">Submit</button>
+    <div class="col"></div>
+  </div>
+</form>
