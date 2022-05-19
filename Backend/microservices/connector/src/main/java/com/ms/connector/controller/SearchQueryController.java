@@ -1,11 +1,14 @@
 package com.ms.connector.controller;
 
-import com.ms.connector.dto.SearchQuery;
-
+import com.customstarter.model.request.SearchRequest;
 import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +21,8 @@ public class SearchQueryController {
     private ApiService apiService;
 
     @PostMapping
-    public Map<String, SearchResponse> searcher(@RequestBody SearchQuery searchQuery) {
-        return apiService.handleSearchRequest(searchQuery);
+    public SearchResponse searcher(@RequestBody SearchRequest searchRequest) {
+        return apiService.handleSearchRequest(searchRequest);
     }
     //todo change Map into wrapper class!
     //for test only.  Get test search query JSON response

@@ -1,4 +1,4 @@
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -29,13 +29,16 @@ import {
 } from "./admin-user-is-active-toggle/admin-user-is-active-toggle-component";
 import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-component";
 import {EnvService} from "./shared/env.service";
+import {JsonFormComponent} from "./json-form/json-form-component";
 import {NgxPaginationModule} from "ngx-pagination";
+import { AdminUserUpdateFormComponent } from './admin-user-update-form/admin-user-update-form.component';
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
     return appConfig.loadAppConfig();
   }
 };
+
 
 @NgModule({
   declarations: [
@@ -56,15 +59,20 @@ const appInitializerFn = (appConfig: EnvService) => {
     TwoFactorAuthenticationFormComponent,
     UserSearchInterfaceComponent,
     SearchResponseComponent,
-    AdminUserIsActiveToggleComponent
+    AdminUserIsActiveToggleComponent,
+    AdminUserUpdateFormComponent,
+    JsonFormComponent
+
   ],
-  imports: [
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserModule,
-    NgxPaginationModule
-  ],
+
+    imports: [
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserModule,
+        NgxPaginationModule,
+        FormsModule
+    ],
   providers: [
     AuthService,
     UserAuthGuard,

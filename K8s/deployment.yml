@@ -1,0 +1,321 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: mysql:latest
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: AUTH_SERVER
+              value: http://34.116.181.83:8090
+            - name: SEARCH_API
+              value: http://34.118.5.208:8082
+            - name: DATA_API
+              value: http://34.116.185.54:8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authority
+  labels:
+    app: authority
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authority
+  template:
+    metadata:
+      labels:
+        app: authority
+    spec:
+      containers:
+        - name: authority
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/authority:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: PORTS_MICROSERVICES_AUTHORITY
+              value: "8090"
+            - name: ROUTES_UI
+              value: http://34.107.146.133
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MAIL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search
+  labels:
+    app: search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search
+  template:
+    metadata:
+      labels:
+        app: search
+    spec:
+      containers:
+        - name: search
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/search:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: PORTS_MICROSERVICES_SEARCH
+              value: "8082"
+            - name: ROUTES_MICROSERVICES_CONNECTOR
+              value: http://connector:8080
+            - name: ROUTES_MICROSERVICES_DATA
+              value: http://data:8081
+            - name: ROUTES_MICROSERVICES_AUTHORITY
+              value: http://34.116.181.83:8090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data
+  labels:
+    app: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data
+  template:
+    metadata:
+      labels:
+        app: data
+    spec:
+      containers:
+        - name: data
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/data:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: PORTS_MICROSERVICES_DATA
+              value: "8081"
+            - name: ROUTES_MICROSERVICES_AUTHORITY
+              value: http://34.116.181.83:8090
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/var/run/secret/cloud.google.com/cmiyc-bucket-key.json"
+          volumeMounts:
+            - name: "service-account"
+              mountPath: "/var/run/secret/cloud.google.com"
+            - name: "certs"
+              mountPath: "/etc/ssl/certs"
+      volumes:
+        - name: "service-account"
+          secret:
+            secretName: "bucket-secret"
+        - name: "certs"
+          hostPath:
+            path: "/etc/ssl/certs"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connector
+  labels:
+    app: connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connector
+  template:
+    metadata:
+      labels:
+        app: connector
+    spec:
+      containers:
+        - name: connector
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/connector:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORTS_MICROSERVICES_CONNECTOR
+              value: "8080"
+            - name: ROUTES_MICROSERVICES_AUTHORITY
+              value: http://34.116.181.83:8090
+            - name: ROUTES_EXTERNAL_REST
+              value: http://rest-server:9001/rest-server
+            - name: ROUTES_EXTERNAL_SOAP
+              value: http://soap-server:9003
+            - name: ROUTES_EXTERNAL_WEBSOCKET
+              value: ws://websocket-server:9002/websocket-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mock-repository
+  labels:
+    app: mock-repository
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-repository
+  template:
+    metadata:
+      labels:
+        app: mock-repository
+    spec:
+      containers:
+        - name: mock-repository
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/mock-repository:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soap-server
+  labels:
+    app: soap-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soap-server
+  template:
+    metadata:
+      labels:
+        app: soap-server
+    spec:
+      containers:
+        - name: soap-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/soap-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9003
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-server
+  labels:
+    app: rest-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-server
+  template:
+    metadata:
+      labels:
+        app: rest-server
+    spec:
+      containers:
+        - name: rest-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/rest-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-server
+  labels:
+    app: websocket-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket-server
+  template:
+    metadata:
+      labels:
+        app: websocket-server
+    spec:
+      containers:
+        - name: websocket-server
+          image: europe-central2-docker.pkg.dev/cmiyc-manage-349411/cmiyc-docker-repo/websocket-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ROUTES_EXTERNAL_MOCK_REPOSITORY
+              value: ws://mock-repository:9000
+
+
+
+

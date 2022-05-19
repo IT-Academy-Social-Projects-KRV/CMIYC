@@ -63,6 +63,12 @@
             <version>2.8.6</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.teststarter</groupId>
+            <artifactId>custom-app</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -97,7 +103,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.external.server.MockRepositoryApplication</mainClass>
+                            <mainClass>com.external.MockRepositoryApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
