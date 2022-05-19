@@ -1,6 +1,9 @@
 package com.external.entity;
 
+import com.external.dto.Date;
 import com.external.dto.Gender;
+import com.external.dto.Name;
+import com.external.dto.RaceCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,23 +14,49 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+
 public class Person {
-
-    private int id;
-
-    private String firstName;
-    private String lastName;
-    private String birthDayDate;
+    private Date birthDate;
+    private Name name;
     private Gender gender;
+    private RaceCode raceCode;
+    private boolean isMarried;
+    private byte numberOfChildren;
+    private String operatorLicenseExpirationDate;
+    private short carModelYear;
+    private String carVin;
+    private String carNumber;
+    private String companyName;
 
-    private String country;
+    private String state;
+    private String operatorLicenseNumber;
+
     private String city;
     private String address;
 
-    private String phone;
-    private String email;
     private String job;
+    private String phone;
 
     private String carModel;
-    private String carVin;
+    private String email;
+
+
+
+
+
+    private String image;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

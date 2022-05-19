@@ -1,50 +1,34 @@
 package com.external.dto;
 
-import com.external.dto.request.RequestPayload;
-import com.external.dto.request.RequestPayloadOne;
-import com.external.dto.request.RequestPayloadThree;
-import com.external.dto.request.RequestPayloadTwo;
+import com.external.dto.request.Payload;
+import com.external.dto.request.PayloadOne;
+import com.external.dto.request.PayloadThree;
+import com.external.dto.request.PayloadTwo;
+import com.external.dto.response.Response;
 import com.external.entity.Person;
 import lombok.Getter;
-
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Getter
 public enum API {
 
-    API1("api1", RequestPayloadOne.class, (person, map) -> {
-        map.put("country", person.getCountry());
-        map.put("city", person.getCity());
-        map.put("address", person.getAddress());
-    }),
+    API1("api1", PayloadOne.class),
 
-    API2("api2", RequestPayloadTwo.class, (person, map) -> {
-        map.put("email", person.getEmail());
-        map.put("job", person.getJob());
-        map.put("phone", person.getPhone());
-    }),
+    API2("api2", PayloadTwo.class),
 
-    API3("api3", RequestPayloadThree.class, (person, map) -> {
-        map.put("carModel", person.getCarModel());
-        map.put("carVin", person.getCarVin());
-    });
+    API3("api3", PayloadThree.class);
 
     private final String name;
     private final Class<?> requestClass;
-    private final BiConsumer<Person, Map<String, Object>> loadDataBiConsumer;
 
-    API(String name, Class<?> requestClass, BiConsumer<Person, Map<String, Object>> loadDataBiConsumer) {
+    API(String name, Class<?> requestClass) {
         this.name = name;
         this.requestClass = requestClass;
-        this.loadDataBiConsumer = loadDataBiConsumer;
     }
 
-    public PersonData createPersonData(Person person, RequestPayload payload) {
-        Map<String, Object> data = payload.toMap();
-        loadDataBiConsumer.accept(person, data);
-
-        return new PersonData(person.getId(), data);
+    public Response createPersonData(Person person, Payload payload) {
+        Response response = payload.createResponse(person);
+        response.setApiName(this.name);
+        return response;
     }
 
 }
