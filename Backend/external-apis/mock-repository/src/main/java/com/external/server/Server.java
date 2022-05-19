@@ -1,9 +1,9 @@
 package com.external.server;
 
 import com.external.dto.API;
-import com.external.dto.PersonData;
 import com.external.dto.SearchRequest;
 import com.external.dto.SearchResponse;
+import com.external.dto.response.Response;
 import com.external.entity.Person;
 import com.external.repository.PersonRepository;
 import com.external.utils.MapperUtils;
@@ -65,7 +65,7 @@ public class Server extends WebSocketServer {
             List<Person> people = personRepository.findAllByRequest(request.getRequestPayload());
 
             API api = request.getApi();
-            List<PersonData> personDataList = people.stream()
+            List<Response> personDataList = people.stream()
                     .map(person -> api.createPersonData(person, request.getRequestPayload()))
                     .collect(Collectors.toList());
 

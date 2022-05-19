@@ -1,6 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {FormGroup} from '@angular/forms';
 import {Observable} from "rxjs";
 import {Router} from '@angular/router';
 import {LoginRequest} from "./data/login-request";
@@ -12,6 +11,8 @@ import {RequestResult} from "./data/request-result";
 import {TfaRequest} from "./data/tfa-request";
 import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
+import {JsonForm} from "./data/json-form";
+import {SearchRequest} from "./data/search-request";
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,7 @@ export class HttpClientService {
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
     this.URL_PAGINATION = this.URL_USERS +"/?page={page}&size={itemsAmount}";
 
-    this.URL_SCHEMA = this.SEARCH_API + '/search';
+    this.URL_SCHEMA = this.SEARCH_API + '/schema';
     this.URL_SEARCH = this.SEARCH_API + '/search';
 
     this.URL_SCHEMAS = this.DATA_API + '/schemas';
@@ -125,6 +126,10 @@ export class HttpClientService {
     return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
 
+  private putRequest<T>(url: string, params: any): Observable<T> {
+    return this.http.put<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
+  }
+
   private postFile<T>(url: string, formData: FormData): Observable<T> {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
@@ -147,12 +152,12 @@ export class HttpClientService {
     }
   }
 
-  public getSelectedSchema<T>(): Observable<T> {
+  public getSelectedSchema(): Observable<JsonForm> {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(body: FormGroup): Observable<T> {
-    return this.postRequest(this.URL_SEARCH, body.value);
+  public search<T>(requestData: SearchRequest): Observable<T> {
+    return this.postRequest(this.URL_SEARCH, requestData);
   }
 
   public getUsers(): Observable<User[]> {
@@ -166,6 +171,9 @@ export class HttpClientService {
   public getUsersOnPage(page:number,itemsAmount:number): Observable<Object> {
     let pageOnBack = page-1;
     return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(pageOnBack)).replace("{itemsAmount}",String(itemsAmount)));
+  }
+  public deleteUser(userId:number):Observable<number>{
+    return this.deleteRequest<number>(this.URL_USERS+"/"+userId);
   }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
@@ -231,6 +239,20 @@ export class HttpClientService {
     }
 
     this.postRequest<any>(this.URL_REGISTRATION, data)
+      .subscribe({
+        next: (res) => {
+          callback( RequestResult.success(" "))
+        },
+        error: (err) => {
+          callback(RequestResult.error(
+            err.error))
+        }
+      });
+  }
+
+  public updateUser(id: number, data:any, callback: (result: RequestResult) => void) {
+
+    this.putRequest<any>(this.URL_USERS+"/"+id, data)
       .subscribe({
         next: (res) => {
           const error = res['error'];

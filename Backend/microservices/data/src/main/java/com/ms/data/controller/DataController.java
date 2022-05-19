@@ -1,7 +1,7 @@
 package com.ms.data.controller;
 
 import com.ms.data.dto.SchemaFile;
-import com.ms.data.dto.xml.InterfaceSchema;
+import com.customstarter.model.schema.Schema;
 import com.ms.data.service.CloudStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,8 +49,8 @@ public class DataController {
     @GetMapping("/{name}/json")
     public ResponseEntity<?> readSchemaToObject(@PathVariable("name") String name) {
         try {
-            InterfaceSchema interfaceSchema = cloudStorageService.getInterfaceSchema(name);
-            return ResponseEntity.of(Optional.of(interfaceSchema));
+            Schema schema = cloudStorageService.readSchema(name);
+            return ResponseEntity.of(Optional.of(schema));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
@@ -58,7 +58,7 @@ public class DataController {
     }
 
     @GetMapping("/selected")
-    public InterfaceSchema getSelectedSchema() {
+    public Schema getSelectedSchema() {
         return cloudStorageService.getSelectedSchema();
     }
 

@@ -28,8 +28,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "registration")
-    public RegistrationResultData register(@RequestBody RegistrationRequestData request) {
-        return userService.register(request);
+    public void register(@RequestBody RegistrationRequestData request) {
+        userService.register(request);
     }
 
     @PostMapping("/activation")
