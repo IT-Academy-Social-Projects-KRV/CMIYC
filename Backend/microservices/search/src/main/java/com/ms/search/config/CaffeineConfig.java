@@ -1,8 +1,8 @@
 package com.ms.search.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.search.cache.CacheTokenKeyGenerator;
-import com.ms.search.cache.CustomCacheManager;
+import com.ms.search.config.cache.CacheTokenKeyGenerator;
+import com.ms.search.config.cache.CustomCacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;

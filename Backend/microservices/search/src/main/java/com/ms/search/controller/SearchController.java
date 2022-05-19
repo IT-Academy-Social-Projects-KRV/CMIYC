@@ -1,9 +1,10 @@
 package com.ms.search.controller;
 
 import com.ms.search.config.CaffeineConfig;
-import com.ms.search.cache.CustomCacheManager;
+import com.ms.search.config.cache.CustomCacheManager;
 import com.customstarter.model.schema.Schema;
 import com.customstarter.utils.ApiError;
+import com.ms.search.config.cache.SearchRequestWrapper;
 import com.ms.search.connectInterface.ConnectorConnect;
 import com.ms.search.connectInterface.DataConnect;
 import com.customstarter.model.request.SearchRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -39,9 +42,9 @@ public class SearchController {
     }
 
     @GetMapping
-    @RequestMapping("/cached")
-    public Object getCache(@RequestHeader(value = "Authorization") String authorizationHeader) {
-        return cacheManager.getDataForUser(authorizationHeader, CaffeineConfig.CACHE_SEARCH);
+    @RequestMapping("/search/history")
+    public List<SearchRequestWrapper> getCache(@RequestHeader(value = "Authorization") String authorizationHeader) {
+        return cacheManager.getRequestHistoryByUser(authorizationHeader, CaffeineConfig.CACHE_SEARCH);
     }
 
 

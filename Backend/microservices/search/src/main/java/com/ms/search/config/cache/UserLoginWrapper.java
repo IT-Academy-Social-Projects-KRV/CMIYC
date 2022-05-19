@@ -1,4 +1,4 @@
-package com.ms.search.cache;
+package com.ms.search.config.cache;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
