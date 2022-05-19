@@ -126,6 +126,10 @@ export class HttpClientService {
     return this.http.post<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
   }
 
+  private putRequest<T>(url: string, params: any): Observable<T> {
+    return this.http.put<T>(url, JSON.stringify(params, null, 2), this.getJSONRequestOptions());
+  }
+
   private postFile<T>(url: string, formData: FormData): Observable<T> {
     return this.http.post<T>(url, formData, this.getMultipartRequestOptions());
   }
@@ -167,6 +171,9 @@ export class HttpClientService {
   public getUsersOnPage(page:number,itemsAmount:number): Observable<Object> {
     let pageOnBack = page-1;
     return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(pageOnBack)).replace("{itemsAmount}",String(itemsAmount)));
+  }
+  public deleteUser(userId:number):Observable<number>{
+    return this.deleteRequest<number>(this.URL_USERS+"/"+userId);
   }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
@@ -232,6 +239,20 @@ export class HttpClientService {
     }
 
     this.postRequest<any>(this.URL_REGISTRATION, data)
+      .subscribe({
+        next: (res) => {
+          callback( RequestResult.success(" "))
+        },
+        error: (err) => {
+          callback(RequestResult.error(
+            err.error))
+        }
+      });
+  }
+
+  public updateUser(id: number, data:any, callback: (result: RequestResult) => void) {
+
+    this.putRequest<any>(this.URL_USERS+"/"+id, data)
       .subscribe({
         next: (res) => {
           const error = res['error'];
