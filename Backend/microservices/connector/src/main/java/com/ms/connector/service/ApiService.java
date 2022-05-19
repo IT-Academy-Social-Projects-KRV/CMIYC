@@ -1,7 +1,7 @@
 package com.ms.connector.service;
 
 import com.customstarter.model.request.SearchRequest;
-import com.ms.connector.config.ConnectionsConfig;
+import com.customstarter.model.request.SearchRequestPayload;
 import com.ms.connector.dto.SearchResponse;
 import com.ms.connector.dto.response.ApiResponse;
 import com.ms.connector.dto.response.RestApiResponse;
@@ -11,53 +11,32 @@ import com.ms.connector.exception.ApiErrorException;
 import com.ms.connector.service.api.RestApiConnection;
 import com.ms.connector.service.api.SoapApiConnection;
 import com.ms.connector.service.api.WebsocketApiConnection;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ApiService {
 
     private final RestApiConnection restApiConnection;
     private final SoapApiConnection soapApiConnection;
     private final WebsocketApiConnection websocketApiConnection;
 
-    @Autowired
-    public ApiService(ConnectionsConfig connectionsConfig) {
-        this.restApiConnection = connectionsConfig.getRest().build();
-        this.soapApiConnection = connectionsConfig.getSoap().build();
-        this.websocketApiConnection = connectionsConfig.getWebsocket().build();
-    }
-
     public SearchResponse handleSearchRequest(SearchRequest request) {
-        SearchResponse result = new SearchResponse();
+        SearchResponse searchResponse = new SearchResponse();
+        SearchRequestPayload payload = request.getData();
 
         for (String apiName : request.getApis()) {
+            apiName = apiName.toLowerCase();
+            ApiResponse response = null;
+
             try {
-                ApiResponse response = null;
-
-                switch (apiName.toLowerCase()) {
-                    case "api1": {
-                        RestApiResponse restApiResponse = restApiConnection.getData(request.getData());
-                        result.setApi1Responses(restApiResponse.getData());
-                        response = restApiResponse;
-
-                        break;
-                    }
-                    case "api2": {
-                        SoapApiResponse soapApiResponse = soapApiConnection.getData(request.getData());
-                        result.setApi2Responses(soapApiResponse.getData());
-                        response = soapApiResponse;
-
-                        break;
-
-                    }
-                    case "api3": {
-                        WebsocketApiResponse websocketApiResponse = websocketApiConnection.getData(request.getData());
-                        result.setApi3Responses(websocketApiResponse.getData());
-                        response = websocketApiResponse;
-
-                        break;
-                    }
+                if(apiName.equals(restApiConnection.getName())) {
+                    response = restApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
+                } else if(apiName.equals(soapApiConnection.getName())) {
+                    response = soapApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
+                } else if(apiName.equals(websocketApiConnection.getName())) {
+                    response = websocketApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
                 }
 
                 if(response != null && response.isError())
@@ -67,6 +46,6 @@ public class ApiService {
             }
         }
 
-        return result;
+        return searchResponse;
     }
 }

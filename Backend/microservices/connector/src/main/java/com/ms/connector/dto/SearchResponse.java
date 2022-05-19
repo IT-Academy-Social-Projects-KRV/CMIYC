@@ -1,8 +1,8 @@
 package com.ms.connector.dto;
 
-import com.ms.connector.dto.response.data.RestApiResponseData;
-import com.ms.connector.dto.response.data.WebsocketResponseData;
-import com.ms.connector.dto.response.data.SoapApiResponseData;
+import com.customstarter.model.response.ResponseOne;
+import com.customstarter.model.response.ResponseThree;
+import com.customstarter.model.response.ResponseTwo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 public class SearchResponse {
 
-    private List<RestApiResponseData> api1Responses = new ArrayList<>();
-    private List<SoapApiResponseData> api2Responses = new ArrayList<>();
-    private List<WebsocketResponseData> api3Responses = new ArrayList<>();
+    private List<ResponseOne> api1Responses = new ArrayList<>();
+    private List<ResponseTwo> api2Responses = new ArrayList<>();
+    private List<ResponseThree> api3Responses = new ArrayList<>();
 }

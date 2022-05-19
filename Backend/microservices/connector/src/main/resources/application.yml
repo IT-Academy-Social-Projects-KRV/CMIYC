@@ -9,12 +9,15 @@ eureka:
 
 api:
   rest:
+    name: api1
     path: ${ROUTES_EXTERNAL_REST:http://localhost:9001}/rest
     method: post
   soap:
+    name: api2
     path: ${ROUTES_EXTERNAL_SOAP:http://localhost:9003}/soap
     method: post
   websocket:
+    name: api3
     path: ${ROUTES_EXTERNAL_WEBSOCKET:ws://localhost:9002}/ws
     timeout: 10000
 

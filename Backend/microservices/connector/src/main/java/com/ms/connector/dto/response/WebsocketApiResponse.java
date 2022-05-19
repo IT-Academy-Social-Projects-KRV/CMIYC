@@ -1,6 +1,6 @@
 package com.ms.connector.dto.response;
 
-import com.ms.connector.dto.response.data.WebsocketResponseData;
+import com.customstarter.model.response.ResponseThree;
 import lombok.Setter;
 
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
 @Setter
 public class WebsocketApiResponse extends ApiResponse {
 
-    private List<WebsocketResponseData> data;
+    private List<ResponseThree> data;
 
     @Override
-    public List<WebsocketResponseData> getData() {
+    public List<ResponseThree> getData() {
         return data;
     }
 }

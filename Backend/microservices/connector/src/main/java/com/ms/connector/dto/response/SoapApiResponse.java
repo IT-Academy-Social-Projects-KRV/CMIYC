@@ -1,6 +1,6 @@
 package com.ms.connector.dto.response;
 
-import com.ms.connector.dto.response.data.SoapApiResponseData;
+import com.customstarter.model.response.ResponseTwo;
 import lombok.Setter;
 
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
 @Setter
 public class SoapApiResponse extends ApiResponse {
 
-    private List<SoapApiResponseData> data;
+    private List<ResponseTwo> data;
 
     @Override
-    public List<SoapApiResponseData> getData() {
+    public List<ResponseTwo> getData() {
         return data;
     }
 }

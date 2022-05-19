@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
-public class SoapBodyConverter implements BodyConverter {
+public class SoapBodyConverter {
 
     // TODO: probably should move some of this this data to constructor
     private static final String GS_NAMESPACE_URL = "http://soap.api/xsd";
@@ -37,7 +37,6 @@ public class SoapBodyConverter implements BodyConverter {
     private static final SOAPFactory soapFactory = SoapHelper.soapFactory;
 
     @SneakyThrows
-    @Override
     public String payloadToBody(SearchRequestPayload query) {
         SOAPMessage soapMessage = messageFactory.createMessage();
 
@@ -58,7 +57,6 @@ public class SoapBodyConverter implements BodyConverter {
     }
 
     @SneakyThrows
-    @Override
     public SoapApiResponse responseBodyToObject(String response) {
         XMLStreamReader xmlStreamReader = SoapHelper.xmlInputFactory.createXMLStreamReader(new StringReader(response));
         XMLReaderWithoutNamespace xmlReader = new XMLReaderWithoutNamespace(xmlStreamReader);

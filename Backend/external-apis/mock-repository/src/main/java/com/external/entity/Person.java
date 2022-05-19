@@ -1,10 +1,9 @@
 package com.external.entity;
 
-import com.external.dto.Date;
+import com.customstarter.model.Date;
+import com.customstarter.model.Name;
+import com.customstarter.model.RaceCode;
 import com.external.dto.Gender;
-import com.external.dto.Name;
-import com.external.dto.RaceCode;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,47 +15,30 @@ import lombok.ToString;
 @ToString
 
 public class Person {
+
     private Date birthDate;
     private Name name;
     private Gender gender;
     private RaceCode raceCode;
-    private boolean isMarried;
-    private byte numberOfChildren;
-    private String operatorLicenseExpirationDate;
-    private short carModelYear;
-    private String carVin;
-    private String carNumber;
-    private String companyName;
-
-    private String state;
     private String operatorLicenseNumber;
 
+    private boolean isMarried;
+    private byte numberOfChildren;
+    private String state;
     private String city;
     private String address;
 
     private String job;
+    private String companyName;
     private String phone;
-
-    private String carModel;
     private String email;
 
-
-
-
+    private String carModel;
+    private String operatorLicenseExpirationDate;
+    private short carModelYear;
+    private String carVin;
+    private String carNumber;
 
     private String image;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,7 +1,6 @@
 package com.ms.connector.dto.response;
 
-import com.ms.connector.dto.response.data.RestApiResponseData;
-import lombok.Getter;
+import com.customstarter.model.response.ResponseOne;
 import lombok.Setter;
 
 import java.util.List;
@@ -9,10 +8,10 @@ import java.util.List;
 @Setter
 public class RestApiResponse extends ApiResponse {
 
-    private List<RestApiResponseData> data;
+    private List<ResponseOne> data;
 
     @Override
-    public List<RestApiResponseData> getData() {
+    public List<ResponseOne> getData() {
         return data;
     }
 }
