@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
@@ -58,15 +54,17 @@ public class UserController {
 
     @GetMapping
     public Page<UserData> getAllUsers(@RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
+                                      @RequestParam(defaultValue = "10") int size) {
         return userService.getAllUsers(page, size);
     }
 
     @GetMapping("/search")
-    public List<UserData> findUserByParams(@RequestParam(defaultValue = "") String email,
-                                  @RequestParam(defaultValue = "") String firstName,
-                                  @RequestParam(defaultValue = "") String lastName,
-                                  @RequestParam(defaultValue = "true") Boolean isActive) {
-        return userService.findUserByParams(email, firstName, lastName, isActive);
+    public Page<UserData> findUserByParams(@RequestParam(defaultValue = "") String email,
+                                           @RequestParam(defaultValue = "") String firstName,
+                                           @RequestParam(defaultValue = "") String lastName,
+                                           @RequestParam(defaultValue = "true") Boolean isActive,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size) {
+        return userService.findUserByParams(email, firstName, lastName, isActive, page, size);
     }
 }
