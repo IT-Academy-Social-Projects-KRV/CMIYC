@@ -1,9 +1,9 @@
 package com.external.dto.request;
 
-import com.external.dto.Date;
-import com.external.dto.Name;
-import com.external.dto.RaceCode;
-import com.external.dto.response.ResponseOne;
+import com.customstarter.model.Date;
+import com.customstarter.model.Name;
+import com.customstarter.model.RaceCode;
+import com.customstarter.model.response.ResponseOne;
 import com.external.entity.Person;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,25 +14,25 @@ import java.util.Objects;
 @Setter
 public class PayloadOne implements Payload {
 
-    private Date birthDate;
     private Name name;
+    private Date birthDate;
     private String sexCode;
     private RaceCode raceCode;
 
-
     @Override
-
     public boolean isEqualToPerson(Person person) {
         return name != null &&
-                name.isSameName(person.getName())&&
-                Objects.equals(person.getBirthDate(),this.birthDate) &&
-                person.getGender().isSexCodeCorrect(sexCode)&&
+                name.isSameName(person.getName()) &&
+                Objects.equals(person.getBirthDate(), this.birthDate) &&
+                person.getGender().isSexCodeCorrect(sexCode) &&
                 (raceCode == null || raceCode == person.getRaceCode());
     }
 
     @Override
     public ResponseOne createResponse(Person person) {
-   return new ResponseOne(person);
+        return new ResponseOne(
+                person.getName(), person.getCity(), person.getAddress(),
+                person.isMarried(), person.getNumberOfChildren(), person.getRaceCode()
+        );
     }
-
 }

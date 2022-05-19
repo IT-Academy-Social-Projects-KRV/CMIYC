@@ -1,10 +1,10 @@
 package com.external.dto;
 
+import com.customstarter.model.response.Response;
 import com.external.dto.request.Payload;
 import com.external.dto.request.PayloadOne;
 import com.external.dto.request.PayloadThree;
 import com.external.dto.request.PayloadTwo;
-import com.external.dto.response.Response;
 import com.external.entity.Person;
 import lombok.Getter;
 
@@ -12,9 +12,7 @@ import lombok.Getter;
 public enum API {
 
     API1("api1", PayloadOne.class),
-
     API2("api2", PayloadTwo.class),
-
     API3("api3", PayloadThree.class);
 
     private final String name;
@@ -30,5 +28,4 @@ public enum API {
         response.setApiName(this.name);
         return response;
     }
-
 }

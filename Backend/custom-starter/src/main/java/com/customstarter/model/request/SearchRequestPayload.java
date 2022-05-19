@@ -7,6 +7,7 @@ import com.customstarter.model.SexCode;
 import com.customstarter.model.StateCode;
 import com.customstarter.utils.ImageIndicatorDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
 public class SearchRequestPayload {
 

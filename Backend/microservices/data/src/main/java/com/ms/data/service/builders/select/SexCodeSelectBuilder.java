@@ -14,7 +14,6 @@ import java.util.List;
 public class SexCodeSelectBuilder extends HtmlInputBuilderByNameAndType {
 
     private static final List<SelectOption> OPTIONS = List.of(
-            new SelectOption("", "Unknown"),
             new SelectOption("M", "Male"),
             new SelectOption("F", "Female")
     );

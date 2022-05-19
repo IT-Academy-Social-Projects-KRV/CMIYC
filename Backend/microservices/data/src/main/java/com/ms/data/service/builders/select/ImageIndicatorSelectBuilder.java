@@ -14,7 +14,7 @@ import java.util.List;
 public class ImageIndicatorSelectBuilder extends HtmlInputBuilderByNameAndType {
 
     private static final List<SelectOption> OPTIONS = List.of(
-            new SelectOption("", "No"),
+            new SelectOption("N", "No"),
             new SelectOption("Y", "Yes")
     );
 

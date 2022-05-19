@@ -1,9 +1,9 @@
 package com.external.server;
 
+import com.customstarter.model.response.Response;
 import com.external.dto.API;
 import com.external.dto.SearchRequest;
 import com.external.dto.SearchResponse;
-import com.external.dto.response.Response;
 import com.external.entity.Person;
 import com.external.repository.PersonRepository;
 import com.external.utils.MapperUtils;

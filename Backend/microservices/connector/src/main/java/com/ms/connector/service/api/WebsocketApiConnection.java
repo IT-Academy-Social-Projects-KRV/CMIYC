@@ -1,19 +1,31 @@
 package com.ms.connector.service.api;
 
-import com.ms.connector.dto.SearchQuery;
+import com.customstarter.model.request.SearchRequestPayload;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.connector.dto.SearchResponse;
-import com.ms.connector.service.api.converter.BodyConverter;
-import com.ms.connector.service.api.converter.JsonBodyConverter;
+import com.ms.connector.dto.response.WebsocketApiResponse;
 import com.ms.connector.service.client.WebsocketClient;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WebsocketApiConnection implements ApiConnection {
 
-    private static final BodyConverter converter = new JsonBodyConverter();
+    private final ObjectMapper objectMapper;
 
     private final String name;
     private final WebsocketClient client;
 
-    public WebsocketApiConnection(String name, String path, int timeout) {
+    public WebsocketApiConnection(
+            @Autowired ObjectMapper objectMapper,
+            @Value("${api.websocket.name}") String name,
+            @Value("${api.websocket.path}") String path,
+            @Value("${api.websocket.timeout}") int timeout
+    ) {
+        this.objectMapper = objectMapper;
+
         this.name = name;
         this.client = new WebsocketClient(path, timeout);
     }
@@ -28,11 +40,20 @@ public class WebsocketApiConnection implements ApiConnection {
         return ApiConnection.Type.WEBSOCKET;
     }
 
+    @SneakyThrows
     @Override
-    public SearchResponse getData(SearchQuery query) {
-        String body = converter.queryToRequestBody(query);
+    public WebsocketApiResponse loadData(SearchRequestPayload payload) {
+        String body = objectMapper.writeValueAsString(payload);
         String response = client.sendAndReceive(body);
 
-        return converter.responseBodyToObject(response);
+        return objectMapper.readValue(response, WebsocketApiResponse.class);
+    }
+
+    @Override
+    public WebsocketApiResponse loadDataAndSaveToResponse(SearchRequestPayload payload, SearchResponse response) {
+        WebsocketApiResponse websocketApiResponse = loadData(payload);
+        response.setApi3Responses(websocketApiResponse.getData());
+
+        return websocketApiResponse;
     }
 }

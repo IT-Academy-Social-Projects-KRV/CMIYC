@@ -1,6 +1,6 @@
 package com.external.dto.request;
 
-import com.external.dto.response.Response;
+import com.customstarter.model.response.Response;
 import com.external.entity.Person;
 
 public interface Payload {
