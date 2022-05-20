@@ -19,6 +19,7 @@ export class JsonFormComponent implements OnChanges {
   notEnoughFields: boolean = false;
   form: FormGroup = new FormGroup({});
   submitted = false;
+  api1Enabled: boolean = false;
 
   constructor(private httpClientService: HttpClientService) {
   }
@@ -53,9 +54,11 @@ export class JsonFormComponent implements OnChanges {
       this.jsonForm.combinations.forEach(combination => {
         if(ApiCombination.isValid(combination, data))
           this.selectedApis.push(combination.apiName);
+          this.checkAPI(combination);
       });
 
       this.notEnoughFields = this.selectedApis.length == 0;
+      this.api1Enabled = this.selectedApis.length > 0;
     }
 
     this.form.valueChanges.subscribe(onUpdateCallback);
