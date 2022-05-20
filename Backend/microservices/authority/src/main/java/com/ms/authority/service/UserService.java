@@ -18,6 +18,7 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -135,6 +136,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(User user) {
+        if(user.getRoles().stream().anyMatch((role)-> role.getRole() .equals(Role.ROLE_ADMIN_USER)) ){
+            throw new ImpossibleOperationException("Admin user can't delete himself or another admin users");
+        }
         tokenService.deleteTokenByUser(user);
         userRepository.delete(user);
     }
