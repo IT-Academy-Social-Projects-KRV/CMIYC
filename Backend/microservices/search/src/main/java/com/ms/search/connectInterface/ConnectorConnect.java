@@ -1,8 +1,7 @@
 package com.ms.search.connectInterface;
 
 import com.customstarter.model.request.SearchRequest;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import com.customstarter.model.response.SearchResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,7 @@ import java.util.Map;
 public interface ConnectorConnect {
 
     @PostMapping("/searcher")
-    Map<String, Object> searcher(
+    SearchResponse searcher(
             @RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest
     );
 
