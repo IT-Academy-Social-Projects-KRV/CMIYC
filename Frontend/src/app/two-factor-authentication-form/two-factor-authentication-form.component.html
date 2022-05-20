@@ -1,7 +1,12 @@
+<div class="login-wrap">
+  <div class="login-content">
 <div class="d-flex vw-100 vh-100">
   <main class="form-signin  w-100 m-auto">
+   <!-- <div class="d-flex">
+      <img src="/assets/images/Logo.svg" class="img-fluid rounded mx-auto d-block pb-0">
+    </div>-->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <h1 class="h3 mb-3 fw-normal">Please enter your authentication code.</h1>
+      <!--<h1 class="h3 mb-3 fw-normal">Please enter your authentication code.</h1>-->
       <div class="input-group mb-3">
         <div class = "form-floating flex-grow-1">
 
@@ -30,4 +35,6 @@
       <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
     </form>
   </main>
+</div>
+  </div>
 </div>

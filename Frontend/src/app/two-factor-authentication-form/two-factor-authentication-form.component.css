@@ -33,3 +33,24 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.login-wrap{
+  position: relative;
+}
+.login-wrap:before{
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  background-image: url(src/assets/images/bgtestup.png) ;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.login-content{
+  position: relative;
+}
