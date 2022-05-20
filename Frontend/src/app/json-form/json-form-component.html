@@ -33,7 +33,15 @@
     <div class="col">
       <div class="row">
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-          <span class="btn api text-start" *ngFor="let api of jsonForm.combinations" [ngClass]="{'apiEnabled': selectedApis.includes(api.apiName)}">{{api.apiName}}</span>
+          <span
+            class="btn api text-start"
+            *ngFor="let api of jsonForm.combinations"
+            [ngClass]="{'apiEnabled': selectedApis.includes(api.apiName)}"
+            tabindex="0"
+            data-bs-toggle="tooltip"
+            [title]="combinations[api.apiName].substring(0, combinations[api.apiName].length - 2)"
+          >{{api.apiName}}
+          </span>
         </div>
       </div>
     </div>
