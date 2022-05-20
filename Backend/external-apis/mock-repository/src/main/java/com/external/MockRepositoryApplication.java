@@ -1,4 +1,6 @@
-package com.external.server;
+package com.external;
+
+import com.external.server.Server;
 
 public class MockRepositoryApplication {
 

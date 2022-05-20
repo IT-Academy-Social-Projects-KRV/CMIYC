@@ -1,6 +1,6 @@
 package com.external.dto;
 
-import com.external.dto.response.Response;
+import com.customstarter.model.response.Response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

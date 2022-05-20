@@ -1,4 +1,4 @@
-package com.external.dto.response;
+package com.customstarter.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Response {
+
     private  String apiName;
 
     protected Response() {
