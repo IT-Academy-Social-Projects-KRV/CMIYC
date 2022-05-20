@@ -20,9 +20,6 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${ROUTES_MICROSERVICES_AUTHORITY:http://localhost:8090}/.well-known/jwks.json
-  cache:
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=8h
   jackson:
     mapper:
       ACCEPT_CASE_INSENSITIVE_PROPERTIES: true
