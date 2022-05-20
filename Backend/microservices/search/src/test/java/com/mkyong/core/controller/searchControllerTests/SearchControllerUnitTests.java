@@ -1,7 +1,7 @@
 package com.mkyong.core.controller.searchControllerTests;
 
-import com.ms.search.connectInterface.ConnectorConnect;
-import com.ms.search.connectInterface.DataConnect;
+import com.ms.search.service.ConnectorConnect;
+import com.ms.search.service.DataConnect;
 import com.ms.search.controller.SearchController;
 import com.customstarter.model.request.SearchRequest;
 
@@ -49,7 +49,7 @@ public class SearchControllerUnitTests {
 
     @Test
     public void searchSearchAPI_checkIfDataFromConnectorIsNotNull_BooleanReturned() {
-        assertThat(controller.search(authorizationHeader, searchRequest)).isNotNull();
+        assertThat(controller.search(authorizationHeader, searchRequest, null)).isNotNull();
     }
 
 

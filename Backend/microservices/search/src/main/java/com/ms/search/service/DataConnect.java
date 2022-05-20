@@ -1,4 +1,4 @@
-package com.ms.search.connectInterface;
+package com.ms.search.service;
 
 import com.customstarter.model.schema.Schema;
 import org.springframework.cache.annotation.CacheConfig;

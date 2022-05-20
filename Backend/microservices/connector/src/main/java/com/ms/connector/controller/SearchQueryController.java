@@ -1,6 +1,7 @@
 package com.ms.connector.controller;
 
 import com.customstarter.model.request.SearchRequest;
+import com.customstarter.model.response.SearchResponse;
 import com.ms.connector.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

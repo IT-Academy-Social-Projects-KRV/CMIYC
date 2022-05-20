@@ -1,4 +1,4 @@
-package com.ms.search.connectInterface;
+package com.ms.search.service;
 
 import com.customstarter.model.request.SearchRequest;
 import com.customstarter.model.response.SearchResponse;

@@ -1,5 +1,7 @@
 server:
   port: ${PORTS_MICROSERVICES_SEARCH:8082}
+cache:
+  expiration-time: 8
 
 routes:
   connector: ${ROUTES_MICROSERVICES_CONNECTOR:http://localhost:8080}
