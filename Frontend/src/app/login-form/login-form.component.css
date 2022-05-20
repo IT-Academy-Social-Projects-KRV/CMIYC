@@ -1,27 +1,8 @@
 html,
 body {
-  /*width: 100vh;
-  height: 100vh;*/
-  margin-left: 0;
-  background-image: url(src/assets/images/test.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  image-resolution: from-image;
-  /*align-content: flex-start;*/
-  background-position: left;
+
 }
-.background-image{
-  opacity: 0.5;
-}
-test {
-/*  width: 100vh;
-  height: 100vh;
-  opacity: 0.75;*/
-  background-image: url(src/assets/images/test.png);
-/*  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;*/
-}
+
 .login-wrap{
   position: relative;
 }
@@ -34,7 +15,7 @@ test {
   width: 100%;
   height: 100%;
   opacity: 0.3;
-  background-image: url(src/assets/images/bgtestup.png) ;
+  background-image: url(../../assets/images/back-ground-logo.svg) ;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
