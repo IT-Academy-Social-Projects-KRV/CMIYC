@@ -1,7 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {ResponseService} from "../shared/response.service";
+import {DataService} from "../shared/data.service";
 import {RaceCode, SearchResponse} from "../shared/data/search.response";
 import {count} from "rxjs";
+import {SearchRequest} from "../shared/data/search-request";
 
 @Component({
   selector: 'app-search-response',
@@ -14,13 +15,15 @@ export class SearchResponseComponent implements OnInit {
   page = 1;
   count: number | undefined;
   tableSize = 5;
-  searchResponses: SearchResponse;
+  searchResponses: SearchResponse | undefined;
+  searchRequest: SearchRequest | undefined;
   getScreenHeight: any;
   raceCode: RaceCode = new RaceCode();
   headerViewSize = 227;
 
-  constructor(private responseService: ResponseService) {
-    this.searchResponses = responseService.response;
+  constructor(private dataService: DataService) {
+    this.searchResponses = dataService.response;
+    this.searchRequest = dataService.request;
   }
 
   ngOnInit(): void {

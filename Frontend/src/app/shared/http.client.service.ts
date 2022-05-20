@@ -157,7 +157,7 @@ export class HttpClientService {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(requestData: SearchRequest): Observable<SearchResponse> {
+  public search(requestData: SearchRequest): Observable<SearchResponse> {
     return this.postRequest(this.URL_SEARCH, requestData);
   }
 

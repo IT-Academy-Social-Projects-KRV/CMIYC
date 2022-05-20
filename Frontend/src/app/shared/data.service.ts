@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {SearchResponse} from "./data/search.response";
+import {SearchRequest} from "./data/search-request";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ResponseService {
+export class DataService {
 
-  //private response = new BehaviorSubject('Basic Approval is required!');
-  // @ts-ignore
-  response: SearchResponse;
+  response: SearchResponse | undefined;
+  request: SearchRequest | undefined;
   constructor() {
 
   }
   updateResponse(newResponse: SearchResponse) {
     this.response = newResponse;
+  }
+
+  updateRequest(newRequest: SearchRequest) {
+    this.request = newRequest;
   }
 }

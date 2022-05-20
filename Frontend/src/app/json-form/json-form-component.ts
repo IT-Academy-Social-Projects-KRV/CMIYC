@@ -4,6 +4,8 @@ import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data
 import Validation from "../utils/validation";
 import {SearchRequest} from "../shared/data/search-request";
 import {HttpClientService} from "../shared/http.client.service";
+import {DataService} from "../shared/data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'json-form-component',
@@ -20,7 +22,7 @@ export class JsonFormComponent implements OnChanges {
   form: FormGroup = new FormGroup({});
   submitted = false;
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private httpClientService: HttpClientService, private dataService: DataService, private router: Router) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -98,6 +100,9 @@ export class JsonFormComponent implements OnChanges {
       .subscribe({
         next: value => {
           console.log(value);
+          this.dataService.updateResponse(value);
+          this.dataService.updateRequest(request);
+          this.router.navigate(['/search/response']);
         },
         error: err => {
           alert(err.error || err.message || err.description || JSON.stringify(err));
