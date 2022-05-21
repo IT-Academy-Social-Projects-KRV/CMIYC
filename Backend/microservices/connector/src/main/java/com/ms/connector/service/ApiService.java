@@ -27,7 +27,6 @@ public class ApiService {
         SearchRequestPayload payload = request.getData();
 
         for (String apiName : request.getApis()) {
-            apiName = apiName.toLowerCase();
             ApiResponse response = null;
 
             try {

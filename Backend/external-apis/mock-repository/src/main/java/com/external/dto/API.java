@@ -11,9 +11,9 @@ import lombok.Getter;
 @Getter
 public enum API {
 
-    API1("api1", PayloadOne.class),
-    API2("api2", PayloadTwo.class),
-    API3("api3", PayloadThree.class);
+    API1("NCIC", PayloadOne.class),
+    API2("FRED", PayloadTwo.class),
+    API3("DataGOV", PayloadThree.class);
 
     private final String name;
     private final Class<?> requestClass;
