@@ -2,11 +2,8 @@ package com.ms.connector.service;
 
 import com.customstarter.model.request.SearchRequest;
 import com.customstarter.model.request.SearchRequestPayload;
-import com.ms.connector.dto.SearchResponse;
+import com.customstarter.model.response.SearchResponse;
 import com.ms.connector.dto.response.ApiResponse;
-import com.ms.connector.dto.response.RestApiResponse;
-import com.ms.connector.dto.response.SoapApiResponse;
-import com.ms.connector.dto.response.WebsocketApiResponse;
 import com.ms.connector.exception.ApiErrorException;
 import com.ms.connector.service.api.RestApiConnection;
 import com.ms.connector.service.api.SoapApiConnection;

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import com.ms.search.connectInterface.ConnectorConnect;
-import com.ms.search.connectInterface.DataConnect;
+import com.ms.search.service.ConnectorConnect;
+import com.ms.search.service.DataConnect;
 import com.ms.search.controller.SearchController;
 import com.customstarter.model.request.SearchRequest;
 

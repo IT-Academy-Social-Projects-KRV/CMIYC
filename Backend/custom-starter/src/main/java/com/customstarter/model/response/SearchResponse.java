@@ -1,13 +1,11 @@
-package com.ms.connector.dto;
+package com.customstarter.model.response;
 
-import com.customstarter.model.response.ResponseOne;
-import com.customstarter.model.response.ResponseThree;
-import com.customstarter.model.response.ResponseTwo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +18,6 @@ public class SearchResponse {
     private List<ResponseOne> api1Responses = new ArrayList<>();
     private List<ResponseTwo> api2Responses = new ArrayList<>();
     private List<ResponseThree> api3Responses = new ArrayList<>();
+    private LocalDateTime dateTime = LocalDateTime.now();
+
 }
