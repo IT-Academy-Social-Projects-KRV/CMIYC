@@ -31,8 +31,8 @@ public class SearchRequest {
         String json = message.substring(message.indexOf(REQUEST_SPLIT) + REQUEST_SPLIT.length());
 
         for (API api : API.values()) {
-            if (!api.getName()
-                    .equals(apiName)) {
+            if (!api.name()
+                    .equals(apiName.toUpperCase())) {
                 continue;
             }
 

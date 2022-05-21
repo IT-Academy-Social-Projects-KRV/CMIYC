@@ -1,4 +1,4 @@
-This starter enables work of cors filter in three modules:authority,data and search
+This starter enables work of cors filter in three modules:authority, data and search
 
 To build the project with our starter in jar file you need to write next commands:
 In terminal: PS [your_pass]\CMIYC\Backend\custom-starter>

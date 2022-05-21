@@ -1,9 +1,8 @@
 package com.ms.connector.service.api;
 
 import com.customstarter.model.request.SearchRequestPayload;
-import com.ms.connector.dto.SearchResponse;
+import com.customstarter.model.response.SearchResponse;
 import com.ms.connector.dto.response.ApiResponse;
-import com.ms.connector.dto.response.RestApiResponse;
 import com.ms.connector.dto.response.SoapApiResponse;
 import com.ms.connector.service.api.converter.SoapBodyConverter;
 import com.ms.connector.service.client.SoapClient;

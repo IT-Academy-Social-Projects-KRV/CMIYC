@@ -1,9 +1,7 @@
-package com.ms.search.connectInterface;
+package com.ms.search.service;
 
-import com.ms.search.config.CaffeineConfig;
 import com.customstarter.model.request.SearchRequest;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import com.customstarter.model.response.SearchResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +10,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.Map;
 
 @FeignClient(name = "connector", url = "${routes.connector}")
-@CacheConfig(cacheNames = CaffeineConfig.CACHE_SEARCH)
 public interface ConnectorConnect {
 
     @PostMapping("/searcher")
-    @Cacheable
-    Map<String, Object> searcher(
+    SearchResponse searcher(
             @RequestHeader(value = "Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest
     );
 
