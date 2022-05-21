@@ -5,6 +5,7 @@ import api.soap.xsd.SearchResponse;
 import com.external.connection.ConnectDataSource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -15,7 +16,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 @Endpoint
-public class SoapEndpoint {
+public class ResponseEndpoint {
 
     private static final String NAMESPACE_URI = "http://soap.api/xsd";
     private static final String DATA_HOST = Objects.requireNonNullElse(

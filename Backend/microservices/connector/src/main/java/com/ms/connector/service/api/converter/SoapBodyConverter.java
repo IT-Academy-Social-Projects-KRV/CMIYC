@@ -15,6 +15,7 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPMessage;
@@ -30,7 +31,7 @@ public class SoapBodyConverter {
     private static final String GS_NAMESPACE_URL = "http://soap.api/xsd";
     private static final String GS_NAMESPACE_PREFIX = "gs";
 
-    private static final String REQUEST_TAG_NAME = "SearchRequest";
+    private static final String REQUEST_TAG_NAME = "Payload";
     private static final String RESPONSE_TAG_NAME = "SearchResponse";
 
     private static final MessageFactory messageFactory = SoapHelper.messageFactory;
@@ -49,6 +50,26 @@ public class SoapBodyConverter {
 
         Name getPersonRequestName = soapFactory.createName(REQUEST_TAG_NAME, GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
         SOAPBodyElement requestElement = body.addBodyElement(getPersonRequestName);
+        addTag("operatorLicenseNumber",query.getOperatorLicenseNumber(),requestElement);
+        addTag("imageIndicator",String.valueOf(query.isImageIndicator()),requestElement);
+        addTag("sexCode",query.getSexCode().name(),requestElement);
+        addTag("raceCode",query.getRaceCode().name(),requestElement);
+        addTag("state",query.getState().name(),requestElement);
+        if(query.getName() != null) {
+            Name name = soapFactory.createName("name", GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
+            SOAPElement nameElement = requestElement.addChildElement(name);
+            addTag("first",query.getName().getFirst(),nameElement);
+            addTag("middle",query.getName().getMiddle(),nameElement);
+            addTag("last",query.getName().getLast(),nameElement);
+            addTag("suffix",query.getName().getSuffix(),nameElement);
+        }
+        if(query.getBirthDate() != null) {
+            Name name = soapFactory.createName("birthDate", GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
+            SOAPElement birthDateElement = requestElement.addChildElement(name);
+            addTag("day",String.valueOf(query.getBirthDate().getDay()),birthDateElement);
+            addTag("month",String.valueOf(query.getBirthDate().getMonth()),birthDateElement);
+            addTag("year",String.valueOf(query.getBirthDate().getYear()),birthDateElement);
+        }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         soapMessage.writeTo(out);
@@ -67,16 +88,25 @@ public class SoapBodyConverter {
             xmlReader.nextTag();
         }
 
-        JAXBContext jaxbContext = JAXBContext.newInstance(SearchResponse.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(SoapApiResponse.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         unmarshaller.setAdapter(new MapAdapter());
 
-        JAXBElement<SearchResponse> jaxbElement = unmarshaller.unmarshal(xmlReader, SearchResponse.class);
+        JAXBElement<SoapApiResponse> jaxbElement = unmarshaller.unmarshal(xmlReader, SoapApiResponse.class);
 
         xmlReader.close();
         xmlStreamReader.close();
 
-        return null;
-        //return jaxbElement.getValue();
+
+        return jaxbElement.getValue();
+    }
+    @SneakyThrows
+    private void addTag(String key, String value, SOAPElement requestElement){
+        if(value == null){
+            return;
+        }
+        Name name = soapFactory.createName(key, GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
+        SOAPElement childElement = requestElement.addChildElement(name);
+        childElement.setValue(value);
     }
 }

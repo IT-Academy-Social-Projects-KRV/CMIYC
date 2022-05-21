@@ -2,10 +2,16 @@ package com.customstarter.model.response;
 
 import com.customstarter.model.Name;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 @Getter
 @Setter
+@XmlAccessorType(XmlAccessType.FIELD)
+@NoArgsConstructor
 public class ResponseTwo extends Response {
 
     private Name name;

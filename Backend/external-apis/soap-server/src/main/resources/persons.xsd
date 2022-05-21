@@ -11,6 +11,7 @@
             <xs:element name="carNumber" type="xs:string" minOccurs="0"/>
             <xs:element name="phone" type="xs:string" minOccurs="0"/>
             <xs:element name="image" type="xs:string" minOccurs="0"/>
+            <xs:element name="apiName" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -20,7 +21,7 @@
             <xs:sequence>
                 <xs:element name="error" type="xs:boolean"/>
                 <xs:element name="errorMessage" type="xs:string" minOccurs="0"/>
-                <xs:element name="data" type="tns:Response"/>
+                <xs:element name="data" type="tns:Response" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
