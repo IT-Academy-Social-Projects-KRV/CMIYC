@@ -4,6 +4,7 @@ import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data
 import Validation from "../utils/validation";
 import {SearchRequest} from "../shared/data/search-request";
 import {HttpClientService} from "../shared/http.client.service";
+import {FormDataService} from "../shared/form.data.service";
 
 @Component({
   selector: 'json-form-component',
@@ -20,7 +21,7 @@ export class JsonFormComponent implements OnChanges {
   form: FormGroup = new FormGroup({});
   submitted = false;
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private httpClientService: HttpClientService, private formDataService: FormDataService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
