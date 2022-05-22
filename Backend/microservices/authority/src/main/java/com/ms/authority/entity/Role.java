@@ -20,7 +20,9 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "role")
 public class Role implements GrantedAuthority {
-
+    public static final String ROLE_USER = "user";
+    public static final String ROLE_ADMIN_SCHEMA = "admin_schema";
+    public static final String ROLE_ADMIN_USER = "admin_user";
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

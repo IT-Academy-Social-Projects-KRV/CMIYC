@@ -135,6 +135,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(User user) {
+        if(user.getRoles().stream().anyMatch((role)-> role.getRole() .equals(Role.ROLE_ADMIN_USER)) ){
+            throw new ImpossibleOperationException("Admin user can't delete himself or another admin users");
+        }
         tokenService.deleteTokenByUser(user);
         userRepository.delete(user);
     }
