@@ -1,9 +1,10 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
 import Validation from "../utils/validation";
 import {SearchRequest} from "../shared/data/search-request";
 import {HttpClientService} from "../shared/http.client.service";
+import {FormDataService} from "../shared/form.data.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -11,7 +12,7 @@ import {Router} from "@angular/router";
   templateUrl: './json-form-component.html',
   styleUrls: ['./json-form-component.css']
 })
-export class JsonFormComponent implements OnChanges {
+export class JsonFormComponent implements OnChanges, OnInit {
 
   @Input()
   jsonForm: JsonForm = new JsonForm();
@@ -20,8 +21,22 @@ export class JsonFormComponent implements OnChanges {
   notEnoughFields: boolean = false;
   form: FormGroup = new FormGroup({});
   submitted = false;
+  combinations: {[key: string]: string} = {};
 
-  constructor(private httpClientService: HttpClientService, private router: Router) {
+  constructor(private httpClientService: HttpClientService, private formDataService: FormDataService, private router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.jsonForm.combinations.forEach(combination => {
+      for (let field of combination.fields) {
+        if (this.combinations[combination.apiName] == undefined) {
+          this.combinations[combination.apiName] = "Required: "
+        }
+        if (field.required) {
+          this.combinations[combination.apiName] = this.combinations[combination.apiName] + this.normalizeCamelCase(field.field) + ", ";
+        }
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -31,7 +46,7 @@ export class JsonFormComponent implements OnChanges {
       if(input.type == FieldType.object) {
         let first = true;
         input.components.forEach(component => {
-          const control = this.createControl(component);
+          const control = this.createControl(component, '', input.name);
           controls[input.name + "." + component.name] = control;
           if(first) {
             control.addValidators(Validation.complexFieldLength(input.name, input.maxLength, () => this.form));
@@ -47,7 +62,7 @@ export class JsonFormComponent implements OnChanges {
 
     this.form = new FormGroup(controls);
 
-    const onUpdateCallback = () => {
+    const onUpdateCallback = (formData: any) => {
       const data = this.collectData();
 
       this.selectedApis = [];
@@ -57,17 +72,21 @@ export class JsonFormComponent implements OnChanges {
       });
 
       this.notEnoughFields = this.selectedApis.length == 0;
+      if(formData)
+        this.formDataService.save(formData);
     }
 
     this.form.valueChanges.subscribe(onUpdateCallback);
-    onUpdateCallback();
+    onUpdateCallback(undefined);
   }
 
-  createControl(field: JsonFormInput, value: string = ''): FormControl {
+  createControl(field: JsonFormInput, value: string = '', parentName: string | undefined = undefined): FormControl {
     const control = new FormControl();
+    control.addValidators(this.getValidators(field));
 
-    control.addValidators(this.getValidators(field))
-    control.setValue(value);
+    const controlName = parentName ? parentName + "." + field.name : field.name;
+    const prevValue = this.formDataService.data[controlName];
+    control.setValue(prevValue || value);
 
     return control;
   }
@@ -99,7 +118,6 @@ export class JsonFormComponent implements OnChanges {
       .subscribe({
         next: value => {
           console.log(value);
-          //this.dataService.updateResponse(value);
           this.router.navigate(['/search/response']);
         },
         error: err => {

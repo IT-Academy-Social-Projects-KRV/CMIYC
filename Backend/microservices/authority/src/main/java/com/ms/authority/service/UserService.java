@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
     }
 
     @SneakyThrows
-    public void register(RegistrationRequestData request) {
+    public synchronized void register(RegistrationRequestData request) {
         Token token = new Token();
         String link = activationPage + token.getToken();
         String secret = tfaService.generateSecretKey();
@@ -135,6 +135,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(User user) {
+        if(user.getRoles().stream().anyMatch((role)-> role.getRole() .equals(Role.ROLE_ADMIN_USER)) ){
+            throw new ImpossibleOperationException("Admin user can't delete himself or another admin users");
+        }
         tokenService.deleteTokenByUser(user);
         userRepository.delete(user);
     }

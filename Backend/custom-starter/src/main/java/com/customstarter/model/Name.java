@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Name {
 
     private String first;

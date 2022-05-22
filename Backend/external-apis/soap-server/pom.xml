@@ -103,9 +103,7 @@
                     <sources>
                         <source>${project.basedir}/src/main/resources/persons.xsd</source>
                     </sources>
-                    <xjbSources>
-                        <xjbSource>src/main/resources/bindings.xjb</xjbSource>
-                    </xjbSources>
+
                 </configuration>
             </plugin>
         </plugins>
