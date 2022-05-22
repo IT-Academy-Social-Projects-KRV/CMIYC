@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InterfaceSchema>
+    <Transaction name="DriverLicenseQuery" version="10">
+        <Fields>
+            <Field name="BirthDate" type="Date" maxLength="8" description="date of birth">
+                <Components>
+                    <Component name="Day" type="Numeric" />
+                    <Component name="Month" type="Numeric" />
+                    <Component name="Year" type="Numeric" />
+                </Components>
+            </Field>
+            <Field name="ImageIndicator" type="Alphabetic" maxLength="1" description="send Y to request an image" />
+            <Field name="Name" type="Name" maxLength="30" description="name of person">
+                <Components>
+                    <Component name="First" type="Alphabetic" />
+                    <Component name="Middle" type="Alphabetic" />
+                    <Component name="Last" type="Alphabetic" />
+                    <Component name="Suffix" type="Alphabetic" />
+                </Components>
+            </Field>
+            <Field name="OperatorLicenseNumber" type="Alphanumeric" maxLength="20" description="driver license number" />
+            <Field name="RaceCode" type="Alphabetic" maxLength="1" description="race of person" />
+            <Field name="SexCode" type="Alphabetic" maxLength="1" description="gender of person" />
+            <Field name="State" type="Alphanumeric" maxLength="2" description="state" />
+        </Fields>
+        <Combinations>
+            <Combination keyReference="QD" primaryFieldReference="NCIC">
+                <Requirements>
+                    <Set>
+                        <Field reference="BirthDate" />
+                        <Field reference="Name" />
+                        <Field reference="SexCode" />
+                    </Set>
+                </Requirements>
+            </Combination>
+            <Combination keyReference="DQ" primaryFieldReference="FRED">
+                <Requirements>
+                    <Set>
+                        <Field reference="OperatorLicenseNumber" />
+                        <Field reference="State" />
+                        <Any>
+                            <Field reference="ImageIndicator" />
+                        </Any>
+                    </Set>
+                </Requirements>
+            </Combination>
+            <Combination keyReference="DQ" primaryFieldReference="DataGOV">
+                <Requirements>
+                    <Set>
+                        <Field reference="BirthDate" />
+                        <Field reference="Name" />
+                        <Field reference="SexCode" />
+                        <Field reference="State" />
+                        <Any>
+                            <Field reference="ImageIndicator" />
+                        </Any>
+                    </Set>
+                </Requirements>
+            </Combination>
+        </Combinations>
+    </Transaction>
+</InterfaceSchema>
