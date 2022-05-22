@@ -31,6 +31,7 @@ export class LoginFormComponent implements OnInit {
       .has("activationSuccess");
 
     this.showSuccessMessage = showSuccessMessage == true;
+    /*this.showSuccessMessage=true;*/
   }
 
   readonly resetErrorMessage = () => {
