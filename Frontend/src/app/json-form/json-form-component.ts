@@ -31,7 +31,7 @@ export class JsonFormComponent implements OnChanges {
       if(input.type == FieldType.object) {
         let first = true;
         input.components.forEach(component => {
-          const control = this.createControl(component);
+          const control = this.createControl(component, '', input.name);
           controls[input.name + "." + component.name] = control;
           if(first) {
             control.addValidators(Validation.complexFieldLength(input.name, input.maxLength, () => this.form));
@@ -47,7 +47,7 @@ export class JsonFormComponent implements OnChanges {
 
     this.form = new FormGroup(controls);
 
-    const onUpdateCallback = () => {
+    const onUpdateCallback = (formData: any) => {
       const data = this.collectData();
 
       this.selectedApis = [];
@@ -57,17 +57,21 @@ export class JsonFormComponent implements OnChanges {
       });
 
       this.notEnoughFields = this.selectedApis.length == 0;
+      if(formData)
+        this.formDataService.save(formData);
     }
 
     this.form.valueChanges.subscribe(onUpdateCallback);
-    onUpdateCallback();
+    onUpdateCallback(undefined);
   }
 
-  createControl(field: JsonFormInput, value: string = ''): FormControl {
+  createControl(field: JsonFormInput, value: string = '', parentName: string | undefined = undefined): FormControl {
     const control = new FormControl();
+    control.addValidators(this.getValidators(field));
 
-    control.addValidators(this.getValidators(field))
-    control.setValue(value);
+    const controlName = parentName ? parentName + "." + field.name : field.name;
+    const prevValue = this.formDataService.data[controlName];
+    control.setValue(prevValue || value);
 
     return control;
   }
