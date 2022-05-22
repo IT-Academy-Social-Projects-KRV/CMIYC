@@ -28,14 +28,13 @@ export class AdminManageUserListComponent implements OnInit {
     lastNameSearch: new FormControl(''),
     emailSearch: new FormControl(''),
     isActiveSearch: new FormControl('')
-
   });
 
   constructor(private httpClientService: HttpClientService) {
-
   }
 
   onSubmit(): void {
+    this.page = 1;
     const firstName = this.form.controls['firstNameSearch'].value;
     const lastName = this.form.controls['lastNameSearch'].value;
     const email = this.form.controls['emailSearch'].value;
@@ -56,7 +55,6 @@ export class AdminManageUserListComponent implements OnInit {
     this.form.controls['firstNameSearch'].setValue('');
     this.form.controls['lastNameSearch'].setValue('');
     this.form.controls['emailSearch'].setValue('');
-    this.form.controls['isActiveSearch'].reset();
 
     this.ngOnInit();
   }
@@ -97,8 +95,7 @@ export class AdminManageUserListComponent implements OnInit {
     const email = this.form.controls['emailSearch'].value;
     const isActive = this.form.controls['isActiveSearch'].value == true;
 
-    if ((firstName == null || firstName == "") && (lastName == null || lastName == "") && (email == null || email == ""))
-      if (!isActive) {
+    if ((firstName == null || firstName == "") && (lastName == null || lastName == "") && (email == null || email == "")){
         this.httpClientService.getUsersOnPage(event, this.tableSize).subscribe({
           next: (response) => {
             this.RESPONSE = response;

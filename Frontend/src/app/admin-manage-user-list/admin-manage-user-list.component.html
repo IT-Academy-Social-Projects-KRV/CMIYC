@@ -4,9 +4,7 @@
     <table class="table table-striped">
       <thead class="table-dark">
       <tr>
-        <th scope="col">
-
-        </th>
+        <th scope="col"></th>
         <th scope="col">First</th>
         <th scope="col">Last</th>
         <th scope="col">Email</th>
@@ -18,28 +16,28 @@
 
       <tbody>
 
-      <tr>
+      <tr class=" table-secondary">
         <th scope="row" class=" col-md-1  align-middle px-3">
-          <a class="btn btn-dark me-2 " type="button" (click)="getAllUsersClearSearchFields()">
+          <a class="btn btn-dark btn-sm me-2 " type="button" (click)="getAllUsersClearSearchFields()">
             <i class="bi bi-arrow-clockwise"></i>
           </a>
         </th>
 
         <td class="col-md-1 align-middle">
           <div class="col-xs-2 input-group-sm" [formGroup]="form">
-            <input class="form-control" type="text" formControlName="firstNameSearch">
+            <input class="form-control" type="text" formControlName="firstNameSearch" placeholder="First">
           </div>
         </td>
 
         <td class="col-md-1 align-middle">
           <div class="col-xs-2 input-group-sm" [formGroup]="form">
-            <input class="form-control" formControlName="lastNameSearch" type="text">
+            <input class="form-control" formControlName="lastNameSearch" type="text" placeholder="Last">
           </div>
         </td>
 
         <td class="col-md-2 align-middle">
           <div class="col-xs-2 input-group-sm" [formGroup]="form">
-            <input class="form-control" formControlName="emailSearch" type="email">
+            <input class="form-control" formControlName="emailSearch" type="email"  placeholder="Email">
           </div>
         </td>
 
