@@ -33,7 +33,7 @@ public class CacheService {
         if (list.isEmpty()){
             cache.put(email, list);
         }
-        list.add(searchResponse);
+        list.add(0, searchResponse);
     }
     @Scheduled(cron = "0 0/20 * * * *")
     public void deleteOldData(){

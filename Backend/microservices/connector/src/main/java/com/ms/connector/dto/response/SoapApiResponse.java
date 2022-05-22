@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -14,7 +15,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SoapApiResponse extends ApiResponse {
 
-    private List<ResponseTwo> data;
+    private List<ResponseTwo> data = new ArrayList<>();
 
     @Override
     public List<ResponseTwo> getData() {
