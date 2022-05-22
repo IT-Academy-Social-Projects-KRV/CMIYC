@@ -48,7 +48,7 @@ public class SoapApiConnection implements ApiConnection {
     }
 
     @Override
-    public ApiResponse loadDataAndSaveToResponse(SearchRequestPayload payload, SearchResponse response) {
+    public SoapApiResponse loadDataAndSaveToResponse(SearchRequestPayload payload, SearchResponse response) {
         SoapApiResponse soapApiResponse = loadData(payload);
         response.setApi2Responses(soapApiResponse.getData());
 
