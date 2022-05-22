@@ -5,6 +5,7 @@ import Validation from "../utils/validation";
 import {SearchRequest} from "../shared/data/search-request";
 import {HttpClientService} from "../shared/http.client.service";
 import {FormDataService} from "../shared/form.data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'json-form-component',
@@ -22,7 +23,7 @@ export class JsonFormComponent implements OnChanges, OnInit {
   submitted = false;
   combinations: {[key: string]: string} = {};
 
-  constructor(private httpClientService: HttpClientService, private formDataService: FormDataService) {
+  constructor(private httpClientService: HttpClientService, private formDataService: FormDataService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -117,6 +118,7 @@ export class JsonFormComponent implements OnChanges, OnInit {
       .subscribe({
         next: value => {
           console.log(value);
+          this.router.navigate(['/search/response']);
         },
         error: err => {
           alert(err.error || err.message || err.description || JSON.stringify(err));
