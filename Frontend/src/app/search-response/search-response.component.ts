@@ -22,6 +22,19 @@ export class SearchResponseComponent implements OnInit {
     this.http.getHistory().subscribe({
       next: value => {
         for (let i = 0; i < value.length; i++) {
+
+          if (value[i].api1Responses == null) {
+            value[i].api1Responses = new Array<any>();
+          }
+
+          if (value[i].api2Responses == null) {
+            value[i].api2Responses = new Array<any>();
+          }
+
+          if (value[i].api3Responses == null) {
+            value[i].api3Responses = new Array<any>();
+          }
+
           this.pushResponsesToSingleArray(value[i].api1Responses, value[i].dateTime);
           this.pushResponsesToSingleArray(value[i].api2Responses, value[i].dateTime);
           this.pushResponsesToSingleArray(value[i].api3Responses, value[i].dateTime);
@@ -49,10 +62,10 @@ export class SearchResponseComponent implements OnInit {
   }
 
   pushResponsesToSingleArray(apiResponses: Array<any>, dateTime: string): void {
-      for (let i = 0; i < apiResponses.length; i++) {
-        apiResponses[i]['dateTime'] = this.toTwelveHourTimeFormat(dateTime);
-        this.searchResponses.push(apiResponses[i]);
-      }
+    for (let i = 0; i < apiResponses.length; i++) {
+      apiResponses[i]['dateTime'] = this.toTwelveHourTimeFormat(dateTime);
+      this.searchResponses.push(apiResponses[i]);
+    }
   }
 
   ngOnInit(): void {
