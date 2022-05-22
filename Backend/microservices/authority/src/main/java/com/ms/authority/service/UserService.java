@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
     }
 
     @SneakyThrows
-    public void register(RegistrationRequestData request) {
+    public synchronized void register(RegistrationRequestData request) {
         Token token = new Token();
         String link = activationPage + token.getToken();
         String secret = tfaService.generateSecretKey();
