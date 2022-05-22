@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
 import Validation from "../utils/validation";
@@ -10,7 +10,7 @@ import {HttpClientService} from "../shared/http.client.service";
   templateUrl: './json-form-component.html',
   styleUrls: ['./json-form-component.css']
 })
-export class JsonFormComponent implements OnChanges {
+export class JsonFormComponent implements OnChanges, OnInit {
 
   @Input()
   jsonForm: JsonForm = new JsonForm();
@@ -19,8 +19,22 @@ export class JsonFormComponent implements OnChanges {
   notEnoughFields: boolean = false;
   form: FormGroup = new FormGroup({});
   submitted = false;
+  combinations: {[key: string]: string} = {};
 
   constructor(private httpClientService: HttpClientService) {
+  }
+
+  ngOnInit(): void {
+    this.jsonForm.combinations.forEach(combination => {
+      for (let field of combination.fields) {
+        if (this.combinations[combination.apiName] == undefined) {
+          this.combinations[combination.apiName] = "Required: "
+        }
+        if (field.required) {
+          this.combinations[combination.apiName] = this.combinations[combination.apiName] + this.normalizeCamelCase(field.field) + ", ";
+        }
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
