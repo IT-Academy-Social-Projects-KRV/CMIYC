@@ -14,17 +14,22 @@ import com.ms.data.dto.xml.Fields;
 import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.dto.xml.Requirements;
 import com.ms.data.dto.xml.Transaction;
+import com.ms.data.service.CloudStorageService;
 import com.ms.data.service.SearchFormBuilderService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
 @SpringBootTest
 public class SearchFormBuilderServiceTests {
+
+    @MockBean
+    private CloudStorageService cloudStorageService;
 
     @Autowired
     private SearchFormBuilderService searchFormBuilderService;
