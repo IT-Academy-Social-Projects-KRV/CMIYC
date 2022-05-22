@@ -14,6 +14,9 @@
 
 <div class="container">
   <div class="row">
+    <div *ngIf="!jsonForm">
+      <app-spinner [headerHeight]="185"></app-spinner>
+    </div>
     <div class="p-5 mb-4 border bg-light" *ngIf="jsonForm">
       <h3 class="d-flex justify-content-center ps-3 mb-3">{{formName}}</h3>
       <div>

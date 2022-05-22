@@ -18,7 +18,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngIf="users.length > 0">
         <tr *ngFor="let user of users | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
@@ -67,6 +67,9 @@
       </tbody>
 
     </table>
+
+    <app-spinner *ngIf="users.length == 0" [headerHeight]="67"></app-spinner>
+
     <div  class="d-flex justify-content-center">
       <pagination-controls
         [autoHide]="true"

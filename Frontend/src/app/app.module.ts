@@ -32,6 +32,7 @@ import {EnvService} from "./shared/env.service";
 import {JsonFormComponent} from "./json-form/json-form-component";
 import {NgxPaginationModule} from "ngx-pagination";
 import { AdminUserUpdateFormComponent } from './admin-user-update-form/admin-user-update-form.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -61,18 +62,18 @@ const appInitializerFn = (appConfig: EnvService) => {
     SearchResponseComponent,
     AdminUserIsActiveToggleComponent,
     AdminUserUpdateFormComponent,
-    JsonFormComponent
+    JsonFormComponent,
+    SpinnerComponent
 
   ],
-
-    imports: [
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserModule,
-        NgxPaginationModule,
-        FormsModule
-    ],
+  imports: [
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserModule,
+    NgxPaginationModule,
+    FormsModule
+  ],
   providers: [
     AuthService,
     UserAuthGuard,
