@@ -21,17 +21,18 @@ import {SearchResponse} from "./data/search.response";
 export class HttpClientService {
 
   private readonly AUTH_SERVER: string | undefined;
-  private readonly SEARCH_API:  string | undefined;
-  private readonly DATA_API:    string | undefined;
+  private readonly SEARCH_API: string | undefined;
+  private readonly DATA_API: string | undefined;
 
   // Auth
 
-  private readonly URL_LOGIN:           string;
-  private readonly URL_USERS:           string;
+  private readonly URL_LOGIN: string;
+  private readonly URL_USERS: string;
   private readonly URL_SET_USER_ACTIVE: string;
-  private readonly URL_ACTIVATION:      string;
-  private readonly URL_REGISTRATION:    string;
-  private readonly URL_PAGINATION:      string;
+  private readonly URL_ACTIVATION: string;
+  private readonly URL_REGISTRATION: string;
+  private readonly URL_PAGINATION: string;
+  private readonly URL_USERS_SEARCH: string;
 
 
   // Search API
@@ -39,11 +40,11 @@ export class HttpClientService {
   private readonly URL_SEARCH: string;
 
   // Data API
-  private readonly URL_SCHEMAS:        string;
+  private readonly URL_SCHEMAS: string;
   private readonly URL_SCHEMA_CONTENT: string;
-  private readonly URL_SCHEMA_JSON:    string;
-  private readonly URL_SCHEMA_DELETE:  string;
-  private readonly URL_SCHEMA_SELECT:  string;
+  private readonly URL_SCHEMA_JSON: string;
+  private readonly URL_SCHEMA_DELETE: string;
+  private readonly URL_SCHEMA_SELECT: string;
 
   private readonly HEADERS = new HttpHeaders({
     'Authorization': 'Basic ' + btoa('client-ui:secret'),
@@ -60,7 +61,8 @@ export class HttpClientService {
     this.URL_SET_USER_ACTIVE = this.AUTH_SERVER + '/users/{userId}/active/';
     this.URL_ACTIVATION = this.AUTH_SERVER + "/users/activation";
     this.URL_REGISTRATION = this.AUTH_SERVER + "/users/registration";
-    this.URL_PAGINATION = this.URL_USERS +"/?page={page}&size={itemsAmount}";
+    this.URL_PAGINATION = this.URL_USERS + "/?page={page}&size={itemsAmount}";
+    this.URL_USERS_SEARCH = this.URL_USERS + "/search/?page={page}&size={itemsAmount}&firstName={firstName}&lastName={lastName}&isActive={isActive}&email={email}";
 
     this.URL_SCHEMA = this.SEARCH_API + '/schema';
     this.URL_SEARCH = this.SEARCH_API + '/search';
@@ -141,15 +143,15 @@ export class HttpClientService {
 
   public login(email: string, password: string, callback: Function): void {
     const params = new LoginRequest(email, password);
-    this.handleLoginRequest(callback,params,this.HEADERS)
+    this.handleLoginRequest(callback, params, this.HEADERS)
   }
 
   public secondFactor(code: string, callback: Function): void {
     let token = localStorage.getItem("access_token")
 
-    if(token!=null) {
+    if (token != null) {
       const params = new TfaRequest(code, token);
-      this.handleLoginRequest(callback,params,this.HEADERS)
+      this.handleLoginRequest(callback, params, this.HEADERS)
     }
   }
 
@@ -169,16 +171,45 @@ export class HttpClientService {
     return this.getRequestJSON<User[]>(this.URL_USERS);
   }
 
-  public getInitialPage(itemsAmount:number): Observable<Object> {
+  public getInitialPage(itemsAmount: number): Observable<Object> {
     let page = 0;
-    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(page)).replace("{itemsAmount}",String(itemsAmount)));
+    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}", String(page)).replace("{itemsAmount}", String(itemsAmount)));
   }
-  public getUsersOnPage(page:number,itemsAmount:number): Observable<Object> {
-    let pageOnBack = page-1;
-    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}",String(pageOnBack)).replace("{itemsAmount}",String(itemsAmount)));
+
+  public getUsersOnPage(page: number, itemsAmount: number): Observable<Object> {
+    let pageOnBack = page - 1;
+    return this.getRequestJSON<Object>(this.URL_PAGINATION.replace("{page}", String(pageOnBack)).replace("{itemsAmount}", String(itemsAmount)));
   }
-  public deleteUser(userId:number):Observable<number>{
-    return this.deleteRequest<number>(this.URL_USERS+"/"+userId);
+
+  public getUsersSearchInitialPage(itemsAmount: number, firstName: string, lastName: string, email: string, isActive: boolean): Observable<Object> {
+    let page = 0;
+
+    return this.getRequestJSON<Object>(this.URL_USERS_SEARCH
+      .replace("{page}", String(page))
+      .replace("{itemsAmount}", String(itemsAmount))
+      .replace("{firstName}", String(firstName))
+      .replace("{lastName}", String(lastName))
+      .replace("{email}", String(email))
+      .replace("{isActive}", String(isActive))
+    );
+  }
+
+
+  public getUsersSearchOnPage(page: number, itemsAmount: number, firstName: string, lastName: string, email: string, isActive: boolean): Observable<Object> {
+    let pageOnBack = page - 1;
+
+    return this.getRequestJSON<Object>(this.URL_USERS_SEARCH
+      .replace("{page}", String(pageOnBack))
+      .replace("{itemsAmount}", String(itemsAmount))
+      .replace("{firstName}", String(firstName))
+      .replace("{lastName}", String(lastName))
+      .replace("{email}", String(email))
+      .replace("{isActive}", String(isActive))
+    );
+  }
+
+  public deleteUser(userId: number): Observable<number> {
+    return this.deleteRequest<number>(this.URL_USERS + "/" + userId);
   }
 
   public setUserActive(userId: number, isActive: boolean): Observable<any> {
@@ -246,7 +277,7 @@ export class HttpClientService {
     this.postRequest<any>(this.URL_REGISTRATION, data)
       .subscribe({
         next: (res) => {
-          callback( RequestResult.success(" "))
+          callback(RequestResult.success(" "))
         },
         error: (err) => {
           callback(RequestResult.error(
@@ -255,9 +286,9 @@ export class HttpClientService {
       });
   }
 
-  public updateUser(id: number, data:any, callback: (result: RequestResult) => void) {
+  public updateUser(id: number, data: any, callback: (result: RequestResult) => void) {
 
-    this.putRequest<any>(this.URL_USERS+"/"+id, data)
+    this.putRequest<any>(this.URL_USERS + "/" + id, data)
       .subscribe({
         next: (res) => {
           const error = res['error'];
@@ -273,7 +304,7 @@ export class HttpClientService {
       });
   }
 
-  private handleLoginRequest (callback:Function,params:URLSearchParams,headers:HttpHeaders){
+  private handleLoginRequest(callback: Function, params: URLSearchParams, headers: HttpHeaders) {
     this
       .http
       .post<JwtData>(this.URL_LOGIN, params, {headers})
