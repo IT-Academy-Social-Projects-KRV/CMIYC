@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {DataService} from "../shared/data.service";
-import {RaceCode, SearchResponse} from "../shared/data/search.response";
+import {RaceCode} from "../shared/data/search.response";
 import {HttpClientService} from "../shared/http.client.service";
 
 @Component({
@@ -14,7 +14,6 @@ export class SearchResponseComponent implements OnInit {
   page = 1;
   count: number | undefined;
   tableSize = 5;
-  responses: Array<SearchResponse> = new Array<SearchResponse>();
   getScreenHeight: any;
   raceCode: RaceCode = new RaceCode();
   headerViewSize = 227;
