@@ -2,6 +2,7 @@ export class SearchResponse {
   api1Responses: Array<any> = new Array<any>();
   api2Responses: Array<any> = new Array<any>();
   api3Responses: Array<any> = new Array<any>();
+  dateTime: string = "";
 }
 
 export class RaceCode {

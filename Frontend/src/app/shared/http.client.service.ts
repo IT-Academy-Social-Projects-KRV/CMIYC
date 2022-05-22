@@ -161,6 +161,10 @@ export class HttpClientService {
     return this.postRequest(this.URL_SEARCH, requestData);
   }
 
+  public getHistory(): Observable<Array<SearchResponse>> {
+    return this.getRequestJSON(this.URL_SEARCH + "/history");
+  }
+
   public getUsers(): Observable<User[]> {
     return this.getRequestJSON<User[]>(this.URL_USERS);
   }

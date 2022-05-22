@@ -1,8 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {DataService} from "../shared/data.service";
 import {RaceCode, SearchResponse} from "../shared/data/search.response";
-import {count} from "rxjs";
-import {SearchRequest} from "../shared/data/search-request";
+import {HttpClientService} from "../shared/http.client.service";
 
 @Component({
   selector: 'app-search-response',
@@ -15,15 +14,47 @@ export class SearchResponseComponent implements OnInit {
   page = 1;
   count: number | undefined;
   tableSize = 5;
-  searchResponses: SearchResponse | undefined;
-  searchRequest: SearchRequest | undefined;
+  responses: Array<SearchResponse> = new Array<SearchResponse>();
   getScreenHeight: any;
   raceCode: RaceCode = new RaceCode();
   headerViewSize = 227;
+  searchResponses: Array<any> = new Array<any>();
 
-  constructor(private dataService: DataService) {
-    this.searchResponses = dataService.response;
-    this.searchRequest = dataService.request;
+  constructor(private dataService: DataService, private http: HttpClientService) {
+    this.http.getHistory().subscribe({
+      next: value => {
+        for (let i = 0; i < value.length; i++) {
+          this.pushResponsesToSingleArray(value[i].api1Responses, value[i].dateTime);
+          this.pushResponsesToSingleArray(value[i].api2Responses, value[i].dateTime);
+          this.pushResponsesToSingleArray(value[i].api3Responses, value[i].dateTime);
+
+          if (i == 0 && value[i].api1Responses.length == 0 && value[i].api2Responses.length == 0 && value[i].api3Responses.length == 0) {
+            let noRresults: {[key: string]: any} = new Array<any>();
+            noRresults["dateTime"] = this.toTwelveHourTimeFormat(value[i].dateTime);
+            noRresults["noResult"] = "No results!";
+            this.searchResponses.push(noRresults);
+          }
+        }
+      },
+      error: err => {
+        alert(err.error || err.message || err.description || JSON.stringify(err));
+      }
+    });
+  }
+
+  toTwelveHourTimeFormat(dateTime: string): string {
+    return new Date(dateTime).toLocaleString("en-US", {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  pushResponsesToSingleArray(apiResponses: Array<any>, dateTime: string): void {
+      for (let i = 0; i < apiResponses.length; i++) {
+        apiResponses[i]['dateTime'] = this.toTwelveHourTimeFormat(dateTime);
+        this.searchResponses.push(apiResponses[i]);
+      }
   }
 
   ngOnInit(): void {

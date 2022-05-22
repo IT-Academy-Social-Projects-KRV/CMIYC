@@ -16,95 +16,104 @@
   <div class="row">
     <div class="pt-2 border bg-light table-wrapper-scroll-y my-custom-scrollbar" [ngStyle]="{'height': getScreenHeight + 'px'}">
       <!-- Test accordion-->
-      <div class="card" *ngIf="searchResponses == null">
+      <div class="card" *ngIf="searchResponses.length == 0">
         <div class="card-body">
           No results. Please make a search query!
         </div>
       </div>
-      <div class="accordion accordion-flush" id="accordion" *ngIf="searchResponses != null">
-        <div class="accordion-item" *ngFor="let response of searchResponses.api1Responses.concat(searchResponses.api2Responses).concat(searchResponses.api3Responses) | paginate : {
+      <div class="accordion accordion-flush" id="accordion" *ngIf="searchResponses.length > 0">
+        <div class="accordion-item" *ngFor="let response of searchResponses | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
                 totalItems: count
               };
         let i = index" [class.active]="i == i">
-          <h2 class="accordion-header" [attr.id]="'flush-heading'+i">
-            <button class="accordion-button collapsed" type="button" [attr.data-bs-toggle]="'collapse'" [attr.data-bs-target]="'#flush-collapse'+i" [attr.aria-expanded]="'false'" [attr.aria-controls]="'flush-collapse'+i">
-              {{response.apiName}}: {{response.name.first}} {{response.name.last}}
-            </button>
-          </h2>
-          <div [attr.id]="'flush-collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+i" [attr.data-bs-parent]="'#accordion'">
-            <div class="accordion-body">
-              <section class="search-result-item">
-              <span class="image-link" *ngIf="response.hasOwnProperty('image')">
-                <img class="image" src="{{response.image}}">
-              </span>
-                <span class="image-link" *ngIf="!response.hasOwnProperty('image')">
-                <img class="image" src="assets/images/user.svg">
-              </span>
-                <div class="search-result-item-body">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="media-body">
-                        <h5 class="mb-4">
-                          <span *ngIf="response.name.suffix != ''">{{response.name.suffix}} </span>
-                          {{response.name.first}}
-                          <span *ngIf="response.name.middle != ''">{{response.name.middle}} </span>
-                          {{response.name.last}}
-                        </h5>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('city') && response.hasOwnProperty('address')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">City:</span>
-                          <span class="bg-light-blue">{{response.city}}</span>
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Address:</span>
-                          <span class="bg-light-blue">{{response.address}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('raceCode')" >
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Race:</span>
-                          <span class="bg-light-blue">{{raceCode.getRace[(response.raceCode)]}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('married') && response.hasOwnProperty('numberOfChildren')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Married:</span>
-                          <span class="bg-light-blue">{{response.married ? 'Yes': 'No'}}</span>
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Number of children:</span>
-                          <span class="bg-light-blue">{{response.numberOfChildren}}</span>
-                        </div>
+          <div *ngIf="response.hasOwnProperty('noResult')">
+            <h2 class="accordion-header" [attr.id]="'flush-heading'+i">
+              <button class="accordion-button collapsed no-arrow" type="button" [attr.data-bs-toggle]="'collapse'" [attr.data-bs-target]="'#flush-collapse'+i" [attr.aria-expanded]="'false'" [attr.aria-controls]="'flush-collapse'+i">
+                <span class="col">{{response.noResult}}</span><span class="col text-end pe-2 fw-light">{{response.dateTime}}</span>
+              </button>
+            </h2>
+          </div>
+          <div *ngIf="!response.hasOwnProperty('noResult')">
+            <h2 class="accordion-header" [attr.id]="'flush-heading'+i">
+              <button class="accordion-button collapsed" type="button" [attr.data-bs-toggle]="'collapse'" [attr.data-bs-target]="'#flush-collapse'+i" [attr.aria-expanded]="'false'" [attr.aria-controls]="'flush-collapse'+i">
+                <span class="col">{{response.apiName}}: {{response.name.first}} {{response.name.last}}</span><span class="col text-end pe-2 fw-light">{{response.dateTime}}</span>
+              </button>
+            </h2>
+            <div [attr.id]="'flush-collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+i" [attr.data-bs-parent]="'#accordion'">
+              <div class="accordion-body">
+                <section class="search-result-item">
+                <span class="image-link" *ngIf="response.hasOwnProperty('image')">
+                  <img class="image" src="{{response.image}}">
+                </span>
+                  <span class="image-link" *ngIf="!response.hasOwnProperty('image')">
+                  <img class="image" src="assets/images/user.svg">
+                </span>
+                  <div class="search-result-item-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="media-body">
+                          <h5 class="mb-4">
+                            <span *ngIf="response.name.suffix != ''">{{response.name.suffix}} </span>
+                            {{response.name.first}}
+                            <span *ngIf="response.name.middle != ''">{{response.name.middle}} </span>
+                            {{response.name.last}}
+                          </h5>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('city') && response.hasOwnProperty('address')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">City:</span>
+                            <span class="bg-light-blue">{{response.city}}</span>
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Address:</span>
+                            <span class="bg-light-blue">{{response.address}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('raceCode')" >
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Race:</span>
+                            <span class="bg-light-blue">{{raceCode.getRace[(response.raceCode)]}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('married') && response.hasOwnProperty('numberOfChildren')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Married:</span>
+                            <span class="bg-light-blue">{{response.married ? 'Yes': 'No'}}</span>
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Number of children:</span>
+                            <span class="bg-light-blue">{{response.numberOfChildren}}</span>
+                          </div>
 
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('carModel') && response.hasOwnProperty('carModelYear') && response.hasOwnProperty('carNumber')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Model:</span>
-                          <span class="bg-light-blue">{{response.carModel}}</span>
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Model Year:</span>
-                          <span class="bg-light-blue">{{response.carModelYear}}</span>
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Number:</span>
-                          <span class="bg-light-blue">{{response.carNumber}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('carVin')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Vin:</span>
-                          <span class="bg-light-blue">{{response.carVin}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('operatorLicenseExpirationDate')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Operator license expiration date:</span>
-                          <span class="bg-light-blue">{{response.operatorLicenseExpirationDate}}</span>
-                        </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('carModel') && response.hasOwnProperty('carModelYear') && response.hasOwnProperty('carNumber')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Model:</span>
+                            <span class="bg-light-blue">{{response.carModel}}</span>
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Model Year:</span>
+                            <span class="bg-light-blue">{{response.carModelYear}}</span>
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Number:</span>
+                            <span class="bg-light-blue">{{response.carNumber}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('carVin')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Car Vin:</span>
+                            <span class="bg-light-blue">{{response.carVin}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('operatorLicenseExpirationDate')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Operator license expiration date:</span>
+                            <span class="bg-light-blue">{{response.operatorLicenseExpirationDate}}</span>
+                          </div>
 
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('companyName') && response.hasOwnProperty('job')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Company:</span>
-                          <span class="bg-light-blue">{{response.companyName}}</span>
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Job:</span>
-                          <span class="bg-light-blue">{{response.job}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('phone')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Phone:</span>
-                          <span class="bg-light-blue">{{response.phone}}</span>
-                        </div>
-                        <div class="mb-3 response" *ngIf="response.hasOwnProperty('email')">
-                          <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Email:</span>
-                          <span class="bg-light-blue">{{response.email}}</span>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('companyName') && response.hasOwnProperty('job')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Company:</span>
+                            <span class="bg-light-blue">{{response.companyName}}</span>
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Job:</span>
+                            <span class="bg-light-blue">{{response.job}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('phone')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Phone:</span>
+                            <span class="bg-light-blue">{{response.phone}}</span>
+                          </div>
+                          <div class="mb-3" *ngIf="response.hasOwnProperty('email')">
+                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Email:</span>
+                            <span class="bg-light-blue">{{response.email}}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </section>
+                </section>
+              </div>
             </div>
           </div>
         </div>

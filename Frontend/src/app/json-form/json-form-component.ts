@@ -22,7 +22,7 @@ export class JsonFormComponent implements OnChanges {
   form: FormGroup = new FormGroup({});
   submitted = false;
 
-  constructor(private httpClientService: HttpClientService, private dataService: DataService, private router: Router) {
+  constructor(private httpClientService: HttpClientService, public dataService: DataService, private router: Router) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -100,8 +100,7 @@ export class JsonFormComponent implements OnChanges {
       .subscribe({
         next: value => {
           console.log(value);
-          this.dataService.updateResponse(value);
-          this.dataService.updateRequest(request);
+          //this.dataService.updateResponse(value);
           this.router.navigate(['/search/response']);
         },
         error: err => {
