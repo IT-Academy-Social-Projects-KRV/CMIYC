@@ -1,22 +1,49 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form.controls">
   <div class="row mb-3">
     <label class="col-sm-4 col-form-label ln">First name:</label>
     <div class="col-sm-8">
-      <input class="form-control" formControlName="firstName" type="text" value="{{firstNameToForm}}">
+      <input class="form-control" formControlName="firstName" type="text" value="{{firstNameToForm}}"
+             [ngClass]="{'is-invalid': f['firstName'] && f['firstName'].errors}"
+      />
+      <div *ngIf="f['firstName'] && f['firstName'].errors" class="invalid-feedback">
+        <div *ngIf="f['firstName'].errors['minlength']">
+          First Name must be at least 2 characters
+        </div>
+        <div *ngIf="f['firstName'].errors['maxlength']">
+          First Name must not exceed 20 characters
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="row mb-3">
     <label class="col-sm-4 col-form-label ln">Last name:</label>
     <div class="col-sm-8">
-      <input class="form-control" formControlName="lastName" type="text"  value="{{lastNameToForm}}">
+      <input [ngClass]="{'is-invalid': f['lastName'] && f['lastName'].errors}"
+             class="form-control" formControlName="lastName" type="text" value="{{lastNameToForm}}"
+      />
+      <div *ngIf="f['lastName'] && f['lastName'].errors" class="invalid-feedback">
+        <div *ngIf="f['lastName'].errors['minlength']">
+          Last Name must be at least 2 characters
+        </div>
+        <div *ngIf="f['lastName'].errors['maxlength']">
+          Last Name must not exceed 20 characters
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="row mb-3">
     <label class="col-sm-4 col-form-label ln">Email:</label>
     <div class="col-sm-8">
-      <input class="form-control" formControlName="email" type="email" value="{{emailToForm}}">
+      <input class="form-control" formControlName="email" type="email" value="{{emailToForm}}"
+             [ngClass]="{'is-invalid': f['email'] && f['email'].errors}"
+      />
+      <div *ngIf="f['email'] && f['email'].errors" class="invalid-feedback">
+        <div *ngIf="f['email'].errors['email']">
+          Email is incorrect
+        </div>
+      </div>
     </div>
   </div>
 
