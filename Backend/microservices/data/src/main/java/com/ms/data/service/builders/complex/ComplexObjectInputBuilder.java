@@ -9,11 +9,11 @@ import com.ms.data.service.builders.HtmlInputBuilderByType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NameObjectInputBuilder extends HtmlInputBuilderByType {
+public class ComplexObjectInputBuilder extends HtmlInputBuilderByType {
 
     @Override
-    public boolean canBuild(String type) {
-        return "Name".equals(type);
+    public boolean canBuild(Field field) {
+        return field.getComponents() != null && field.getComponents().size() > 0;
     }
 
     @Override
@@ -30,5 +30,10 @@ public class NameObjectInputBuilder extends HtmlInputBuilderByType {
         }
 
         return nameInput;
+    }
+
+    @Override
+    public boolean canBuild(String type) {
+        return false;
     }
 }

@@ -17,5 +17,5 @@ import javax.xml.bind.annotation.XmlElement;
 public class Requirements {
 
     @XmlElement(name = "Set")
-    private Fields fields;
+    private Fields fields = new Fields();
 }

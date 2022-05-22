@@ -23,5 +23,5 @@ public class Combination {
     private String primaryFieldReference;
 
     @XmlElement(name = "Requirements")
-    private Requirements requirements;
+    private Requirements requirements = new Requirements();
 }
