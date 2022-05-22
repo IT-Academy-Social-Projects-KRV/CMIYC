@@ -16,12 +16,15 @@
   <div class="row">
     <div class="pt-2 border bg-light table-wrapper-scroll-y my-custom-scrollbar" [ngStyle]="{'height': getScreenHeight + 'px'}">
       <!-- Test accordion-->
-      <div class="card" *ngIf="searchResponses.length == 0">
+      <div *ngIf="searchResponses == null">
+        <app-spinner [headerHeight]="185"></app-spinner>
+      </div>
+      <div class="card" *ngIf="searchResponses != null && searchResponses.length == 0">
         <div class="card-body">
           No results. Please make a search query!
         </div>
       </div>
-      <div class="accordion accordion-flush" id="accordion" *ngIf="searchResponses.length > 0">
+      <div class="accordion accordion-flush" id="accordion" *ngIf="searchResponses != null && searchResponses.length > 0">
         <div class="accordion-item" *ngFor="let response of searchResponses | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
