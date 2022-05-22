@@ -1,10 +1,11 @@
 package com.external.endpoint;
 
-import api.soap.xsd.SearchRequest;
+import api.soap.xsd.Payload;
 import api.soap.xsd.SearchResponse;
 import com.external.connection.ConnectDataSource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -15,7 +16,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 @Endpoint
-public class SoapEndpoint {
+public class ResponseEndpoint {
 
     private static final String NAMESPACE_URI = "http://soap.api/xsd";
     private static final String DATA_HOST = Objects.requireNonNullElse(
@@ -23,9 +24,9 @@ public class SoapEndpoint {
             "ws://localhost:9000"
     );
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "SearchRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "Payload")
     @ResponsePayload
-    public SearchResponse getPerson(@RequestPayload SearchRequest request)
+    public SearchResponse getPerson(@RequestPayload Payload request)
             throws InterruptedException, JsonProcessingException, URISyntaxException {
         ObjectMapper mapper = new ObjectMapper();
         ConnectDataSource connection = new ConnectDataSource(new URI(DATA_HOST));
