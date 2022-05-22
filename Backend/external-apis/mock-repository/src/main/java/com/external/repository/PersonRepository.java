@@ -1,8 +1,8 @@
 package com.external.repository;
 
+import com.external.MockRepositoryApplication;
 import com.external.dto.request.Payload;
 import com.external.entity.Person;
-import com.external.MockRepositoryApplication;
 import com.external.utils.MapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -10,20 +10,18 @@ import lombok.SneakyThrows;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PersonRepository {
 
     private static final String MOCK_DATA_FILE_NAME = "/mock_data.json";
 
-    private final Set<Person> persons = new HashSet<>();
-
-
+    private final List<Person> persons = new ArrayList<>();
 
     public PersonRepository() {
         onInit();
@@ -58,4 +56,7 @@ public class PersonRepository {
                 .collect(Collectors.toList());
     }
 
+    public List<Person> getAll() {
+        return persons;
+    }
 }

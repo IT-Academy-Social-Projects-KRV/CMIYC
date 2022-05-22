@@ -85,16 +85,16 @@ public class TfaTokenGranter extends AbstractTokenGranter {
         OAuth2AccessToken accessToken = this.tokenStore.readAccessToken(accessTokenValue);
 
         if (accessToken == null) {
-            throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
+            throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG);
         } else if (accessToken.isExpired()) {
             this.tokenStore.removeAccessToken(accessToken);
-            throw new InvalidTokenException(ACCESS_TOKEN_EXPIRED_MSG + accessTokenValue);
+            throw new InvalidTokenException(ACCESS_TOKEN_EXPIRED_MSG);
         }
 
         OAuth2Authentication result = this.tokenStore.readAuthentication(accessToken);
 
         if (result == null) {
-            throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG + accessTokenValue);
+            throw new InvalidTokenException(INVALID_ACCESS_TOKEN_MSG);
         }
 
         return result;

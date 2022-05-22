@@ -13,6 +13,7 @@ import {SchemaFile} from "./data/schema";
 import {EnvService} from "./env.service";
 import {JsonForm} from "./data/json-form";
 import {SearchRequest} from "./data/search-request";
+import {SearchResponse} from "./data/search.response";
 
 @Injectable({
   providedIn: 'root'
@@ -158,8 +159,12 @@ export class HttpClientService {
     return this.getRequestJSON(this.URL_SCHEMA);
   }
 
-  public search<T>(requestData: SearchRequest): Observable<T> {
+  public search(requestData: SearchRequest): Observable<SearchResponse> {
     return this.postRequest(this.URL_SEARCH, requestData);
+  }
+
+  public getHistory(): Observable<Array<SearchResponse>> {
+    return this.getRequestJSON(this.URL_SEARCH + "/history");
   }
 
   public getUsers(): Observable<User[]> {

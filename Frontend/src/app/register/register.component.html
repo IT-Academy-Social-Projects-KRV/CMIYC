@@ -1,10 +1,10 @@
-<div class="confirm-register vw-100 vh-100">
-  <main class="form-signin w-100 m-auto">
-    <div class="card mx-4">
+<div class="confirm-register vw-100 vh-100 login-wrap">
+  <main class="form-signin w-100 m-auto login-content">
+    <div>
       <div class="card-body p-4">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <h1 class="h3 mb-3 fw-normal">Register</h1>
-          <h6 class="h6 mb-3 fw-normal text-muted">Enter and confirm your password to finish registration.</h6>
+          <h6 class="h6 mb-3 fw-normal ">Enter and confirm your password to finish registration.</h6>
           <h6 class="h6 mb-3 fw-normal text-danger">{{errorMessage}}</h6>
 
           <div class="form-floating">
@@ -53,3 +53,4 @@
     </div>
   </main>
 </div>
+
