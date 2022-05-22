@@ -1,50 +1,47 @@
 package com.ms.connector.service;
 
-import com.ms.connector.config.ConnectionsConfig;
-import com.ms.connector.dto.SearchQuery;
-import com.ms.connector.dto.SearchResponse;
-import com.ms.connector.service.api.ApiConnection;
-import com.ms.connector.service.api.converter.SoapBodyConverter;
+import com.customstarter.model.request.SearchRequest;
+import com.customstarter.model.request.SearchRequestPayload;
+import com.customstarter.model.response.SearchResponse;
+import com.ms.connector.dto.response.ApiResponse;
+import com.ms.connector.exception.ApiErrorException;
+import com.ms.connector.service.api.RestApiConnection;
+import com.ms.connector.service.api.SoapApiConnection;
+import com.ms.connector.service.api.WebsocketApiConnection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
 public class ApiService {
 
-    private final Map<String, ApiConnection> apis = new HashMap<>();
+    private final RestApiConnection restApiConnection;
+    private final SoapApiConnection soapApiConnection;
+    private final WebsocketApiConnection websocketApiConnection;
 
-    private ConnectionsConfig connectionsConfig;
+    public SearchResponse handleSearchRequest(SearchRequest request) {
+        SearchResponse searchResponse = new SearchResponse();
+        SearchRequestPayload payload = request.getData();
 
-    @PostConstruct
-    public void initApiConnections() {
-        connectionsConfig.getConnections()
-                .values()
-                .stream()
-                .map(ConnectionsConfig.ApiConnectionData::buildApiConnection)
-                .forEach(connection -> apis.put(connection.getName(), connection));
-    }
+        for (String apiName : request.getApis()) {
+            ApiResponse response = null;
 
-    public Map<String, SearchResponse> handleSearchRequest(SearchQuery searchQuery) {
-        Map<String, SearchResponse> result = new HashMap<>();
-
-        for (String apiName : searchQuery.getForeignDataSource()) {
-            ApiConnection apiConnection = apis.get(apiName);
-            if (apiConnection != null) {
-                try {
-                    result.put(apiName, apiConnection.getData(searchQuery));
-                } catch (Exception e) {
-                    e.printStackTrace();
+            try {
+                if(apiName.equals(restApiConnection.getName())) {
+                    response = restApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
+                } else if(apiName.equals(soapApiConnection.getName())) {
+                    response = soapApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
+                } else if(apiName.equals(websocketApiConnection.getName())) {
+                    response = websocketApiConnection.loadDataAndSaveToResponse(payload, searchResponse);
                 }
+
+                if(response != null && response.isError())
+                    throw new ApiErrorException(response.getErrorMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        return result;
+        return searchResponse;
     }
-
 }

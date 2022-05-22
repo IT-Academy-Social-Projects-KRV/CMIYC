@@ -64,7 +64,17 @@ OR:
 _new -> HTTP Request -> POST -> http://localhost:9001/rest -> Body -> raw -> paste and send request:_
 
 ```json
-{"firstName":"John"}
+{
+  "name": {
+    "first": "Donna"
+  },
+  "birthDate": {
+    "day": 17,
+    "month": 10,
+    "year": 1999
+  },
+  "sexCode": "F"
+}
 ```
 
 ### 2.2. soap-server:
@@ -76,10 +86,10 @@ _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gs="http://soap.api/xsd">
     <soapenv:Header/>
     <soapenv:Body>
-        <gs:SearchRequest>
-            <gs:firstName>Steven</gs:firstName>
-            <gs:lastName>Stevenson</gs:lastName>
-        </gs:SearchRequest>
+        <gs:Payload>
+            <gs:state>KS</gs:state>
+            <gs:operatorLicenseNumber>SCBCU8ZA2AC586280</gs:operatorLicenseNumber>
+        </gs:Payload>
     </soapenv:Body>
 </soapenv:Envelope>
 ```
@@ -89,7 +99,19 @@ _new -> HTTP Request -> POST -> http://localhost:9003/soap -> Headers -> Content
 _new -> WebSocket Request -> ws://localhost:9002/ws -> Connect -> paste and send request:_
 
 ```json
-{"firstName":"Amanda","lastName":"Armstrong","birthDayDate":"1984-04-04","gender":"FEMALE"}
+{
+  "name": {
+    "first": "Donna"
+  },
+  "birthDate": {
+    "day": 17,
+    "month": 10,
+    "year": 1999
+  },
+  "sexCode": "F",
+  "state": "KS",
+  "imageIndicator": true
+}
 ```
 
 ## 3.API
@@ -97,16 +119,16 @@ _new -> WebSocket Request -> ws://localhost:9002/ws -> Connect -> paste and send
 Every external service represents one API:
 
 **rest-server** - **api1**
-> **required field:** firstName<br>
-> **returns:** country, city, and address
+> **required field:** birthDate(day,month,year), name(first,middle,last,suffix) sexCode <br>
+> **returns:** city , address, name, isMarried, numberOfChildren, raceCode
 
 **soap-server** - **api2**
-> **required fields:** firstName and lastName<br>
-> **returns:** email, job, and phone number
+> **required fields:** operatorLicenseNumber, state, imageIndicator<br>
+> **returns:** carModel,operatorLicenseExpirationDate, carModelYear, carVin,carNumber, image, phone, name
 
 **websocket-server** - **api3**
-> **required fields:** firstName, lastName, gender and birthDayDate (format: yyyy-MM-dd)<br>
-> **returns:** carModel and carVin
+> **required fields:** birthDate(day,month,year), name(first,middle,last,suffix), state, imageIndicator<br>
+> **returns:** сity, address, job,companyName, phone, email, image, name
 
 All person data can be found in mock-repository/src/main/resources/mock_data.json
 
@@ -115,60 +137,97 @@ Some of this data:
 ```json
 [
   {
-    "gender": "MALE",
-    "firstName": "John",
-    "lastName": "Johnson",
-    "email": null,
-    "phone": "704-570-9750",
-    "birthDayDate": "1981-01-01",
-    "carVin": "WAUMF98K69A080368",
-    "carModel": "Tacoma",
-    "country": "China",
-    "city": "Guashe",
-    "address": "1337 Kennedy Drive",
-    "job": "VP Accounting"
-  },
-  {
-    "gender": "MALE",
-    "firstName": "Peter",
-    "lastName": "Peterson",
-    "email": "jpiniur1@over-blog.com",
-    "phone": "947-793-9775",
-    "birthDayDate": "1982-02-02",
-    "carVin": "3C6TD5GT5CG918011",
-    "carModel": "XK Series",
-    "country": "Greece",
-    "city": "Samothráki",
-    "address": "72 Fordem Drive",
-    "job": null
-  },
-  {
-    "gender": "MALE",
-    "firstName": "Steven",
-    "lastName": "Stevenson",
-    "email": null,
-    "phone": "444-453-1779",
-    "birthDayDate": "1983-03-03",
-    "carVin": "2GKALMEKXF6505805",
-    "carModel": "Fox",
-    "country": "China",
-    "city": "Zhenjiang",
-    "address": "302 Jackson Avenue",
-    "job": "Design Engineer"
-  },
-  {
+    "state": "KS",
+    "city": "Topeka",
+    "address": "09 Mesta Alley",
+    "email": "jdensumbe0@dagondesign.com",
+    "job": "Staff Accountant III",
+    "companyName": "McLaughlin, Schimmel and Raynor",
+    "phone": "785-263-8114",
     "gender": "FEMALE",
-    "firstName": "Amanda",
-    "lastName": "Armstrong",
-    "email": "lfrearson3@soup.io",
-    "phone": "529-544-9508",
-    "birthDayDate": "1984-04-04",
-    "carVin": "5FNRL5H23CB727110",
-    "carModel": "Scirocco",
-    "country": "Botswana",
-    "city": "Mathambgwane",
-    "address": "05741 Annamark Pass",
-    "job": "VP Product Management"
+    "name": {
+      "first": "Donna",
+      "middle": "Jan",
+      "last": "Davis",
+      "suffix": ""
+    },
+    "birthDate": {
+      "day": 17,
+      "month": 10,
+      "year": 1999
+    },
+    "raceCode": "L",
+    "image": "https://avatars.dicebear.com/api/female/4269.png",
+    "operatorLicenseNumber": "SCBCU8ZA2AC586280",
+    "operatorLicenseExpirationDate": "09.08.2025",
+    "carModel": "Navajo",
+    "carModelYear": 1994,
+    "carVin": "2G4GU5GV9C9958996",
+    "carNumber": "5L3•EXO",
+    "isMarried": false,
+    "numberOfChildren": 0
+  },
+  {
+    "state": "NY",
+    "city": "New York City",
+    "address": "20 Mayfield Center",
+    "email": "dmumbey1@gizmodo.com",
+    "job": "Marketing Manager",
+    "companyName": "Brakus, Botsford and Conroy",
+    "phone": "917-729-1066",
+    "gender": "MALE",
+    "name": {
+      "first": "James",
+      "middle": "Delainey",
+      "last": "Stevenson",
+      "suffix": ""
+    },
+    "birthDate": {
+      "day": 8,
+      "month": 11,
+      "year": 1977
+    },
+    "raceCode": "L",
+    "image": "https://avatars.dicebear.com/api/male/7637.png",
+    "operatorLicenseNumber": "3GYFNDE33ES767101",
+    "operatorLicenseExpirationDate": "27.05.2025",
+    "carModel": "Alcyone SVX",
+    "carModelYear": 1993,
+    "carVin": "WAUBG78E96A669395",
+    "carNumber": "02X•IQE",
+    "isMarried": true,
+    "numberOfChildren": 3
+  },
+  {
+    "state": "CA",
+    "city": "Glendale",
+    "address": "8879 Crowley Circle",
+    "email": "vwhiten2@businesswire.com",
+    "job": "Accounting Assistant I",
+    "companyName": "Flatley and Sons",
+    "phone": "818-746-8212",
+    "gender": "FEMALE",
+    "name": {
+      "first": "Donna",
+      "middle": "Vaughan",
+      "last": "Williams",
+      "suffix": ""
+    },
+    "birthDate": {
+      "day": 8,
+      "month": 5,
+      "year": 1963
+    },
+    "raceCode": "O",
+    "image": "https://avatars.dicebear.com/api/female/1832.png",
+    "operatorLicenseNumber": "WVWAA7AJ7BW094055",
+    "operatorLicenseExpirationDate": "26.03.2027",
+    "carModel": "Fiero",
+    "carModelYear": 1984,
+    "carVin": "KMHDB8AE4BU092399",
+    "carNumber": "H1H•5NI",
+    "isMarried": true,
+    "numberOfChildren": 3
   }
 ]
 ```

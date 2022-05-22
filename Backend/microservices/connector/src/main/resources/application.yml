@@ -8,22 +8,18 @@ eureka:
     enabled: false
 
 api:
-  connections:
-    rest-server:
-      name: api1
-      path: ${ROUTES_EXTERNAL_REST:http://localhost:9001}/rest
-      type: rest
-      method: post
-    soap-server:
-      name: api2
-      path: ${ROUTES_EXTERNAL_SOAP:http://localhost:9003}/soap
-      type: soap
-      method: post
-    websocket-server:
-      name: api3
-      path: ${ROUTES_EXTERNAL_WEBSOCKET:ws://localhost:9002}/ws
-      type: websocket
-      timeout: 10000
+  rest:
+    name: NCIC
+    path: ${ROUTES_EXTERNAL_REST:http://localhost:9001}/rest
+    method: post
+  soap:
+    name: FRED
+    path: ${ROUTES_EXTERNAL_SOAP:http://localhost:9003}/soap
+    method: post
+  websocket:
+    name: DataGOV
+    path: ${ROUTES_EXTERNAL_WEBSOCKET:ws://localhost:9002}/ws
+    timeout: 10000
 
 spring:
   application:

@@ -19,8 +19,8 @@ public class Authorities {
         public static final String MISSING_TFA_CODE_MSG = "Missing TFA code";
         public static final String INVALID_TFA_CODE_MSG = "Invalid TFA code";
         public static final String MISSING_TFA_TOKEN_MSG = "Missing TFA token";
-        public static final String INVALID_ACCESS_TOKEN_MSG = "Invalid access token: ";
-        public static final String ACCESS_TOKEN_EXPIRED_MSG = "Access token expired: ";
+        public static final String INVALID_ACCESS_TOKEN_MSG = "Invalid access token";
+        public static final String ACCESS_TOKEN_EXPIRED_MSG = "Access token expired";
         public static final String INVALID_CLIENT_MSG = "Client not valid: ";
         public static final String MISSING_CLIENT_MSG = "Client is missing or does not correspond to the TFA token";
 

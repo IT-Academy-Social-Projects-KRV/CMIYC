@@ -5,22 +5,19 @@
 
 ```json
 {
- "firstName": "John",
- "lastName": "Johnson",
- "birthDayDate": "1981-01-01",
- "sex": "Male",
- "foreignDataSource": [
-   "api1",
-   "api2",
-   "api3"
- ]
+  "apis": ["NCIC", "FRED", "DataGOV"],
+  "data": [{
+    "name.first": "Donna",
+    "name.middle": "Jan",
+    "name.last": "Davis",
+    "birthDate.day": 17,
+    "birthDate.month": 10,
+    "birthDate.year": 1999,
+    "raceCode": "L",
+    "operatorLicenseNumber": "SCBCU8ZA2AC586280",
+    "state": "KS",
+    "imageIndicator": "Y",
+    "sexCode": "F"
+  }]
 }
 ```
-
->### WARNING
->For tests only, you can send GET request without valid token and get mock response.
-
-
-
-
-
