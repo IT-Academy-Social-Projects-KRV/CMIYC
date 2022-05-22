@@ -3,74 +3,114 @@
   <div class="d-flex flex-column flex-shrink-0 border-start border-1">
     <table class="table table-striped">
       <thead class="table-dark">
-        <tr>
-          <th scope="col">
-            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalWindow">
-              <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
-            </button>
-          </th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Email</th>
-          <th scope="col">Is active</th>
-          <th scope="col">Roles</th>
-          <th scope="col">Actions</th>
-        </tr>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Is active</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Actions</th>
+      </tr>
       </thead>
 
       <tbody *ngIf="users.length > 0">
-        <tr *ngFor="let user of users | paginate : {
+
+      <tr class=" table-secondary">
+        <th scope="row" class=" col-md-1  align-middle px-3">
+          <a class="btn btn-dark btn-sm me-2 " type="button" (click)="getAllUsersClearSearchFields()">
+            <i class="bi bi-arrow-clockwise"></i>
+          </a>
+        </th>
+
+        <td class="col-md-1 align-middle">
+          <div class="col-xs-2 input-group-sm" [formGroup]="form">
+            <input class="form-control" type="text" formControlName="firstNameSearch" placeholder="First">
+          </div>
+        </td>
+
+        <td class="col-md-1 align-middle">
+          <div class="col-xs-2 input-group-sm" [formGroup]="form">
+            <input class="form-control" formControlName="lastNameSearch" type="text" placeholder="Last">
+          </div>
+        </td>
+
+        <td class="col-md-2 align-middle">
+          <div class="col-xs-2 input-group-sm" [formGroup]="form">
+            <input class="form-control" formControlName="emailSearch" type="email"  placeholder="Email">
+          </div>
+        </td>
+
+        <td class="align-middle">
+          <div class="form-check form-switch" [formGroup]="form">
+            <input class="form-check-input" formControlName="isActiveSearch" type="checkbox" role="switch"
+                   id="isActive">
+            <label class="form-check-label" for="isActive">Active</label>
+          </div>
+        </td>
+
+        <td></td>
+
+        <td>
+          <a class="btn btn-primary me-2 " type="button" (click)="onSubmit()">
+            <i class="bi bi-search"></i>
+          </a>
+
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalWindow">
+            <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngFor="let user of users | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
                 totalItems: count
               };
         let i = index" [class.active]="i == i">
-          <th scope="row" class="align-middle px-3">{{i+1}}</th>
-          <td class="align-middle">{{user.firstName}}</td>
-          <td class="align-middle">{{user.lastName}}</td>
-          <td class="align-middle">{{user.email}}</td>
-          <td class="align-middle">
-            <user-is-active-toggle
-              [userId]="user.id" [isActive]="user.active" [isDisabled]="user.isUserAdmin"
-              (onChange)="onUserActiveChange(user.id, $event)"
-            ></user-is-active-toggle>
-          </td>
-          <td>
-            <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
-                     role="switch" id="user-admin-toggle-{{user.id}}" [checked]="user.isUserAdmin ? 'checked': null">
-              <label class="form-check-label " style="margin-top: 6px;" for="user-admin-toggle-{{user.id}}">User Manager</label>
-            </div>
+        <th scope="row" class="align-middle px-3">{{i + 1}}</th>
+        <td class="align-middle">{{user.firstName}}</td>
+        <td class="align-middle">{{user.lastName}}</td>
+        <td class="align-middle">{{user.email}}</td>
+        <td class="align-middle">
+          <user-is-active-toggle
+            [userId]="user.id" [isActive]="user.active" [isDisabled]="user.isUserAdmin"
+            (onChange)="onUserActiveChange(user.id, $event)"
+          ></user-is-active-toggle>
+        </td>
+        <td class="align-middle">
+          <div *ngIf="user.isUserAdmin">
+            <span class="badge bg-secondary">User Manager</span>
+          </div>
 
-            <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
-                     role="switch" id="schema-admin-toggle-{{user.id}}" [checked]="user.isSchemaAdmin ? 'checked': null">
-              <label class="form-check-label" style="margin-top: 6px;" for="schema-admin-toggle-{{user.id}}">Schema Manager</label>
-            </div>
+          <div *ngIf="user.isSchemaAdmin">
+            <span class="badge bg-secondary">Schema Manager</span>
+          </div>
 
-            <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" style="margin-top: 10px;" type="checkbox" disabled
-                     role="switch" id="user-toggle-{{user.id}}" [checked]="user.isUser ? 'checked': null">
-              <label class="form-check-label" style="margin-top: 6px;" for="user-toggle-{{user.id}}">User</label>
-            </div>
-          </td>
-          <td>
-            <a  class="btn btn-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateWindow"
-                (click)="onEdit(user.id,user.firstName, user.lastName,user.email,user.isUserAdmin,user.isSchemaAdmin,user.isUser)">
-              <i class="bi bi-vector-pen "></i>
-            </a>
-            <a  class="btn btn-danger" type="button" (click)="onDelete(user.id, user.firstName, user.lastName)" >
-              <i class="bi bi-trash3"></i>
-            </a>
-          </td>
-        </tr>
+          <div *ngIf="user.isUser">
+            <span class="badge bg-secondary">User</span>
+          </div>
+        </td>
+        <td>
+          <a class="btn btn-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateWindow"
+             (click)="onEdit(user.id,user.firstName, user.lastName,user.email,user.isUserAdmin,user.isSchemaAdmin,user.isUser)">
+            <i class="bi bi-vector-pen "></i>
+          </a>
+          <a class="btn btn-danger" type="button" (click)="onDelete(user.id, user.firstName, user.lastName)">
+            <i class="bi bi-trash3"></i>
+          </a>
+        </td>
+      </tr>
       </tbody>
 
     </table>
 
     <app-spinner *ngIf="users.length == 0" [headerHeight]="67"></app-spinner>
 
-    <div  class="d-flex justify-content-center">
+    <div *ngIf="users.length ==0">
+      <i  class="d-flex justify-content-center">There are no users</i>
+    </div>
+    <div class="d-flex justify-content-center">
       <pagination-controls
         [autoHide]="true"
         previousLabel="Prev"
@@ -90,7 +130,7 @@
     </div>
     <!-- Modal for new user-->
     <div class="modal fade" id="modalWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -115,9 +155,9 @@
           </div>
           <div class="modal-body">
             <app-admin-user-update-form [firstNameToForm]="firstNameToUpdate" [lastNameToForm]="lastNameToUpdate"
-            [emailToForm]="emailToUpdate" [isUserAdminToForm]="isUserAdminToUpdate"
-                [idToForm]="idToUpdate" [isSchemaAdminToForm]="isSchemaAdminToUpdate"
-            [isUserToForm]="isUserToUpdate"></app-admin-user-update-form>
+                                        [emailToForm]="emailToUpdate" [isUserAdminToForm]="isUserAdminToUpdate"
+                                        [idToForm]="idToUpdate" [isSchemaAdminToForm]="isSchemaAdminToUpdate"
+                                        [isUserToForm]="isUserToUpdate"></app-admin-user-update-form>
           </div>
         </div>
       </div>

@@ -11,16 +11,14 @@ import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.exception.CurrentSelectedSchemaException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -42,7 +40,6 @@ public class CloudStorageService {
 
     @Value("${cloud-storage.path}")
     private String bucketName;
-
     private String selectedSchemaName;
 
     @PostConstruct
@@ -57,6 +54,8 @@ public class CloudStorageService {
 
     @SneakyThrows
     public void uploadSchema(MultipartFile file) {
+        String validateFile = new String(file.getBytes());
+        xmlReaderService.read(validateFile);
         StorageObject object = new StorageObject();
 
         String originalFilename = file.getOriginalFilename() == null ?
@@ -71,6 +70,8 @@ public class CloudStorageService {
                         new InputStreamContent(file.getOriginalFilename(), targetStream, file.getSize())
                 )
                 .execute();
+
+
     }
 
     @SneakyThrows
