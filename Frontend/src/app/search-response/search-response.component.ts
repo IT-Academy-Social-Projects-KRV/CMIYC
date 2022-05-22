@@ -1,5 +1,4 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {DataService} from "../shared/data.service";
 import {RaceCode} from "../shared/data/search.response";
 import {HttpClientService} from "../shared/http.client.service";
 
@@ -19,7 +18,7 @@ export class SearchResponseComponent implements OnInit {
   headerViewSize = 227;
   searchResponses: Array<any> = new Array<any>();
 
-  constructor(private dataService: DataService, private http: HttpClientService) {
+  constructor(private http: HttpClientService) {
     this.http.getHistory().subscribe({
       next: value => {
         for (let i = 0; i < value.length; i++) {
