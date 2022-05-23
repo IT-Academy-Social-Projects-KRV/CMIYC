@@ -10,6 +10,7 @@ import {JsonForm} from "../shared/data/json-form";
 export class UserSearchInterfaceComponent {
   jsonForm: JsonForm | undefined;
   formName: string = '';
+  spinner: boolean = false;
 
   constructor(private httpClientService: HttpClientService) {
     this.httpClientService
@@ -21,5 +22,9 @@ export class UserSearchInterfaceComponent {
 
         console.log((this.jsonForm));
       });
+  }
+
+  enableSpinner(value: boolean) {
+    this.spinner = value;
   }
 }

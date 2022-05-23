@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+.modalSpinner {
+  position: fixed;
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.modalSpinner div.justify-content-center {
+  height: 100%!important;
+}

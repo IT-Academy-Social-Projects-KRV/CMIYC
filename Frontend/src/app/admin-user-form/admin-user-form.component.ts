@@ -18,6 +18,7 @@ export class AdminUserFormComponent implements OnInit {
     email: new FormControl('')
 
   });
+  spinner: boolean = false;
 
   constructor(private httpClientService: HttpClientService) {
   }
@@ -26,6 +27,8 @@ export class AdminUserFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+
+    this.spinner = true;
 
     if (this.form.invalid) {
       return;
@@ -46,6 +49,7 @@ export class AdminUserFormComponent implements OnInit {
 
     this.httpClientService.createUser(firstName, lastName, email, roles, (result) => {
       if (result.isError) {
+        this.spinner = false;
         alert(result.message)
       } else {
         window.location.reload();
