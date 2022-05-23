@@ -17,7 +17,7 @@
     <div class="pt-2 border bg-light table-wrapper-scroll-y my-custom-scrollbar" [ngStyle]="{'height': getScreenHeight + 'px'}">
       <!-- Test accordion-->
       <div *ngIf="searchResponses == null">
-        <app-spinner [headerHeight]="185"></app-spinner>
+        <app-spinner [headerHeight]="240"></app-spinner>
       </div>
       <div class="card" *ngIf="searchResponses != null && searchResponses.length == 0">
         <div class="card-body">
@@ -123,7 +123,7 @@
       </div>
     </div>
   </div>
-  <div class="mt-2 d-flex justify-content-center">
+  <div class="mt-2 d-flex justify-content-center" *ngIf="searchResponses != null && searchResponses.length != 0">
     <pagination-controls [autoHide] = "true"
       previousLabel="Prev"
       nextLabel="Next"
