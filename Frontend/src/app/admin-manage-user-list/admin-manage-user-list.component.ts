@@ -22,6 +22,7 @@ export class AdminManageUserListComponent implements OnInit {
   tableSize = 8;
   //tableSizes = [1, 3, 6, 9]; variable used for items per page selection
   users: User[] = [];
+  spinner: boolean = false;
 
   form: FormGroup = new FormGroup({
     firstNameSearch: new FormControl(''),
@@ -62,12 +63,15 @@ export class AdminManageUserListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.spinner = true;
+
     this.httpClientService.getInitialPage(this.tableSize).subscribe({
       next: (response) => {
         this.RESPONSE = response;
         this.count = this.RESPONSE.totalElements;
         const usersList = this.RESPONSE.content;
         this.loadUsers(usersList);
+        this.spinner = false;
       }
     })
 
@@ -101,6 +105,7 @@ export class AdminManageUserListComponent implements OnInit {
             this.RESPONSE = response;
             const usersList = this.RESPONSE.content;
             this.loadUsers(usersList);
+            this.spinner = false;
           }
         })
       } else {
@@ -109,6 +114,7 @@ export class AdminManageUserListComponent implements OnInit {
             this.RESPONSE = response;
             const usersList = this.RESPONSE.content;
             this.loadUsers(usersList);
+            this.spinner = false;
           }
         })
       }
@@ -122,6 +128,7 @@ export class AdminManageUserListComponent implements OnInit {
     if (confirm(message)) {
       this.httpClientService.deleteUser(userId).subscribe(list => {
         this.loadUsers(this.users);
+        this.spinner = false;
       })
       window.location.reload();
     }
