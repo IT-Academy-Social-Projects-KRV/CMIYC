@@ -13,6 +13,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
   fileName: string | undefined;
   submitted = false;
   maxSize = 500000;
+  spinner: boolean = false;
 
  form = new FormGroup({
     file: new FormControl('', ),
@@ -62,6 +63,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
 
   onFormSubmit() {
     this.submitted = true;
+    this.spinner = true;
 
     if (this.form.invalid) {
       return;
@@ -81,6 +83,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
       error: err => {
         const errorMessage: string = err.message || "Something went wrong";
         alert(errorMessage);
+        this.spinner = false;
       }
     });
   }
