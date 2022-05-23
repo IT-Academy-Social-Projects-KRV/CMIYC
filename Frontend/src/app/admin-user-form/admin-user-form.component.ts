@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {HttpClientService} from "../shared/http.client.service";
+import Validation from "../utils/validation";
 
 
 @Component({
@@ -9,21 +10,32 @@ import {HttpClientService} from "../shared/http.client.service";
   styleUrls: ['./admin-user-form.component.css']
 })
 export class AdminUserFormComponent implements OnInit {
-  form: FormGroup = new FormGroup({
+  form: FormGroup = this.formBuilder.group({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     userManager: new FormControl(''),
     schemaManager: new FormControl(''),
     user: new FormControl(''),
     email: new FormControl('')
-
   });
   spinner: boolean = false;
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private httpClientService: HttpClientService, private formBuilder: FormBuilder) {
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
   }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      firstName: ['', [Validators.minLength(2), Validators.maxLength(20)]],
+      lastName: ['', [Validators.minLength(2), Validators.maxLength(20)]],
+      userManager:[''],
+      schemaManager:[''],
+      user:[''],
+      email:['', [Validators.email]]
+    });
   }
 
   onSubmit(): void {
