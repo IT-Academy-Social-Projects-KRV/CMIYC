@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 import {ApiCombination, FieldType, JsonForm, JsonFormInput} from "../shared/data/json-form";
 import Validation from "../utils/validation";
@@ -16,6 +16,9 @@ export class JsonFormComponent implements OnChanges, OnInit {
 
   @Input()
   jsonForm: JsonForm = new JsonForm();
+
+  @Output()
+  onChange = new EventEmitter<boolean>();
 
   selectedApis: string[] = [];
   notEnoughFields: boolean = false;
@@ -113,6 +116,7 @@ export class JsonFormComponent implements OnChanges, OnInit {
 
     console.log("Data to send", request);
 
+    this.enableLoadingAnimation(true);
     this.httpClientService
       .search(request)
       .subscribe({
@@ -203,6 +207,10 @@ export class JsonFormComponent implements OnChanges, OnInit {
     });
 
     return data;
+  }
+
+  enableLoadingAnimation(value: boolean) {
+    this.onChange.emit(value);
   }
 
   checkAPI(combination: ApiCombination) {

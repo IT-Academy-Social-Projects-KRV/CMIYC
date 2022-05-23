@@ -17,7 +17,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngIf="schemas.length > 0">
         <tr *ngFor="let schema of schemas; let i = index;" [ngClass]="schema.file.selected ? 'table-primary' : ''">
           <th scope="row" class="align-middle px-3">{{i + 1}}</th>
           <td class="align-middle">{{schema.file.name}}</td>
@@ -40,6 +40,8 @@
         </tr>
       </tbody>
     </table>
+
+    <app-spinner *ngIf="schemas.length == 0" [headerHeight]="80"></app-spinner>
 
     <div class="modal fade" id="createSchemaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">

@@ -16,11 +16,12 @@ export class SearchResponseComponent implements OnInit {
   getScreenHeight: any;
   raceCode: RaceCode = new RaceCode();
   headerViewSize = 227;
-  searchResponses: Array<any> = new Array<any>();
+  searchResponses: Array<any> | null = null;
 
   constructor(private http: HttpClientService) {
     this.http.getHistory().subscribe({
       next: value => {
+        this.searchResponses = new Array<any>();
         for (let i = 0; i < value.length; i++) {
 
           if (value[i].api1Responses == null) {
@@ -64,7 +65,9 @@ export class SearchResponseComponent implements OnInit {
   pushResponsesToSingleArray(apiResponses: Array<any>, dateTime: string): void {
     for (let i = 0; i < apiResponses.length; i++) {
       apiResponses[i]['dateTime'] = this.toTwelveHourTimeFormat(dateTime);
-      this.searchResponses.push(apiResponses[i]);
+      if (this.searchResponses != null) {
+        this.searchResponses.push(apiResponses[i]);
+      }
     }
   }
 

@@ -24,6 +24,7 @@ export class AdminUserUpdateFormComponent implements OnInit {
     email: new FormControl(''),
   });
   submitted: boolean = false;
+  spinner: boolean = false;
 
   constructor(private httpClientService: HttpClientService, private formBuilder: FormBuilder) {
   }
@@ -56,6 +57,7 @@ export class AdminUserUpdateFormComponent implements OnInit {
     if(!this.form.valid)
       return;
 
+    this.spinner = true;
     let isUserManager;
     let isSchemaManager;
     let isUser;
@@ -90,6 +92,7 @@ export class AdminUserUpdateFormComponent implements OnInit {
 
     this.httpClientService.updateUser(this.idToForm, data, (result) => {
       if (result.isError) {
+        this.spinner = false;
         alert(result.message)
       } else {
         window.location.reload();
