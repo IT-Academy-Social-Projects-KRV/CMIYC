@@ -92,8 +92,8 @@ export class AdminUserUpdateFormComponent implements OnInit {
 
     this.httpClientService.updateUser(this.idToForm, data, (result) => {
       if (result.isError) {
-        this.spinner = false;
         alert(result.message)
+        this.spinner = false;
       } else {
         window.location.reload();
       }

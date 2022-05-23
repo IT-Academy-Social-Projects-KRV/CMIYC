@@ -61,8 +61,8 @@ export class AdminUserFormComponent implements OnInit {
 
     this.httpClientService.createUser(firstName, lastName, email, roles, (result) => {
       if (result.isError) {
-        this.spinner = false;
         alert(result.message)
+        this.spinner = false;
       } else {
         window.location.reload();
       }
