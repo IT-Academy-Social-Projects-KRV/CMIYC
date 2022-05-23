@@ -6,14 +6,14 @@ import com.customstarter.model.schema.input.NumberInput;
 import com.ms.data.dto.xml.Field;
 import com.ms.data.dto.xml.FieldComponent;
 import com.ms.data.service.SearchFormBuilderService;
-import com.ms.data.service.builders.HtmlInputBuilderByType;
+import com.ms.data.service.builders.HtmlInputBuilderByNameAndType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DateObjectInputBuilder extends HtmlInputBuilderByType {
+public class DateObjectInputBuilder extends HtmlInputBuilderByNameAndType {
 
     @Override
-    public boolean canBuild(String type) {
+    protected boolean canBuild(String name, String type) {
         return "Date".equals(type);
     }
 
