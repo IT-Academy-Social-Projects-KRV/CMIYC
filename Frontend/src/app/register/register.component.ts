@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
 
   readonly form: FormGroup;
   readonly token: string;
+  captcha: string = '';
 
   submitted = false;
   errorMessage: string | undefined;
@@ -48,18 +49,25 @@ export class RegisterComponent implements OnInit {
     return this.form.controls['confirmPassword'];
   }
 
+  onCaptchaResolved(captcha: string) {
+    this.captcha = captcha;
+  }
+
   onSubmit(): void {
     this.submitted = true;
-
+    if (this.captcha == '') {
+      alert('Captcha is required');
+      return;
+    }
     if (this.form.invalid) {
       return;
     }
 
     this.httpClientService
       .activateUser(
-        this.token, this.password.value, this.confirmPassword.value,
+        this.token, this.password.value, this.confirmPassword.value, this.captcha,
         (result: RequestResult) => {
-          if(!result.isError) {
+          if (!result.isError) {
             this.router.navigate(['login'], {queryParams: {'activationSuccess': ''}});
           } else {
             this.errorMessage = result.message;

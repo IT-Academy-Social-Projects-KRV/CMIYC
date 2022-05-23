@@ -243,11 +243,12 @@ export class HttpClientService {
     return this.postRequest(this.URL_SCHEMA_SELECT.replace("{name}", name), {});
   }
 
-  public activateUser(token: string, password: string, confirmPassword: string, callback: (result: RequestResult) => void) {
+  public activateUser(token: string, password: string, confirmPassword: string, captcha : string, callback: (result: RequestResult) => void) {
     const data = {
       'token': token,
       'password': password,
-      'confirmPassword': confirmPassword
+      'confirmPassword': confirmPassword,
+      'captchaResponse': captcha
     }
 
     this.http

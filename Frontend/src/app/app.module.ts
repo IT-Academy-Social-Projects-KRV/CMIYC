@@ -31,8 +31,9 @@ import {AdminViewSchemaComponent} from "./admin-view-schema/admin-view-schema-co
 import {EnvService} from "./shared/env.service";
 import {JsonFormComponent} from "./json-form/json-form-component";
 import {NgxPaginationModule} from "ngx-pagination";
-import { AdminUserUpdateFormComponent } from './admin-user-update-form/admin-user-update-form.component';
-import { SpinnerComponent } from './spinner/spinner.component';
+import {AdminUserUpdateFormComponent} from './admin-user-update-form/admin-user-update-form.component';
+import {SpinnerComponent} from './spinner/spinner.component';
+import {RECAPTCHA_SETTINGS, RecaptchaModule, RecaptchaSettings} from "ng-recaptcha";
 
 const appInitializerFn = (appConfig: EnvService) => {
   return () => {
@@ -72,13 +73,19 @@ const appInitializerFn = (appConfig: EnvService) => {
     HttpClientModule,
     BrowserModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    RecaptchaModule
   ],
   providers: [
     AuthService,
     UserAuthGuard,
     UserAdminAuthGuard,
-    EnvService,
+    EnvService, {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: "6LcxlA8gAAAAAJnRPMXjXqBHIAzluY9g-CkWAxH8",
+      } as RecaptchaSettings,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,

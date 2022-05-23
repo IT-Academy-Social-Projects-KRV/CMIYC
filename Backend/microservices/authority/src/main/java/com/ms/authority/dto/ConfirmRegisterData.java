@@ -26,6 +26,7 @@ public class ConfirmRegisterData {
     private String password;
     private String confirmPassword;
     private String twoFactorAuthenticationCode;
+    private String captchaResponse;
 
     public boolean arePasswordsEquals() {
         return password.equals(confirmPassword);

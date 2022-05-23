@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping("/activation")
-    public void confirmRegister(@Valid @RequestBody ConfirmRegisterData confirmRegisterData) {
-        userService.confirmRegister(confirmRegisterData);
+    public void confirmRegister(@Valid @RequestBody ConfirmRegisterData confirmRegisterData, HttpServletRequest request) {
+        userService.confirmRegister(confirmRegisterData, request.getRemoteAddr());
     }
 
     @PostMapping("/{userId}/active/{newState}")
