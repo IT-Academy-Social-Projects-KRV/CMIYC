@@ -16,3 +16,18 @@ Request data, to get responce data from 3 apis:
  "SexCode": "F"
  }
  ```
+ ```json
+  {
+"Name.First": "Templeton", 
+"Name.Middle":"Templeton",
+"Name.Last":"White", 
+"BirthDate.Day":27,
+"BirthDate.Month":2,
+"BirthDate.Year":1956, 
+"RaceCode":"H", 
+"OperatorLicenseNumber":"WBA6B2C54DD210622", 
+"State": "DC", 
+"ImageIndicator": "Y", 
+"SexCode": "M"
+}
+ ```
