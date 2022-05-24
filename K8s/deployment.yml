@@ -107,9 +107,10 @@ spec:
                   name: mail-secret
                   key: password
             - name: CAPTCHA_SECRET
-              secretKeyRef:
-                name: captcha-secret
-                key: password
+              valueFrom:
+                secretKeyRef:
+                  name: captcha-secret
+                  key: password
 ---
 apiVersion: apps/v1
 kind: Deployment
