@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SelectOption {
 
+    public static final SelectOption SELECT = new SelectOption("", "Select...");
     public static final SelectOption UNKNOWN = new SelectOption("", "Unknown");
 
     private String value;

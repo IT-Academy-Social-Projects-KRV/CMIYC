@@ -26,7 +26,7 @@ public class SexCodeSelectBuilder extends HtmlInputBuilderByNameAndType {
     @Override
     public HtmlInput build(Field field, SearchFormBuilderService searchFormBuilderService) {
         Select select = new Select(field.getName(), field.getDescription());
-        select.getOptions().add(SelectOption.UNKNOWN);
+        select.getOptions().add(SelectOption.SELECT);
         select.getOptions().addAll(OPTIONS);
 
         return select;
