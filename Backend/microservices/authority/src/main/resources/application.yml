@@ -11,7 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/cmiyc_authority_db?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
