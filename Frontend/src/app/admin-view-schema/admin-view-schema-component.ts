@@ -44,7 +44,7 @@ export class AdminViewSchemaComponent implements OnChanges {
         .subscribe({
           next: data => {
             if(this.schema) {
-              data = JSON.stringify(data);
+              data = JSON.stringify(data, undefined, 4);
               this.schema.data = data;
               this.currentValue = data;
             }
