@@ -21,7 +21,7 @@
     <div class="col-sm-8">
       <input
         [ngClass]="{'is-invalid': f['lastName'] && f['lastName'].errors}"
-        class="form-control" formControlName="lastName" type="text"  value="" maxlength="20" minlength="1">
+        class="form-control" formControlName="lastName" type="text"  value="">
       <div *ngIf="f['lastName'] && f['lastName'].errors" class="invalid-feedback">
         <div *ngIf="f['lastName'].errors['minlength']">
           Last Name must be at least 2 characters
