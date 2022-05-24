@@ -9,6 +9,8 @@ import com.ms.data.service.SearchFormBuilderService;
 import com.ms.data.service.builders.HtmlInputBuilderByNameAndType;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class DateObjectInputBuilder extends HtmlInputBuilderByNameAndType {
 
@@ -42,8 +44,8 @@ public class DateObjectInputBuilder extends HtmlInputBuilderByNameAndType {
                         break;
                     }
                     case "year": {
-                        numberInput.setMin(1800);
-                        numberInput.setMax(9999);
+                        numberInput.setMin(1900);
+                        numberInput.setMax(LocalDateTime.now().getYear());
                         break;
                     }
                 }
