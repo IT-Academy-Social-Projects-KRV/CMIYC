@@ -70,7 +70,7 @@
 
 
   <div class="d-flex justify-content-center">
-    <button  class="btn btn-outline-success" [disabled]="(f['firstName'] && f['firstName'].errors) || (f['lastName'] && f['lastName'].errors) || (f['email'] && f['email'].errors)">
+    <button  class="btn btn-outline-success" [disabled]="!form.valid">
       Create
       </button>
   </div>

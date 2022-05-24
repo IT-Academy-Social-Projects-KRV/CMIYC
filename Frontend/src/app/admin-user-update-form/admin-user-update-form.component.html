@@ -73,7 +73,7 @@
 
 
   <div class="d-flex justify-content-center" (change)="onSubmit()">
-    <button  class="btn btn-outline-success" >
+    <button  class="btn btn-outline-success" [disabled]="!form.valid">
       Update
     </button>
   </div>
