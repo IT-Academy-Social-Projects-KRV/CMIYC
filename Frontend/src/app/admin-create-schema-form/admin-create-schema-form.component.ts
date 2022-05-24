@@ -81,7 +81,7 @@ export class AdminCreateSchemaFormComponent implements OnInit {
         document.location.reload();
       },
       error: err => {
-        const errorMessage: string = err.message || "Something went wrong";
+        const errorMessage: string = err.error || "Something went wrong";
         alert(errorMessage);
         this.spinner = false;
       }

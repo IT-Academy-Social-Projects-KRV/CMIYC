@@ -9,6 +9,7 @@ import com.ms.data.dto.SchemaFile;
 import com.customstarter.model.schema.Schema;
 import com.ms.data.dto.xml.InterfaceSchema;
 import com.ms.data.exception.CurrentSelectedSchemaException;
+import com.ms.data.exception.InvalidSchemaException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -54,8 +55,13 @@ public class CloudStorageService {
 
     @SneakyThrows
     public void uploadSchema(MultipartFile file) {
-        String validateFile = new String(file.getBytes());
-        xmlReaderService.read(validateFile);
+        try {
+            String fileContent = new String(file.getBytes());
+            xmlReaderService.read(fileContent);
+        } catch (Exception e) {
+            throw new InvalidSchemaException();
+        }
+
         StorageObject object = new StorageObject();
 
         String originalFilename = file.getOriginalFilename() == null ?
