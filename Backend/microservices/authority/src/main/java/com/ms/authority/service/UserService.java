@@ -7,7 +7,9 @@ import com.ms.authority.dto.UserData;
 import com.ms.authority.entity.Role;
 import com.ms.authority.entity.Token;
 import com.ms.authority.entity.User;
+import com.ms.authority.exception.BadRegisterDataException;
 import com.ms.authority.exception.ImpossibleOperationException;
+import com.ms.authority.exception.NotEnoughRolesSelectedException;
 import com.ms.authority.exception.PasswordsDoNotMatchException;
 import com.ms.authority.exception.TokenNotFoundException;
 import com.ms.authority.exception.UserAlreadyRegistredException;
@@ -77,18 +79,24 @@ public class UserService implements UserDetailsService {
 
     @SneakyThrows
     public synchronized void register(RegistrationRequestData request) {
+        request.validate();
+
+        if(isUserExist(request.getEmail()))
+            throw new UserAlreadyRegistredException();
+
         Token token = new Token();
         String link = activationPage + token.getToken();
         String secret = tfaService.generateSecretKey();
         String qrCode = tfaService.getQRCode(request.getEmail(), secret);
-        if(isUserExist(request.getEmail()))
-            throw new UserAlreadyRegistredException();
         emailService.sendActivationLink(request.getEmail(), request.getFirstName(), link, qrCode);
+
         Set<Role> roleSet = extractRolesFromStrings(request.getRoles());
         User user = new User(request.getFirstName(), request.getLastName(), request.getEmail(), secret, roleSet);
+
         String encodePassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
         user.setPassword(encodePassword);
         userRepository.save(user);
+
         token.setUser(user);
         tokenService.saveVerificationToken(token);
     }
@@ -146,22 +154,26 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUserById(User user, RegistrationRequestData request) {
-        userRepository.findById(user.getId()).map(userUpdated -> {
-            if (request.getFirstName() != null) {
-                user.setFirstName(request.getFirstName());
-            }
-            if (request.getLastName() != null) {
-                user.setLastName(request.getLastName());
-            }
-            if (request.getEmail() != null) {
-                user.setEmail(request.getEmail());
-            }
-            if (request.getRoles() != null) {
-                user.setRoles(extractRolesFromStrings(request.getRoles()));
-            }
-            return userRepository.save(user);
+        if(request.getFirstName() == null)
+            request.setFirstName(user.getFirstName());
 
+        if(request.getLastName() == null)
+            request.setLastName(user.getLastName());
+
+        if(request.getEmail() == null)
+            request.setEmail(user.getEmail());
+
+        request.validate();
+
+        userRepository.findById(user.getId()).map(userUpdated -> {
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setEmail(request.getEmail());
+            user.setRoles(extractRolesFromStrings(request.getRoles()));
+
+            return userRepository.save(user);
         });
+
         return user;
     }
 
