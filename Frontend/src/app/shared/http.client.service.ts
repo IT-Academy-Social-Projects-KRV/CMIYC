@@ -261,6 +261,7 @@ export class HttpClientService {
           callback(RequestResult.error(
             err.error.error_description ||
             err.error.error ||
+            err.error ||
             "Unexpected error occurred. Please, try again later"))
         }
       });
