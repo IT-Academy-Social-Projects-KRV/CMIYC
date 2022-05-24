@@ -46,9 +46,16 @@
               </div>
             </div>
           </div>
-
           <button class="w-100 btn btn-lg btn-primary" type="submit">Finish</button>
         </form>
+        <div class="mt-2">
+          <re-captcha
+            (resolved)="onCaptchaResolved($event)"
+            name="captcha" ngDefaultControl
+            required
+            siteKey="6LcxlA8gAAAAAJnRPMXjXqBHIAzluY9g-CkWAxH8"
+          ></re-captcha>
+        </div>
       </div>
     </div>
   </main>

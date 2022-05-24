@@ -53,6 +53,7 @@ public class UserService implements UserDetailsService {
     private final EmailService emailService;
     private final RoleRepository roleRepository;
     private final TfaService tfaService;
+    private final RecaptchaService recaptchaService;
 
     @Value("${routes.ui.activation-page}")
     private String activationPage;
@@ -100,8 +101,10 @@ public class UserService implements UserDetailsService {
         tokenService.saveVerificationToken(token);
     }
 
-    public void confirmRegister(ConfirmRegisterData confirmRegisterData)
+    public void confirmRegister(ConfirmRegisterData confirmRegisterData, String ip)
             throws PasswordsDoNotMatchException, TokenNotFoundException, UserAlreadyRegistredException {
+        recaptchaService.checkResponse(confirmRegisterData.getCaptchaResponse(), ip);
+
         if (!confirmRegisterData.arePasswordsEquals()) {
             throw new PasswordsDoNotMatchException();
         }
