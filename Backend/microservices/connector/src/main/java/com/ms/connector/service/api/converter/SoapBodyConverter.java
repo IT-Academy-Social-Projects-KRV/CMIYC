@@ -50,11 +50,16 @@ public class SoapBodyConverter {
 
         Name getPersonRequestName = soapFactory.createName(REQUEST_TAG_NAME, GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
         SOAPBodyElement requestElement = body.addBodyElement(getPersonRequestName);
-        addTag("operatorLicenseNumber",query.getOperatorLicenseNumber(),requestElement);
-        addTag("imageIndicator",String.valueOf(query.isImageIndicator()),requestElement);
-        addTag("sexCode",query.getSexCode().name(),requestElement);
-        addTag("raceCode",query.getRaceCode().name(),requestElement);
-        addTag("state",query.getState().name(),requestElement);
+        addTag("operatorLicenseNumber", query.getOperatorLicenseNumber(), requestElement);
+        addTag("imageIndicator", String.valueOf(query.isImageIndicator()), requestElement);
+
+        if(query.getSexCode() != null)
+            addTag("sexCode", query.getSexCode().name(),requestElement);
+        if(query.getRaceCode() != null)
+            addTag("raceCode" ,query.getRaceCode().name(),requestElement);
+        if(query.getState() != null)
+            addTag("state", query.getState().name(),requestElement);
+
         if(query.getName() != null) {
             Name name = soapFactory.createName("name", GS_NAMESPACE_PREFIX, GS_NAMESPACE_URL);
             SOAPElement nameElement = requestElement.addChildElement(name);
