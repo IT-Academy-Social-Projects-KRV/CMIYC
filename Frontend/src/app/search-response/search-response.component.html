@@ -47,10 +47,11 @@
             <div [attr.id]="'flush-collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+i" [attr.data-bs-parent]="'#accordion'">
               <div class="accordion-body">
                 <section class="search-result-item">
-                <span class="image-link" *ngIf="response.hasOwnProperty('image')">
+
+                <span class="image-link" *ngIf="response.image && response.image.length">
                   <img class="image" src="{{response.image}}">
                 </span>
-                  <span class="image-link" *ngIf="!response.hasOwnProperty('image')">
+                  <span class="image-link" *ngIf="!response.image || !response.image.length">
                   <img class="image" src="assets/images/user.svg">
                 </span>
                   <div class="search-result-item-body">
